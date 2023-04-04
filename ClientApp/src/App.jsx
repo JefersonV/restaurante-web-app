@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import './App.scss'
+import './styles/App.scss'
 import Home from './pages/Home'
 import Inventory from './pages/Inventory'
 import Purchases from './pages/Purchases'
