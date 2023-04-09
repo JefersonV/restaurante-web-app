@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useStore } from '../providers/GlobalProvider'
+import DatePicker from '../components/DatePicker';
 function Sales(props) {
   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
   const isOpen = useStore((state) => state.sidebar)
@@ -9,7 +10,8 @@ function Sales(props) {
   });
   return (
     <div className={ isOpen ? "wrapper" : "side" }>
-      <h1>Sales</h1>
+      <DatePicker />
+      
     </div>
   )
 }

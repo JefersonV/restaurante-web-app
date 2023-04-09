@@ -1,0 +1,35 @@
+/* body {
+  padding: 40px;
+} */
+
+/* .App {
+  text-align: center;
+  font-size: 22px;
+} */
+.calendarContainer {
+  width: max-content;
+  margin: 0;
+  position: absolute;
+  z-index: 1000;
+}
+
+input .inputBox {
+  font-size: 22px;
+  padding: 50x 8px 4px 8px;
+  border-radius: 3px;
+  border: 1px solid #666;
+}
+
+.calendarWrap {
+  display: inline-block;
+  position: relative;
+}
+
+.calendarElement {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  top: 40px;
+  border: 1px solid #ccc;
+  z-index: 1000;
+}

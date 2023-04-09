@@ -28,7 +28,7 @@ function Sidebar(props) {
           <img className="header-avatar" src="https://avatarfiles.alphacoders.com/286/thumb-286945.png" width="50px" alt="Perfil del usuario" />
         </div>
       </header>
-      <div className="container">
+      <div className="container-sidebar">
         <aside className= {isOpen ? "sidebar sidebarOpen" : "sidebar sidebarClose" }>
 
           <section className="top_section">

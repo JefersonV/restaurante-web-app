@@ -1,5 +1,9 @@
 import React, { useEffect } from 'react'
 import { useStore } from '../providers/GlobalProvider'
+import Widget from '../components/charts/widgets/Widget'
+// import Featured from "../components/featured/Featured";
+import Chart from '../components/charts/chart/Chart'
+
 function Home (props) {
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
@@ -9,8 +13,21 @@ function Home (props) {
   const isOpen = useStore((state) => state.sidebar)
   
   return (
-    <div className= { isOpen ? "wrapper" : "side" }>
-      <h1>Dashboard</h1> 
+    <div className={isOpen === true ? "wrapper" : "side"}>
+      <div className="home">
+        <div className="homeContainer">
+          <div className="widgets">
+            <Widget type={"ventasMes"} />
+            <Widget type={"bolsasVend"} />
+            <Widget type={"cliente"} />
+            <Widget type={"bolsasDisp"} />
+          </div>
+          <div className="charts">
+            {/* <Featured /> */}
+            <Chart />
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
