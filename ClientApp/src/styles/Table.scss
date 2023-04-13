@@ -1,0 +1,27 @@
+.icon-action {
+  &--edit {
+    color: #05b1ff;
+  }
+  &--delete {
+    color: red;
+  }
+  &--print {
+    color: #ccc;
+  }
+}
+
+.icon-print-all {
+  
+}
+
+button {
+  border: none;
+  background-color: transparent;
+}
+
+fixed-header thead th { /* the thead selector is required because there are th elements in the body */
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: white;
+}

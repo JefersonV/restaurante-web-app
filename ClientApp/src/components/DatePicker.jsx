@@ -6,6 +6,8 @@ import { DateRange } from 'react-date-range';
 import es from 'date-fns/locale/es';
 import addDays from 'date-fns/addDays';
 import '../styles/DatePicker.scss'
+import { FcOvertime } from 'react-icons/fc'
+import { InputGroup, InputGroupText } from 'reactstrap'
 
 function DatePicker() {
   const [selectedDateRange, setSelectedDateRange] = useState([
@@ -60,14 +62,22 @@ function DatePicker() {
   }; 
   return (
     <div>
-      <input 
-        
-        value={ `Fecha desde ${dayjs(selectedDateRange[0].startDate).format('DD/MM/YYYY')} hasta ${dayjs(selectedDateRange[0].startDate).format('DD/MM/YYYY')}` }
-        className='form-control inputBox'
-        readOnly
-        onClick={() => setOpenDate(prevState => !prevState)}
-      />
-      <div className="calendarContainer" ref={refOne}>
+      <InputGroup className="date-picker">
+        <label htmlFor="date-filter">
+        <InputGroupText >
+          <FcOvertime />
+        </InputGroupText>
+        </label>
+        <input 
+          value={ `Fecha desde ${dayjs(selectedDateRange[0].startDate).format('DD/MM/YYYY')} hasta ${dayjs(selectedDateRange[0].startDate).format('DD/MM/YYYY')}` }
+          className='form-control inputBox'
+          readOnly
+          onClick={() => setOpenDate(prevState => !prevState)}
+          id="date-filter"
+        />
+      
+      </InputGroup>
+        <div className="calendarContainer" ref={refOne}>
         {openDate && 
           <DateRange
             {...options}
