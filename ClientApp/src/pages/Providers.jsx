@@ -15,18 +15,18 @@ function Providers(props) {
   });
 
   /* ------ Fetch */
-   const [dataApi, setDataApi] = useState([])
-   const getData = async () => {
-     try {
-       const response = await fetch('https://jsonplaceholder.typicode.com/comments')
-       const json = await response.json() 
-       setDataApi(json)
-       console.log(json)
-     }
-     catch(err) {
-       console.error(err)
-     }
-   }
+  const [dataApi, setDataApi] = useState([])
+  const getData = async () => {
+    try {
+      const response = await fetch('https://jsonplaceholder.typicode.com/comments')
+      const json = await response.json() 
+      setDataApi(json)
+      console.log(json)
+    }
+    catch(err) {
+      console.error(err)
+    }
+  }
    useEffect(() => {
      getData()
    }, [])
@@ -80,7 +80,6 @@ function Providers(props) {
           </div>
         </div>
       </div>
-
     </div>
   )
 }

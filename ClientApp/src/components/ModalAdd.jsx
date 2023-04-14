@@ -22,41 +22,39 @@ function ModalAdd () {
 					nombre: '',
 					telefono: ''
 				}}
-				/* validate={(valores) => {
+				validate={(valores) => {
 					let errores = {};
 					// Validacion nombre
 					if(!valores.nombre){
 						errores.nombre = 'Por favor ingresa un nombre'
-					} else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.nombre)){
-						errores.nombre = 'El nombre solo puede contener letras y espacios'
+					} else if(!/^[a-zA-ZÀ-ÿ\s]{1,25}$/.test(valores.nombre)){
+						errores.nombre = 'El nombre debe tener un máximo de 25 caracteres, solo puede contener letras y espacios'
 					}
 					// Validacion telefono
 					if(!valores.telefono){
 						errores.telefono = 'Por favor ingresa un número telefónico' 
-					} else if(/^[\p{L}\d\s.,'-]+$/u.test(valores.telefono)){
-						errores.telefono = 'El telefono solo puede tener números y un máximo de 13 caracteres'
+					} else if(/^[0-9]{9}$/.test(valores.telefono)){
+						errores.telefono = 'EL teléfono debe tener un máximo de 8 números, y debe escribirse sin espacios ni guiones'
 					}
 					return errores;
-				}} */
-				onSubmit={(valores) => {
-					console.log(valores)
-					console.log('Formulario enviado')
 				}}
-				/* onSubmit={({resetForm, valores}) => {
+				onSubmit={(valores, {resetForm}) => {
 					console.log(valores)
 					resetForm();
-					console.log('Formulario enviado');
+					console.log('Formulario enviado')
 					// State 
 					cambiarFormularioEnviado(true);
 					setTimeout(() => cambiarFormularioEnviado(false), 5000);
-				}} */
+				}}
+
 			>
-				{( {values, handleSubmit, handleChange, handleBlur } ) => (
+				{( {values, handleSubmit, handleChange, handleBlur, errors } ) => (
 					<form className="formulario" onSubmit={handleSubmit}>
 						<FormGroup row>
 							<Label 
 								for="input-nombre"
 								sm={2}
+								
 							>
 								Nombre
 							</Label>
@@ -70,8 +68,11 @@ function ModalAdd () {
 									value={values.nombre }
 									onChange={handleChange}
 									onBlur={handleBlur}
+									/* Feedback para el usuario con el prop valid o invalid de reactstrap */
+									valid={!errors.nombre && values.nombre.length > 0}
+									invalid={!!errors.nombre}
 									/>
-								{/* <ErrorMessage name="nombre" component={() => (<div className="error">{errors.nombre}</div>)} /> */}
+								<ErrorMessage name="nombre" component={() => (<div className="error">{errors.nombre}</div>)} />
 							</Col>
 						</FormGroup>
 						<FormGroup row>
@@ -91,18 +92,21 @@ function ModalAdd () {
 										value={values.telefono}
 										onBlur={handleBlur}
 										onChange={handleChange}
+										valid={!errors.telefono && values.telefono.length > 0}
+										invalid={!!errors.telefono}
+
 									/>
-									{/* <ErrorMessage name="telefono" component={() => (<div className="error">{errors.telefono}</div>)} /> */}
+									<ErrorMessage name="telefono" component={() => (<div className="error">{errors.telefono}</div>)} />
 								</Col>
 						</FormGroup>
-						<button type="submit" >enviar</button>
-						{/* <Button 
+						{/* <button type="submit" >enviar</button> */}
+						<Button 
 							type="submit"
 							color="primary"
 							outline
 							>
 							Registrar
-          	</Button> */}
+          	</Button>
 						<Button color="secondary" onClick={toggle}>
 							Cancelar
 						</Button>
