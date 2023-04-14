@@ -4,13 +4,20 @@ import { FormGroup, Label, Col, Input } from 'reactstrap'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { BiEditAlt } from 'react-icons/bi'
 import { TbTruck } from 'react-icons/tb'
+import Swal from 'sweetalert2'
 import '../styles/Formulario.scss'
 
-function ModalAdd () {
+function ModalAdd (props) {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
   /* Formik */
   const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
+
+	const bodyProvider = {
+		nombre: "",
+    telefono: ""
+	}
+
   return (
 		<>
       <BiEditAlt onClick={toggle} />
@@ -34,17 +41,49 @@ function ModalAdd () {
 					if(!valores.telefono){
 						errores.telefono = 'Por favor ingresa un número telefónico' 
 					} else if(/^[0-9]{9}$/.test(valores.telefono)){
-						errores.telefono = 'EL teléfono debe tener un máximo de 8 números, y debe escribirse sin espacios ni guiones'
+						errores.telefono = 'El teléfono debe tener un máximo de 8 números, y debe escribirse sin espacios ni guiones'
 					}
 					return errores;
 				}}
-				onSubmit={(valores, {resetForm}) => {
+				onSubmit={async (valores, {resetForm}) => {
 					console.log(valores)
-					resetForm();
-					console.log('Formulario enviado')
-					// State 
-					cambiarFormularioEnviado(true);
-					setTimeout(() => cambiarFormularioEnviado(false), 5000);
+					/* Captura de la data que se va a enviar con post */
+					bodyProvider.nombre = valores.nombre
+					bodyProvider.telefono = valores.telefono
+					console.warn('json')
+					console.log(bodyProvider)
+
+					/* Método Post */
+					try {
+						const response = await fetch('http://localhost:5173/api/Proveedor', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							body: JSON.stringify(bodyProvider)
+						});
+						if (response.ok) {
+							Swal.fire({
+								position: 'center',
+								icon: 'success',
+								title: 'Registro agregado correctamente',
+								showConfirmButton: false,
+								timer: 1500
+							})
+							/* Si post fue exitoso se actualiza la data de la tabla */
+							props.actualizarListaProveedores()
+							console.log('Formulario enviado con éxito')
+							// State 
+							cambiarFormularioEnviado(true);
+							setTimeout(() => cambiarFormularioEnviado(false), 5000);
+							resetForm();
+						} else {
+							console.log('Ha ocurrido un error al enviar el formulario')
+						}
+					} catch (error) {
+						console.log('Ha ocurrido un error al enviar el formulario')
+						console.log(error)
+					}
 				}}
 
 			>
@@ -92,6 +131,7 @@ function ModalAdd () {
 										value={values.telefono}
 										onBlur={handleBlur}
 										onChange={handleChange}
+										/* Feedback para el usuario con el prop valid o invalid de reactstrap */
 										valid={!errors.telefono && values.telefono.length > 0}
 										invalid={!!errors.telefono}
 
@@ -116,7 +156,7 @@ function ModalAdd () {
 			</Formik>
         </ModalBody>
         <ModalFooter>
-						
+			
         </ModalFooter>
       </Modal>
     </>

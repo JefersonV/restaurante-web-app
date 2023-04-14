@@ -9,6 +9,7 @@ import '../styles/Table.scss'
 
 export default function TableData(props) {
   const { data } = props
+
   return (
     <Table
       bordered
@@ -21,18 +22,18 @@ export default function TableData(props) {
       <th>
         #
       </th>
-      <th>
+      {/* <th>
         Fecha
+      </th> */}
+      <th>
+        Nombre
       </th>
       <th>
-        No. comanda
+        Teléfono
       </th>
-      <th>
-        Vendedor
-      </th>
-      <th>
+      {/* <th>
         Total
-      </th>
+      </th> */}
       <th>
         Acciones
       </th>
@@ -54,18 +55,18 @@ export default function TableData(props) {
           <th scope="row">
             {index + 1}
           </th>
-          <td>
+          {/* <td>
             {dayjs().format('DD/MM/YYYY')}
+          </td> */}
+          <td>
+            {item.nombre}
           </td>
           <td>
-            {item.postId}
+            {item.telefono}
           </td>
-          <td>
-            {item.email}
-          </td>
-          <td>
+          {/* <td>
             Q.500.00
-          </td>
+          </td> */}
           <td>
             <ModalEdit />
             <SwalDelete />

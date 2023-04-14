@@ -18,7 +18,8 @@ function Providers(props) {
   const [dataApi, setDataApi] = useState([])
   const getData = async () => {
     try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/comments')
+      // https://jsonplaceholder.typicode.com/comments
+      const response = await fetch('http://localhost:5173/api/Proveedor')
       const json = await response.json() 
       setDataApi(json)
       console.log(json)
@@ -27,10 +28,10 @@ function Providers(props) {
       console.error(err)
     }
   }
-   useEffect(() => {
-     getData()
-   }, [])
- 
+  useEffect(() => {
+    getData()
+  }, [])
+   
   /* ----- Buscador */
   // state para buscador
   const [search, setSearch] = useState("")
@@ -45,35 +46,37 @@ function Providers(props) {
   const results = !search ? dataApi 
   // Si se ha ingresado información al input, que la compare a los criterios y los filtre
   : dataApi.filter((item) =>
-    item.email.toLowerCase().includes(search.toLocaleLowerCase())
+    item.nombre.toLowerCase().includes(search.toLocaleLowerCase())
   )
 
   return (
     <div className={ isOpen ? "wrapper" : "side" }>
-      <div className="container-fluid mt-4">
+      <div className="container mt-4">
         <div className="row">
-          <div className="col">
+          <div className="col-6">
             <Searchbar searcher={searcher}/>
           </div>
-        </div>
-        <div className="row d-flex justify-content-center align-items-center">
-          <div className="col">
-          <Button 
-            color="danger"
-            outline
-            >
-            Registrar nuevo
-            <ModalAdd />
-          </Button>
-          <Button 
-            color="primary"
-            outline
-            >
-            Imprimir lista 
-            <FcPrint />
-          </Button>
+          <div className="col-6">
+          
+            <Button 
+              color="danger"
+              outline
+              >
+              Registrar nuevo
+              {/* Prop para actualizar la data después de confirmar el envío de post */}
+              <ModalAdd actualizarListaProveedores={getData} />
+            </Button>
+            <Button 
+              color="primary"
+              outline
+              >
+              Imprimir lista 
+              <FcPrint />
+            </Button>
+ 
           </div>
         </div>
+        
         <div className="row">
           <div className="col">
             <TableData data={results} />
