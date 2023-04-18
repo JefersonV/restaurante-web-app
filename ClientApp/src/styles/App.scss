@@ -14,6 +14,7 @@
   --sidebar-width-close: 70px;
   --margin-add: 10px;
   --random: #da3b2b;
+  --contraste: #d9d9d9;
 }
 
 p,
@@ -62,11 +63,22 @@ main {
   justify-content: flex-start;
   align-items: center;
   padding-right: 1.2em;
+  &-avatar {
+    object-fit: cover;
+  }
+  &-info-user span {
+    color: white;
+    float: right;
+    font-size: .9em;
+    font-family: var(--font-poppins);
+    margin-right: .5em;
+  }
 }
 
 .header .page-title {
   color: var(--color-sidebar);
   margin-left: .5em;
+  margin-bottom: 0;
 }
 
 .header .header-avatar {
@@ -137,6 +149,7 @@ main {
 
 .link:hover {
   background: var(--border-sidebar);
+  color: var(--color-sidebar);
   /* color: #000; */
   transition: all 0.5s;
   border-radius: 0.5em;
@@ -215,18 +228,28 @@ a .sidebar-arrow-isOpen svg {
 }
 
 /* Scroll ----- */
-aside::-webkit-scrollbar {
+.container-sidebar aside {
+  height: 100vh;
+  overflow-x: clip;
+  overflow-y: scroll;
+}
+.container-sidebar aside::-webkit-scrollbar {
   width: 9px;
 }
 
+/* Si está cerrada la sidebar, disminuye el ancho del scroll */
+.container-sidebar .sidebarClose::-webkit-scrollbar {
+  width: 7px;
+}
+
 /* Ponemos un color de fondo y redondeamos las esquinas del thumb */
-aside::-webkit-scrollbar-thumb {
-  background: var(--random);
+.container-sidebar aside::-webkit-scrollbar-thumb {
+  background: var(--contraste);
   border-radius: 4px;
 }
 
 /* Cambiamos el fondo y agregamos una sombra cuando est� en hover */
-aside::-webkit-scrollbar-thumb:hover {
+.container-sidebar aside::-webkit-scrollbar-thumb:hover {
   background: #b3b3b3;
   box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
 }

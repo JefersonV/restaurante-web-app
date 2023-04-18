@@ -6,6 +6,7 @@ import SidebarItem from './SidebarItem';
 import LogoRestaurant from '../../assets/images/la centenaria.png'
 /* Provider (estado global)*/
 import { useStore, useSubItem } from '../../providers/GlobalProvider';
+import '../../styles/App.scss'
 
 
 function Sidebar(props) {
@@ -24,8 +25,13 @@ function Sidebar(props) {
           <FaBars onClick={toggle} />
           <h3 className="page-title">{pageTitle}</h3>
         </div>
+        <div className="header-info-user">
+            <span>Carmen</span>
+            <span>Admin</span>
+          </div>
         <div>
-          <img className="header-avatar" src="https://avatarfiles.alphacoders.com/286/thumb-286945.png" width="50px" alt="Perfil del usuario" />
+          
+          <img className="header-avatar" src="https://b2472105.smushcdn.com/2472105/wp-content/uploads/2022/11/10-Poses-para-foto-de-Perfil-Profesional-Mujer-04-2022-7-819x1024.jpg?lossy=1&strip=1&webp=1" width="50px" height="50px" alt="Perfil del usuario" />
         </div>
       </header>
       <div className="container-sidebar">

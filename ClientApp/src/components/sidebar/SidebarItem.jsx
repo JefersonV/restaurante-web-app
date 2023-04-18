@@ -5,14 +5,11 @@ import { Link } from 'react-router-dom'
 import { useStore, useSubItem } from '../../providers/GlobalProvider';
 function SidebarItem(props) {
   const isOpen = useStore()
-  // const subNav = useSubItem((state) => state.subNav)
-  // const showSubNav = useSubItem((state) => state.showSubNav)
   /* item -> prop para recorrer la data ... isOpen state de la sidebar (true / false) */
   const { item } = props
   /*subNav state para desplegar las opciones de la subnav  */
   const [subNav, setSubNav] = useState(false)
   const showSubNav = () => setSubNav(!subNav)
-  // console.log(subNav)
   return (
     <>
       {/* Menú  */}
