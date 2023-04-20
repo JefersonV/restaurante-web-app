@@ -22,7 +22,7 @@ namespace restaurante_web_app.Controllers
         public async Task<IEnumerable<Menu>> GetAll()
         {
             //return await _dbContext.Menus.Include(d => d.DetalleVenta).ToListAsync();
-            return await _dbContext.Menus.ToListAsync();
+            return await _dbContext.Menus.OrderByDescending(m => m.IdPlatillo).ToListAsync();
         }
 
         [HttpGet]
@@ -51,12 +51,14 @@ namespace restaurante_web_app.Controllers
         {
             if (idMenu != menu.IdPlatillo)
                 return BadRequest("Platillo no encontrado");
+
             var menuToUpdate = await _dbContext.Menus.FindAsync(idMenu);
 
             if (menuToUpdate is not null)
             {
-                menuToUpdate.Platillo = menu.Platillo;
-                menuToUpdate.Precio = menu.Precio;
+                menuToUpdate.Platillo = string.IsNullOrEmpty(menu.Platillo) ? 
+                    menuToUpdate.Platillo : menu.Platillo;
+                menuToUpdate.Precio = menu.Precio == 0 ? menuToUpdate.Precio : menu.Precio;
                 await _dbContext.SaveChangesAsync();
                 return NoContent();
             }
@@ -65,6 +67,7 @@ namespace restaurante_web_app.Controllers
                 return NotFound(new { message = "Platillo no encontrado" });
             }
         }
+
 
         [HttpDelete]
         [Route("{idMenu:int}")]
