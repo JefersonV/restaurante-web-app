@@ -54,10 +54,13 @@ namespace restaurante_web_app.Controllers
 
             if (clienteToUpdate is not null)
             {
-                clienteToUpdate.NombreApellido = cliente.NombreApellido;
-                clienteToUpdate.Fecha = cliente.Fecha;
-                clienteToUpdate.Institucion = cliente.Institucion;
-                clienteToUpdate.Puesto = cliente.Puesto;
+                clienteToUpdate.NombreApellido = string.IsNullOrWhiteSpace(cliente.NombreApellido) ? 
+                    clienteToUpdate.NombreApellido : cliente.NombreApellido;
+                clienteToUpdate.Fecha = cliente.Fecha ?? clienteToUpdate.Fecha;
+                clienteToUpdate.Institucion = string.IsNullOrWhiteSpace(cliente.Institucion) ? 
+                    clienteToUpdate.Institucion : cliente.Institucion;
+                clienteToUpdate.Puesto = string.IsNullOrWhiteSpace(cliente.Puesto) ? 
+                    clienteToUpdate.Puesto : cliente.Puesto;
                 await _dbContext.SaveChangesAsync();
                 return NoContent();
             }
@@ -66,6 +69,7 @@ namespace restaurante_web_app.Controllers
                 return NotFound(new { message = "Cliente no encontrado" });
             }
         }
+
 
         [HttpDelete]
         [Route("{idCliente:int}")]
