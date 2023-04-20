@@ -50,12 +50,16 @@ namespace restaurante_web_app.Controllers
         {
             if (idProveedor != proveedor.IdProveedor)
                 return BadRequest("Proveedor no encontrado");
+
             var proveedorToUpdate = await _dbContext.Proveedores.FindAsync(idProveedor);
 
             if (proveedorToUpdate is not null)
             {
-                proveedorToUpdate.Nombre = proveedor.Nombre;
-                proveedorToUpdate.Telefono = proveedor.Telefono;
+                // actualiza solo los campos proporcionados en la solicitud
+                proveedorToUpdate.Nombre = string.IsNullOrWhiteSpace(proveedor.Nombre) ? 
+                    proveedorToUpdate.Nombre : proveedor.Nombre;
+                proveedorToUpdate.Telefono = string.IsNullOrWhiteSpace(proveedor.Telefono) ? 
+                    proveedorToUpdate.Telefono : proveedor.Telefono;
                 await _dbContext.SaveChangesAsync();
                 return NoContent();
             }
@@ -64,6 +68,8 @@ namespace restaurante_web_app.Controllers
                 return NotFound(new { message = "Proveedor no encontrado" });
             }
         }
+
+
 
         [HttpDelete]
         [Route("{idProveedor:int}")]
