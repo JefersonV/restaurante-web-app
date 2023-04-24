@@ -15,12 +15,19 @@ function ModalAdd (props) {
 
 	const bodyProvider = {
 		nombre: "",
-    telefono: ""
+    	telefono: ""
 	}
 
   return (
 		<>
-      <BiEditAlt onClick={toggle} />
+		<Button 
+			color="danger"
+			outline
+			onClick={toggle}
+		> 
+			Registra Nuevo
+			<BiEditAlt  />
+		</Button>
       <Modal isOpen={modal} fade={false} toggle={toggle} centered={true}>
         <ModalHeader toggle={toggle}><TbTruck size={30}/> Ingreso de nuevo Proveedor</ModalHeader>
         <ModalBody>
@@ -34,13 +41,14 @@ function ModalAdd (props) {
 					// Validacion nombre
 					if(!valores.nombre){
 						errores.nombre = 'Por favor ingresa un nombre'
-					} else if(!/^[a-zA-ZÀ-ÿ\s]{1,25}$/.test(valores.nombre)){
+					} else if(!/^[a-zA-ZÀ-ÿ\s.]{1,25}$/.test(valores.nombre)){
 						errores.nombre = 'El nombre debe tener un máximo de 25 caracteres, solo puede contener letras y espacios'
 					}
 					// Validacion telefono
 					if(!valores.telefono){
-						errores.telefono = 'Por favor ingresa un número telefónico' 
-					} else if(/^[0-9]{9}$/.test(valores.telefono)){
+						errores.telefono = 'Por favor ingresa un número telefónico'
+						/* !/^[0-9]{9}$/.test(valores.telefono) */ 
+					} else if(!/^[0-9]{8}$/.test(valores.telefono)){
 						errores.telefono = 'El teléfono debe tener un máximo de 8 números, y debe escribirse sin espacios ni guiones'
 					}
 					return errores;
@@ -87,7 +95,7 @@ function ModalAdd (props) {
 				}}
 
 			>
-				{( {values, handleSubmit, handleChange, handleBlur, errors } ) => (
+				{( {values, handleSubmit, handleChange, handleBlur, errors, touched, setTouched } ) => (
 					<form className="formulario" onSubmit={handleSubmit}>
 						<FormGroup row>
 							<Label 
@@ -102,16 +110,17 @@ function ModalAdd (props) {
 									type="text"
 									id="input-nombre"
 									name="nombre"
-									placeholder="with a placeholder"
+									placeholder="Magnus S.A."
 									autoComplete="off"
 									value={values.nombre }
 									onChange={handleChange}
 									onBlur={handleBlur}
 									/* Feedback para el usuario con el prop valid o invalid de reactstrap */
-									valid={!errors.nombre && values.nombre.length > 0}
-									invalid={!!errors.nombre}
+									valid={touched.nombre && !errors.nombre && values.nombre.length > 0}
+									invalid={touched.nombre && !!errors.nombre}
 									/>
-								<ErrorMessage name="nombre" component={() => (<div className="error">{errors.nombre}</div>)} />
+									{touched.nombre && errors.nombre && <div className="error">{errors.nombre}</div>}
+								{/* <ErrorMessage name="nombre" component={() => (<div className="error">{errors.nombre}</div>)} /> */}
 							</Col>
 						</FormGroup>
 						<FormGroup row>
@@ -126,17 +135,19 @@ function ModalAdd (props) {
 										type="text"
 										id="input-telefono"
 										name="telefono"
-										placeholder="with a placeholder"
+										placeholder="77623030"
 										autoComplete="off"
 										value={values.telefono}
 										onBlur={handleBlur}
 										onChange={handleChange}
 										/* Feedback para el usuario con el prop valid o invalid de reactstrap */
-										valid={!errors.telefono && values.telefono.length > 0}
-										invalid={!!errors.telefono}
+										valid={touched.telefono && !errors.telefono && values.telefono.length > 0}
+										invalid={touched.telefono && !!errors.telefono}
 
 									/>
-									<ErrorMessage name="telefono" component={() => (<div className="error">{errors.telefono}</div>)} />
+									
+									{/* <ErrorMessage name="telefono" component={() => (<div className="error">{errors.telefono}</div>)} /> */}
+									{touched.telefono && errors.telefono && <div className="error">{errors.telefono}</div>}
 								</Col>
 						</FormGroup>
 						{/* <button type="submit" >enviar</button> */}

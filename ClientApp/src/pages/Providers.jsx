@@ -5,6 +5,8 @@ import { FcPlus, FcPrint } from 'react-icons/fc'
 import { Button } from 'reactstrap'
 import TableData from '../components/TableData'
 import ModalAdd from '../components/ModalAdd'
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
+import CardSkeleton from '../components/skeletonUI/CardSkeleton'
 
 function Providers(props) {
   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
@@ -13,7 +15,8 @@ function Providers(props) {
     // Para establecer en el módulo en el que nos encontramos
     props.setTitle("Proveedores");
   });
-
+  /* Skeleton para la UI, mientras se carga la data de la API */
+  const [isLoading, setIsLoading] = useState(true)
   /* ------ Fetch */
   const [dataApi, setDataApi] = useState([])
   const getData = async () => {
@@ -46,7 +49,8 @@ function Providers(props) {
   const results = !search ? dataApi 
   // Si se ha ingresado información al input, que la compare a los criterios y los filtre
   : dataApi.filter((item) =>
-    item.nombre.toLowerCase().includes(search.toLocaleLowerCase())
+    item.nombre.toLowerCase().includes(search.toLocaleLowerCase()) ||
+    item.telefono.toLowerCase().includes(search.toLocaleLowerCase())
   )
 
   return (
@@ -57,15 +61,9 @@ function Providers(props) {
             <Searchbar searcher={searcher}/>
           </div>
           <div className="col-6">
-          
-            <Button 
-              color="danger"
-              outline
-              >
-              Registrar nuevo
-              {/* Prop para actualizar la data después de confirmar el envío de post */}
-              <ModalAdd actualizarListaProveedores={getData} />
-            </Button>
+            {/* Prop para actualizar la data después de confirmar el envío de post */}
+            <ModalAdd actualizarListaProveedores={getData} />
+      
             <Button 
               color="primary"
               outline
@@ -79,7 +77,10 @@ function Providers(props) {
         
         <div className="row">
           <div className="col">
-            <TableData data={results} />
+            <TableData 
+              data={results} 
+              actualizarListaProveedores={getData} 
+            />
           </div>
         </div>
       </div>

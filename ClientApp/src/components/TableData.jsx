@@ -6,9 +6,10 @@ import ModalEdit from './ModalEdit'
 import SwalDelete from './SwalDelete'
 import dayjs from 'dayjs'
 import '../styles/Table.scss'
+import Skeleton from 'react-loading-skeleton'
 
 export default function TableData(props) {
-  const { data } = props
+  const { data, actualizarListaProveedores } = props
 
   return (
     <Table
@@ -68,14 +69,19 @@ export default function TableData(props) {
             Q.500.00
           </td> */}
           <td>
-            <ModalEdit />
-            <SwalDelete />
-            <button>
+              {/* Item que fue clickado  */}
+            <ModalEdit 
+              idProveedor={item.idProveedor} 
+              actualizarListaProveedores={actualizarListaProveedores}/>
+            <SwalDelete 
+              idProveedor={item.idProveedor} 
+              actualizarListaProveedores={actualizarListaProveedores}/>
+            {/* <button>
               <AiOutlinePrinter
                 className="icon-action icon-action--print"
                 title="Imprimir venta individual"
               />
-            </button>
+            </button> */}
           </td>
         </tr>
       )
