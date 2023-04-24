@@ -47,12 +47,13 @@ namespace restaurante_web_app.Controllers
                 {
                     Id = dv.IdDetalleVenta,
                     Platillo = dv.IdPlatilloNavigation?.Platillo,
+                    Precio = dv.IdPlatilloNavigation?.Precio ?? 0,
                     IdVenta = dv.IdVenta,
                     Cantidad = dv.Cantidad,
                     Subtotal = dv.Subtotal,
                     Observaciones = dv.Observaciones,
                 }).ToList(),
-            });
+            }).OrderByDescending(v => v.IdVenta);
 
             return ventasDto;
         }
@@ -91,6 +92,7 @@ namespace restaurante_web_app.Controllers
                 {
                     Id = dv.IdDetalleVenta,
                     Platillo = dv.IdPlatilloNavigation?.Platillo,
+                    Precio = dv.IdPlatilloNavigation?.Precio ?? 0,
                     IdVenta = dv.IdVenta,
                     Cantidad = dv.Cantidad,
                     Subtotal = dv.Subtotal,
@@ -104,12 +106,14 @@ namespace restaurante_web_app.Controllers
         [HttpPost]
         public async Task<ActionResult<VentaDtoOut>> Create(VentaDtoIn ventaDto)
         {
+            var total = ventaDto.DetalleVenta.Sum(dvDto => dvDto.Cantidad * _dbContext.Menus
+            .Single(p => p.IdPlatillo == dvDto.IdPlatillo).Precio);
+
             var venta = new Venta
             {
                 NumeroComanda = ventaDto.NumeroComanda,
-                //Fecha = ventaDto.Fecha.HasValue ? ventaDto.Fecha.Value : DateOnly.FromDateTime(DateTime.Now.Date),
                 Fecha = ventaDto.Fecha.HasValue ? ventaDto.Fecha.Value : default(DateOnly?),
-                Total = ventaDto.Total ?? 0,
+                Total = total,
                 IdMesero = ventaDto.IdMesero ?? 0,
                 IdCliente = ventaDto.IdCliente ?? 0
             };
@@ -122,7 +126,8 @@ namespace restaurante_web_app.Controllers
                 var detalleVenta = ventaDto.DetalleVenta.Select(dvDto => new DetalleVenta
                 {
                     Cantidad = dvDto.Cantidad ?? 0,
-                    Subtotal = dvDto.Subtotal ?? 0,
+                    Subtotal = (dvDto.Cantidad ?? 0) * _dbContext.Menus
+                    .Single(p => p.IdPlatillo == dvDto.IdPlatillo).Precio,
                     Observaciones = dvDto.Observaciones,
                     IdPlatillo = dvDto.IdPlatillo,
                     IdVenta = venta.IdVenta
@@ -186,22 +191,36 @@ namespace restaurante_web_app.Controllers
 
                 if (dv != null)
                 {
-                    dv.Cantidad = dvDto.Cantidad ?? 0;
-                    dv.Subtotal = dvDto.Subtotal ?? 0;
-                    dv.Observaciones = dvDto.Observaciones;
-                    dv.IdPlatillo = dvDto.IdPlatillo;
+                    // Conserva el valor actual si no está presente en el objeto JSON
+                    dv.Cantidad = dvDto.Cantidad ?? dv.Cantidad;
+                    dv.Observaciones = dvDto.Observaciones ?? dv.Observaciones;
+                    dv.IdPlatillo = dvDto.IdPlatillo ?? dv.IdPlatillo;
+
+                    // Calcular nuevo subtotal
+                    var platillo = await _dbContext.Menus.FindAsync(dv.IdPlatillo);
+                    if (platillo != null)
+                    {
+                        dv.Subtotal = dv.Cantidad * platillo.Precio;
+                    }
                 }
                 else
                 {
-                    venta.DetalleVenta.Add(new DetalleVenta
+                    var platillo = await _dbContext.Menus.FindAsync(dvDto.IdPlatillo);
+                    if (platillo != null)
                     {
-                        Cantidad = dvDto.Cantidad ?? 0,
-                        Subtotal = dvDto.Subtotal ?? 0,
-                        Observaciones = dvDto.Observaciones,
-                        IdPlatillo = dvDto.IdPlatillo,
-                    });
+                        venta.DetalleVenta.Add(new DetalleVenta
+                        {
+                            Cantidad = dvDto.Cantidad ?? 0,
+                            Subtotal = dvDto.Cantidad * platillo.Precio,
+                            Observaciones = dvDto.Observaciones,
+                            IdPlatillo = dvDto.IdPlatillo,
+                        });
+                    }
                 }
             }
+
+            // Calcular nuevo total de venta
+            venta.Total = venta.DetalleVenta.Sum(dv => dv.Subtotal);
 
             // Guardar cambios
             await _dbContext.SaveChangesAsync();
@@ -209,6 +228,31 @@ namespace restaurante_web_app.Controllers
             return NoContent();
         }
         //Eliminar detalles de una venta -> no elimina la venta solo los detalles que se indique
+        //[HttpDelete("{idVenta:long}/detalleVenta/{idDetalleVenta:long}")]
+        //public async Task<ActionResult> DeleteDetalleVenta(long idVenta, long idDetalleVenta)
+        //{
+        //    var venta = await _dbContext.Ventas
+        //        .Include(v => v.DetalleVenta)
+        //        .FirstOrDefaultAsync(v => v.IdVenta == idVenta);
+
+        //    if (venta == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var detalleVenta = venta.DetalleVenta.FirstOrDefault(dv => dv.IdDetalleVenta == idDetalleVenta);
+
+        //    if (detalleVenta == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    venta.DetalleVenta.Remove(detalleVenta);
+        //    await _dbContext.SaveChangesAsync();
+
+        //    return NoContent();
+        //}
+
         [HttpDelete("{idVenta:long}/detalleVenta/{idDetalleVenta:long}")]
         public async Task<ActionResult> DeleteDetalleVenta(long idVenta, long idDetalleVenta)
         {
@@ -228,11 +272,18 @@ namespace restaurante_web_app.Controllers
                 return NotFound();
             }
 
+            decimal? subtotalDetalleVenta = detalleVenta.Subtotal;
+
             venta.DetalleVenta.Remove(detalleVenta);
+
+            venta.Total -= subtotalDetalleVenta;
+
             await _dbContext.SaveChangesAsync();
 
             return NoContent();
         }
+
+
         //Eliminar una venta y los detalles que lo conforman
         [HttpDelete("{id:long}")]
         public async Task<ActionResult> DeleteVenta(long id)

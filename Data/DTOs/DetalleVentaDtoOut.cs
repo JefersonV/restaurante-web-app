@@ -4,6 +4,7 @@
     {
         public long Id { get; set; }
         public string? Platillo { get; set; } = null!;
+        public decimal Precio { get; set; }
         public long? IdVenta { get; set; }
         public short? Cantidad { get; set; }
         public decimal? Subtotal { get; set; }
