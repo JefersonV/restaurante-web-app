@@ -21,7 +21,7 @@ namespace restaurante_web_app.Controllers
         [HttpGet]
         public async Task<IEnumerable<Mesero>> GetAll()
         {
-            return await _dbContext.Meseros.ToListAsync();
+            return await _dbContext.Meseros.OrderByDescending(m => m.IdMesero).ToListAsync();
         }
 
         [HttpGet]
