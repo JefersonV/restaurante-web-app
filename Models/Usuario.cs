@@ -7,11 +7,13 @@ public partial class Usuario
 {
     public Guid IdUsuario { get; set; }
 
-    public string Nombres { get; set; } = null!;
-
-    public string Apellidos { get; set; } = null!;
+    public string Nombre { get; set; } = null!;
 
     public string Usuario1 { get; set; } = null!;
 
     public string Contraseña { get; set; } = null!;
+
+    public short IdTipoUsuario { get; set; }
+
+    public virtual TiposUsuario IdTipoUsuarioNavigation { get; set; } = null!;
 }

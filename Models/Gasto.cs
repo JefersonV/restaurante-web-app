@@ -17,5 +17,7 @@ public partial class Gasto
 
     public int? IdProveedor { get; set; }
 
+    public virtual ICollection<GastosMovimientoCaja> GastosMovimientoCajas { get; } = new List<GastosMovimientoCaja>();
+
     public virtual Proveedor? IdProveedorNavigation { get; set; }
 }
