@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Table } from 'reactstrap'
-import { BiEditAlt } from 'react-icons/bi'
-import { AiFillDelete, AiOutlinePrinter } from 'react-icons/ai'
-import ModalEdit from './ModalEdit'
+import ModalEdit from './modales/ModalEdit'
 import SwalDelete from './SwalDelete'
 import dayjs from 'dayjs'
 import '../styles/Table.scss'
@@ -14,7 +12,8 @@ export default function TableData(props) {
   return (
     <Table
       bordered
-      striped
+      hover
+      // striped
       responsive
       className="fixed-header"
     >
@@ -72,16 +71,12 @@ export default function TableData(props) {
               {/* Item que fue clickado  */}
             <ModalEdit 
               idProveedor={item.idProveedor} 
-              actualizarListaProveedores={actualizarListaProveedores}/>
+              actualizarListaProveedores={actualizarListaProveedores}
+            />
             <SwalDelete 
               idProveedor={item.idProveedor} 
-              actualizarListaProveedores={actualizarListaProveedores}/>
-            {/* <button>
-              <AiOutlinePrinter
-                className="icon-action icon-action--print"
-                title="Imprimir venta individual"
-              />
-            </button> */}
+              actualizarListaProveedores={actualizarListaProveedores}
+            />
           </td>
         </tr>
       )

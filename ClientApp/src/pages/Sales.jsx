@@ -5,9 +5,8 @@ import Searchbar from '../components/Searchbar';
 import Select from '../components/Select';
 import TableData from '../components/TableData';
 import ButtonDrop from '../components/ButtonDrop';
-import { Button } from 'reactstrap';
 import { FcPrint } from 'react-icons/fc';
-import { FcPlus } from 'react-icons/fc';
+import ModalNewSale from '../components/modales/ModalNewSale';
 
 function Sales(props) {
   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
@@ -49,8 +48,6 @@ function Sales(props) {
   : dataApi.filter((item) =>
     item.email.toLowerCase().includes(search.toLocaleLowerCase())
   )
-  // || item.id.toString().toLowerCase().includes(search.toLocaleLowerCase())
-  //  dato.fecha.toLowerCase().includes(search.toLocaleLowerCase())
   return (
     <div className={ isOpen ? "wrapper" : "side" }>
       <div className="container-fluid mt-4">
@@ -67,13 +64,7 @@ function Sales(props) {
             <Select />
           </div>
           <div className="col">
-          <Button 
-            color="danger"
-            outline
-          >
-            <FcPlus />
-            Nueva venta
-          </Button>
+            <ModalNewSale />
           </div>
           <div className="col">
             <ButtonDrop >

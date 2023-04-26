@@ -5,7 +5,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { BiEditAlt } from 'react-icons/bi'
 import { TbTruck } from 'react-icons/tb'
 import Swal from 'sweetalert2'
-import '../styles/Formulario.scss'
+import '../../styles/Formulario.scss'
 
 function ModalAdd (props) {
   const [modal, setModal] = useState(false);
@@ -93,7 +93,6 @@ function ModalAdd (props) {
 						console.log(error)
 					}
 				}}
-
 			>
 				{( {values, handleSubmit, handleChange, handleBlur, errors, touched, setTouched } ) => (
 					<form className="formulario" onSubmit={handleSubmit}>

@@ -12,13 +12,14 @@ import Sidebar from './components/sidebar/Sidebar'
 import Menu from './pages/Menu'
 import Providers from './pages/Providers'
 import Customers from './pages/Customers'
+import IndividualSale from './pages/IndividualSale'
+import GroupSale from './pages/GroupSale'
 import {
   BrowserRouter,
   Routes,
   Route,
-  Link,
+  Link
 } from "react-router-dom";
-import { FaCashRegister } from "react-icons/fa"
 import { SkeletonTheme } from 'react-loading-skeleton'
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
   const setTitle = (title) => {
     setPageTitle(title)
   }
+
 
   return (
     <>
@@ -46,6 +48,14 @@ function App() {
               <Route
                 path="/sales"
                 element={<Sales setTitle={setTitle} />}
+              />
+              <Route
+                path="/new"
+                element={<IndividualSale setTitle={setTitle} />}
+              />
+              <Route
+                path="/group"
+                element={<GroupSale setTitle={setTitle} />}
               />
               <Route
                 path="/purchases"

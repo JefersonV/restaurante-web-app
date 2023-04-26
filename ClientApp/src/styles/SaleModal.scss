@@ -1,0 +1,40 @@
+.sale-container {
+  height: 150px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  &--individual {
+    background: #DC3545;
+  }
+  &--grupal {
+    background: #198754;
+  }
+  &-label {
+    cursor: pointer;
+  }
+}
+
+.btn-sale {
+  display: contents;
+  width: 100%;
+}
+
+/* button:hover {
+  background-color: #af2432;
+} */
+/* 
+.container-fluid .row .col .sale-container--individual {
+  background: var(--indiv);
+  
+} */
+
+/* background: #198754;
+ */
+
+ /* background: #DC3545;
+ */

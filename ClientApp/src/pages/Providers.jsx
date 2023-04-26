@@ -4,7 +4,7 @@ import Searchbar from '../components/Searchbar'
 import { FcPlus, FcPrint } from 'react-icons/fc'
 import { Button } from 'reactstrap'
 import TableData from '../components/TableData'
-import ModalAdd from '../components/ModalAdd'
+import ModalAdd from '../components/modales/ModalAdd'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import CardSkeleton from '../components/skeletonUI/CardSkeleton'
 

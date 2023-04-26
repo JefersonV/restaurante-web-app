@@ -4,7 +4,7 @@ import Searchbar from '../components/Searchbar'
 import { FcPlus, FcPrint } from 'react-icons/fc'
 import { Button } from 'reactstrap'
 import TableData from '../components/TableData'
-import ModalAdd from '../components/ModalAdd'
+import ModalAdd from '../components/modales/ModalAdd'
 
 function Menu(props) {
   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
