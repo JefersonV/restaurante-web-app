@@ -66,7 +66,6 @@ namespace restaurante_web_app.Controllers
             return username;
         }
 
-        [Authorize(Roles = "Administrador, Invitado")]
         [HttpPost("login")]
         public async Task<ActionResult> Login(LoginDtoIn loginDtoIn)
         {
@@ -106,8 +105,9 @@ namespace restaurante_web_app.Controllers
                 var tokenString = tokenHandler.WriteToken(token);
 
                 var rol = usuario.IdTipoUsuarioNavigation?.Tipo ?? "";
+                var nombreUsusrio = usuario.Usuario1;
 
-                return Ok(new { token = tokenString, rol });
+                return Ok(new { token = tokenString, rol, nombreUsusrio });
             }
             catch (Exception ex)
             {
