@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using restaurante_web_app.Models;
+using System.Data;
 
 namespace restaurante_web_app.Controllers
 {
@@ -18,12 +20,14 @@ namespace restaurante_web_app.Controllers
             _dbContext = dbContext;
         }
 
+        [Authorize(Roles = "Administrador, Invitado")]
         [HttpGet]
         public async Task<IEnumerable<Cliente>> GetAll()
         {
             return await _dbContext.Clientes.ToListAsync();
         }
 
+        [Authorize(Roles = "Administrador, Invitado")]
         [HttpGet]
         [Route("{idCliente:int}")]
         public async Task<ActionResult<Cliente>> GetById(int idCliente)
@@ -35,6 +39,7 @@ namespace restaurante_web_app.Controllers
             return cliente;
         }
 
+        [Authorize(Roles = "Administrador, Invitado")]
         [HttpPost]
         public async Task<Cliente> Create(Cliente newCliente)
         {
@@ -44,6 +49,7 @@ namespace restaurante_web_app.Controllers
             return newCliente;
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPut]
         [Route("{idCliente:int}")]
         public async Task<IActionResult> Update(int idCliente, Cliente cliente)
@@ -70,7 +76,7 @@ namespace restaurante_web_app.Controllers
             }
         }
 
-
+        [Authorize(Roles = "Administrador")]
         [HttpDelete]
         [Route("{idCliente:int}")]
 

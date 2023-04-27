@@ -66,6 +66,7 @@ namespace restaurante_web_app.Controllers
             return username;
         }
 
+        [Authorize(Roles = "Administrador, Invitado")]
         [HttpPost("login")]
         public async Task<ActionResult> Login(LoginDtoIn loginDtoIn)
         {

@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using restaurante_web_app.Data.DTOs;
 using restaurante_web_app.Models;
+using System.Data;
 
 namespace restaurante_web_app.Controllers
 {
@@ -18,6 +20,8 @@ namespace restaurante_web_app.Controllers
         {
             _dbContext = dbContext;
         }
+
+        [Authorize(Roles = "Administrador, Invitado")]
         //Obtener todas las ventas con todos sus detalles
         [HttpGet]
         public async Task<IEnumerable<VentaDtoOut>> GetAll()
@@ -57,6 +61,8 @@ namespace restaurante_web_app.Controllers
 
             return ventasDto;
         }
+
+        [Authorize(Roles = "Administrador, Invitado")]
         //Obtener una unica venta con sus detalles
         [HttpGet("{id:long}")]
         public async Task<ActionResult<VentaDtoOut>> GetById(long id)
@@ -102,6 +108,8 @@ namespace restaurante_web_app.Controllers
 
             return ventaDto;
         }
+
+        [Authorize(Roles = "Administrador, Invitado")]
         //Crear una venta luego crear los detalles que contiene con su relacion uno a muchos
         [HttpPost]
         public async Task<ActionResult<VentaDtoOut>> Create(VentaDtoIn ventaDto)
@@ -171,6 +179,8 @@ namespace restaurante_web_app.Controllers
 
             return CreatedAtAction(nameof(GetById), new { id = ventaDtoOut.IdVenta }, ventaDtoOut);
         }
+
+        [Authorize(Roles = "Administrador")]
         //Actualizar los detalles de una venta 
         [HttpPut("{id:long}")]
         public async Task<ActionResult> UpdateDetalleVenta(long id, List<DetalleVentaDtoIn> detalleVentaDto)
@@ -227,32 +237,9 @@ namespace restaurante_web_app.Controllers
 
             return NoContent();
         }
+
+        [Authorize(Roles = "Administrador")]
         //Eliminar detalles de una venta -> no elimina la venta solo los detalles que se indique
-        //[HttpDelete("{idVenta:long}/detalleVenta/{idDetalleVenta:long}")]
-        //public async Task<ActionResult> DeleteDetalleVenta(long idVenta, long idDetalleVenta)
-        //{
-        //    var venta = await _dbContext.Ventas
-        //        .Include(v => v.DetalleVenta)
-        //        .FirstOrDefaultAsync(v => v.IdVenta == idVenta);
-
-        //    if (venta == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var detalleVenta = venta.DetalleVenta.FirstOrDefault(dv => dv.IdDetalleVenta == idDetalleVenta);
-
-        //    if (detalleVenta == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    venta.DetalleVenta.Remove(detalleVenta);
-        //    await _dbContext.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
-
         [HttpDelete("{idVenta:long}/detalleVenta/{idDetalleVenta:long}")]
         public async Task<ActionResult> DeleteDetalleVenta(long idVenta, long idDetalleVenta)
         {
@@ -283,7 +270,7 @@ namespace restaurante_web_app.Controllers
             return NoContent();
         }
 
-
+        [Authorize(Roles = "Administrador")]
         //Eliminar una venta y los detalles que lo conforman
         [HttpDelete("{id:long}")]
         public async Task<ActionResult> DeleteVenta(long id)

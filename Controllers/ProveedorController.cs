@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using restaurante_web_app.Models;
+using System.Data;
 
 namespace restaurante_web_app.Controllers
 {
@@ -18,12 +20,14 @@ namespace restaurante_web_app.Controllers
             _dbContext = dbContext;
         }
 
+        [Authorize(Roles = "Administrador, Invitado")]
         [HttpGet]
         public async Task<IEnumerable<Proveedor>> GetAll()
         {
             return await _dbContext.Proveedores.ToListAsync();
         }
 
+        [Authorize(Roles = "Administrador, Invitado")]
         [HttpGet]
         [Route("{idProveedor:int}")]
         public async Task<ActionResult<Proveedor>> GetById(int idProveedor)
@@ -35,6 +39,7 @@ namespace restaurante_web_app.Controllers
             return proveedor;
         }
 
+        [Authorize(Roles = "Administrador, Invitado")]
         [HttpPost]
         public async Task<Proveedor> Create(Proveedor newProveedor)
         {
@@ -44,6 +49,7 @@ namespace restaurante_web_app.Controllers
             return newProveedor;
         }
 
+        [Authorize(Roles = "Administrador, Invitado")]
         [HttpPut]
         [Route("{idProveedor:int}")]
         public async Task<IActionResult> Update(int idProveedor, Proveedor proveedor)
@@ -69,11 +75,9 @@ namespace restaurante_web_app.Controllers
             }
         }
 
-
-
+        [Authorize(Roles = "Administrador")]
         [HttpDelete]
         [Route("{idProveedor:int}")]
-
         public async Task<IActionResult> Delete(int idProveedor)
         {
             var proveedorToDelete = await _dbContext.Proveedores.FindAsync(idProveedor);
