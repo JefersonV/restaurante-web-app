@@ -105,9 +105,9 @@ namespace restaurante_web_app.Controllers
                 var tokenString = tokenHandler.WriteToken(token);
 
                 var rol = usuario.IdTipoUsuarioNavigation?.Tipo ?? "";
-                var nombreUsusrio = usuario.Usuario1;
+                var nombreUsuario = usuario.Usuario1;
 
-                return Ok(new { token = tokenString, rol, nombreUsusrio });
+                return Ok(new { token = tokenString, rol, nombreUsuario });
             }
             catch (Exception ex)
             {
