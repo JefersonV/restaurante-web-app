@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace restaurante_web_app.Models;
 
@@ -14,6 +15,6 @@ public partial class Usuario
     public string Contraseña { get; set; } = null!;
 
     public short IdTipoUsuario { get; set; }
-
+    [JsonIgnore]
     public virtual TiposUsuario IdTipoUsuarioNavigation { get; set; } = null!;
 }
