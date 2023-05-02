@@ -22,4 +22,6 @@ public partial class Venta
     public virtual Cliente? IdClienteNavigation { get; set; }
 
     public virtual Mesero? IdMeseroNavigation { get; set; }
+
+    public virtual ICollection<VentaMovimientoCaja> VentaMovimientoCajas { get; } = new List<VentaMovimientoCaja>();
 }

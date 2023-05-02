@@ -2,6 +2,8 @@
 using restaurante_web_app.Models;
 using Microsoft.AspNetCore.Cors;//para hacer uso del CORS
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace restaurante_web_app.Controllers
 {
@@ -18,13 +20,15 @@ namespace restaurante_web_app.Controllers
             _dbContext = dbContext;
         }
 
+        [Authorize(Roles = "Administrador, Invitado")]
         [HttpGet]
         public async Task<IEnumerable<Menu>> GetAll()
         {
             //return await _dbContext.Menus.Include(d => d.DetalleVenta).ToListAsync();
-            return await _dbContext.Menus.ToListAsync();
+            return await _dbContext.Menus.OrderByDescending(m => m.IdPlatillo).ToListAsync();
         }
 
+        [Authorize(Roles = "Administrador, Invitado")]
         [HttpGet]
         [Route("{idPlatillo:int}")]
         public async Task<ActionResult<Menu>> GetById(int idPlatillo)
@@ -36,6 +40,7 @@ namespace restaurante_web_app.Controllers
             return menu;
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         public async Task<Menu> Create(Menu newMenu)
         {
@@ -45,18 +50,21 @@ namespace restaurante_web_app.Controllers
             return newMenu;
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPut]
         [Route("{idMenu:int}")]
         public async Task<IActionResult> Update(int idMenu, Menu menu)
         {
             if (idMenu != menu.IdPlatillo)
                 return BadRequest("Platillo no encontrado");
+
             var menuToUpdate = await _dbContext.Menus.FindAsync(idMenu);
 
             if (menuToUpdate is not null)
             {
-                menuToUpdate.Platillo = menu.Platillo;
-                menuToUpdate.Precio = menu.Precio;
+                menuToUpdate.Platillo = string.IsNullOrEmpty(menu.Platillo) ? 
+                    menuToUpdate.Platillo : menu.Platillo;
+                menuToUpdate.Precio = menu.Precio == 0 ? menuToUpdate.Precio : menu.Precio;
                 await _dbContext.SaveChangesAsync();
                 return NoContent();
             }
@@ -66,9 +74,9 @@ namespace restaurante_web_app.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpDelete]
         [Route("{idMenu:int}")]
-
         public async Task<IActionResult> Delete(int idMenu)
         {
             var menuToDelete = await _dbContext.Menus.FindAsync(idMenu);

@@ -23,6 +23,8 @@ public partial class GoeatContext : DbContext
 
     public virtual DbSet<Gasto> Gastos { get; set; }
 
+    public virtual DbSet<GastosMovimientoCaja> GastosMovimientoCajas { get; set; }
+
     public virtual DbSet<Menu> Menus { get; set; }
 
     public virtual DbSet<Mesero> Meseros { get; set; }
@@ -33,13 +35,13 @@ public partial class GoeatContext : DbContext
 
     public virtual DbSet<TipoMovimientoCaja> TipoMovimientoCajas { get; set; }
 
+    public virtual DbSet<TiposUsuario> TiposUsuarios { get; set; }
+
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
     public virtual DbSet<Venta> Ventas { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseNpgsql("Server=127.0.0.1;Port=5432;Database=goeat;User Id=postgres;Password=admin");
+    public virtual DbSet<VentaMovimientoCaja> VentaMovimientoCajas { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -128,6 +130,25 @@ public partial class GoeatContext : DbContext
                 .HasConstraintName("gastos_id_proveedor_fkey");
         });
 
+        modelBuilder.Entity<GastosMovimientoCaja>(entity =>
+        {
+            entity.HasKey(e => e.IdGastoMovimientoCaja).HasName("gastos_movimiento_caja_pkey");
+
+            entity.ToTable("gastos_movimiento_caja");
+
+            entity.Property(e => e.IdGastoMovimientoCaja).HasColumnName("id_gasto_movimiento_caja");
+            entity.Property(e => e.IdGasto).HasColumnName("id_gasto");
+            entity.Property(e => e.IdMovimientoCaja).HasColumnName("id_movimiento_caja");
+
+            entity.HasOne(d => d.IdGastoNavigation).WithMany(p => p.GastosMovimientoCajas)
+                .HasForeignKey(d => d.IdGasto)
+                .HasConstraintName("gastos_movimiento_caja_id_gasto_fkey");
+
+            entity.HasOne(d => d.IdMovimientoCajaNavigation).WithMany(p => p.GastosMovimientoCajas)
+                .HasForeignKey(d => d.IdMovimientoCaja)
+                .HasConstraintName("gastos_movimiento_caja_id_movimiento_caja_fkey");
+        });
+
         modelBuilder.Entity<Menu>(entity =>
         {
             entity.HasKey(e => e.IdPlatillo).HasName("menu_pkey");
@@ -207,6 +228,18 @@ public partial class GoeatContext : DbContext
                 .HasColumnName("tipo");
         });
 
+        modelBuilder.Entity<TiposUsuario>(entity =>
+        {
+            entity.HasKey(e => e.IdTipoUsuario).HasName("tipos_usuarios_pkey");
+
+            entity.ToTable("tipos_usuarios");
+
+            entity.Property(e => e.IdTipoUsuario).HasColumnName("id_tipo_usuario");
+            entity.Property(e => e.Tipo)
+                .HasMaxLength(30)
+                .HasColumnName("tipo");
+        });
+
         modelBuilder.Entity<Usuario>(entity =>
         {
             entity.HasKey(e => e.IdUsuario).HasName("usuarios_pkey");
@@ -216,18 +249,21 @@ public partial class GoeatContext : DbContext
             entity.Property(e => e.IdUsuario)
                 .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("id_usuario");
-            entity.Property(e => e.Apellidos)
-                .HasMaxLength(50)
-                .HasColumnName("apellidos");
             entity.Property(e => e.Contraseña)
                 .HasMaxLength(300)
                 .HasColumnName("contraseña");
-            entity.Property(e => e.Nombres)
+            entity.Property(e => e.IdTipoUsuario).HasColumnName("id_tipo_usuario");
+            entity.Property(e => e.Nombre)
                 .HasMaxLength(50)
-                .HasColumnName("nombres");
+                .HasColumnName("nombre");
             entity.Property(e => e.Usuario1)
                 .HasMaxLength(50)
                 .HasColumnName("usuario");
+
+            entity.HasOne(d => d.IdTipoUsuarioNavigation).WithMany(p => p.Usuarios)
+                .HasForeignKey(d => d.IdTipoUsuario)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("usuarios_id_tipo_usuario_fkey");
         });
 
         modelBuilder.Entity<Venta>(entity =>
@@ -254,6 +290,25 @@ public partial class GoeatContext : DbContext
             entity.HasOne(d => d.IdMeseroNavigation).WithMany(p => p.Venta)
                 .HasForeignKey(d => d.IdMesero)
                 .HasConstraintName("ventas_id_mesero_fkey");
+        });
+
+        modelBuilder.Entity<VentaMovimientoCaja>(entity =>
+        {
+            entity.HasKey(e => e.IdVentaMovimientoCaja).HasName("venta_movimiento_caja_pkey");
+
+            entity.ToTable("venta_movimiento_caja");
+
+            entity.Property(e => e.IdVentaMovimientoCaja).HasColumnName("id_venta_movimiento_caja");
+            entity.Property(e => e.IdMovimientoCaja).HasColumnName("id_movimiento_caja");
+            entity.Property(e => e.IdVenta).HasColumnName("id_venta");
+
+            entity.HasOne(d => d.IdMovimientoCajaNavigation).WithMany(p => p.VentaMovimientoCajas)
+                .HasForeignKey(d => d.IdMovimientoCaja)
+                .HasConstraintName("venta_movimiento_caja_id_movimiento_caja_fkey");
+
+            entity.HasOne(d => d.IdVentaNavigation).WithMany(p => p.VentaMovimientoCajas)
+                .HasForeignKey(d => d.IdVenta)
+                .HasConstraintName("venta_movimiento_caja_id_venta_fkey");
         });
 
         OnModelCreatingPartial(modelBuilder);

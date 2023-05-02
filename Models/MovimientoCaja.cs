@@ -5,7 +5,7 @@ namespace restaurante_web_app.Models;
 
 public partial class MovimientoCaja
 {
-    public int IdMovimiento { get; set; }
+    public long IdMovimiento { get; set; }
 
     public short? IdTipoMovimiento { get; set; }
 
@@ -15,7 +15,11 @@ public partial class MovimientoCaja
 
     public decimal? Total { get; set; }
 
+    public virtual ICollection<GastosMovimientoCaja> GastosMovimientoCajas { get; } = new List<GastosMovimientoCaja>();
+
     public virtual CajaDiaria? IdCajaDiariaNavigation { get; set; }
 
     public virtual TipoMovimientoCaja? IdTipoMovimientoNavigation { get; set; }
+
+    public virtual ICollection<VentaMovimientoCaja> VentaMovimientoCajas { get; } = new List<VentaMovimientoCaja>();
 }
