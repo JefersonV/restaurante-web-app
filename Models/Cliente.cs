@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace restaurante_web_app.Models;
 
@@ -16,6 +15,5 @@ public partial class Cliente
 
     public string? Puesto { get; set; }
 
-    [JsonIgnore]
     public virtual ICollection<Venta> Venta { get; } = new List<Venta>();
 }
