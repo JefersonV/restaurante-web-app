@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './styles/App.scss'
 import Home from './pages/Home'
+import Login from './pages/Login'
 import Inventory from './pages/Inventory'
 import Purchases from './pages/Purchases'
 import Sales from './pages/Sales'
@@ -25,10 +26,10 @@ import { SkeletonTheme } from 'react-loading-skeleton'
 function App() {
   const [pageTitle, setPageTitle] = useState("")
 
+  /* Cambiar el encabezado de la página */
   const setTitle = (title) => {
     setPageTitle(title)
   }
-
 
   return (
     <>
@@ -41,6 +42,10 @@ function App() {
                 exact path="/" 
                 element={<Home setTitle={setTitle} /> }
                 />
+              <Route
+                path="/login"
+                element={<Login /> }
+              />
               <Route
                 path="/inventory"
                 element={<Inventory setTitle={setTitle} />}
