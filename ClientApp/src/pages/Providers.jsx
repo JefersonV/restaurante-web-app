@@ -7,9 +7,7 @@ import TableData from '../components/TableData'
 import ModalAdd from '../components/modales/ModalAdd'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import CardSkeleton from '../components/skeletonUI/CardSkeleton'
-import jsPDF from 'jspdf';  
-import autoTable from 'jspdf-autotable'
-import generatePDF from '../pdf/pdfProviders'
+
 
 function Providers(props) {
   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
@@ -25,8 +23,8 @@ function Providers(props) {
   const getData = async () => {
     try {
       // https://jsonplaceholder.typicode.com/comments
-      // const response = await fetch('http://localhost:5188/api/Proveedor')
       const response = await fetch('http://localhost:5188/api/Proveedor')
+      // const response = await fetch('http://localhost:5188/api/Proveedor')
       const json = await response.json() 
       setDataApi(json)
       console.log(json)
@@ -38,6 +36,35 @@ function Providers(props) {
   useEffect(() => {
     getData()
   }, [])
+
+  // *******************pdf backend
+
+  const handleDownload = async () => {
+    const response = await fetch(
+      "http://localhost:5188/api/pdf",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    var today = new Date();
+ 
+    // obtener la fecha y la hora
+    var now = today.toLocaleString();
+    console.log(now);
+  
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(new Blob([blob]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `Reporte_${now}.pdf`);
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode.removeChild(link);
+  };
+  // +++++++++++++++++++fin
    
   /* ----- Buscador */
   // state para buscador
@@ -58,56 +85,10 @@ function Providers(props) {
   )
 
 
-  // *********++++++++++++++++++++++++++++++++++++++++++++++++PRUEBA PARA IMPRIMIR
-
-// // ********************************PRUEBA 4: FUNCIONAL
-// function generatePDF() {
-//   // crea un nuevo objeto `Date`
-//   var today = new Date();
- 
-//   // obtener la fecha y la hora
-//   var now = today.toLocaleString();
-//   console.log(now);
-//   /*
-//       Resultado: 1/27/2020, 9:30:00 PM
-//   */
-//  // Obtiene los datos de la base de datos
-//  let data = dataApi;
-//  // Crea un nuevo objeto PDF
-//  const doc = new jsPDF();
-
-//  // Define las columnas de la tabla
-//  const columns = ["IDPROVEEDOR","NOMBRE", "TELEFONO"];
-     
-
-//  // Define las filas de la tabla
-//  const rows = [];
-     
-//  // Itera sobre los datos de la tabla y agrega cada fila a la matriz "rows"
-//  data.forEach((item) => {
-//    const rowData = [
-//      item.idProveedor,
-//      item.nombre,
-//      item.telefono
-//    ];
-//    rows.push(rowData);
-//  });
- 
-//      autoTable(doc, {
-//      head: [columns],
-//      body: rows
-//      })
- 
-//    // Guarda el archivo PDF
-//    // doc.save('data.pdf');
-//    doc.save(`Reporte_${now}.pdf`);  
 
 
-// };
 
-// // ********************************PRUEBA 4: FIN FUNCIONAL
 
-// +++++++++++++++++++++++++++++++FIN PRUEBA DE IMPRIMIR
 
   return (
     <div className={ isOpen ? "wrapper" : "side" }>
@@ -121,11 +102,11 @@ function Providers(props) {
             <ModalAdd actualizarListaProveedores={getData} />
       
             <Button 
-              // onClick = {generatePDF(dataApi)} 
-              onClick={() => {
-                generatePDF(
-                  dataApi
-                )}}
+              onClick = {handleDownload} 
+              // onClick={() => {
+              //   generatePDF(
+              //     dataApi
+              //   )}}
               color="primary"
               outline
               >
