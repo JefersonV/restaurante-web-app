@@ -11,21 +11,22 @@ function Login() {
         alignItems: "center",
         height: "100vh",
         backgroundColor: "#031633",
-    }; 
+    };
 
     const handleSubmit = async (event) => {
-        //event.preventDefault();
-        //const requestOptions = {
-            //method: "POST",
-            //headers: { "Content-Type": "application/json" },
-            //body: JSON.stringify({ user: user, password: password }),
-        //};
-        //const response = await fetch("/login", requestOptions);
-        //const data = await response.json();
-        //setResponse(data);
-        localStorage.setItem('token', 'fadskjfhasdkfasdf456fasdf454');
-        localStorage.setItem('user', 'bryanchavajay');
-        localStorage.setItem('rol', 'Invitado');
+        event.preventDefault();
+        const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ usuario: user, contrasenia: password }),
+        };
+        const response = await fetch("http://localhost:5173/api/Account/login", requestOptions);
+        const data = await response.json();
+        setResponse(data);
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', data.nombreUsuario);
+        localStorage.setItem('rol', data.rol);
+        window.location.href = '/';
     };
 
     return (
