@@ -43,7 +43,7 @@ namespace restaurante_web_app.Controllers
                 {
                     Nombre = usuarioDtoIn.Nombre,
                     Usuario1 = GenerateUsername(usuarioDtoIn.Nombre),
-                    Contraseña = BCrypt.Net.BCrypt.HashPassword(usuarioDtoIn.Contraseña),
+                    Contrasenia = BCrypt.Net.BCrypt.HashPassword(usuarioDtoIn.Contrasenia),
                     IdTipoUsuario = usuarioDtoIn.IdTipoUsuario
                 };
 
@@ -79,7 +79,7 @@ namespace restaurante_web_app.Controllers
                     return BadRequest(new { mensaje = "Usuario o contraseña incorrectos" });
                 }
 
-                if (!BCrypt.Net.BCrypt.Verify(loginDtoIn.Contraseña, usuario.Contraseña))
+                if (!BCrypt.Net.BCrypt.Verify(loginDtoIn.Contrasenia, usuario.Contrasenia))
                 {
                     return BadRequest(new { mensaje = "Usuario o contraseña incorrectos" });
                 }
