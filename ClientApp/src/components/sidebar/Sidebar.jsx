@@ -8,7 +8,6 @@ import LogoRestaurant from '../../assets/images/la centenaria.png'
 import { useStore, useSubItem } from '../../providers/GlobalProvider';
 import '../../styles/App.scss'
 
-
 function Sidebar(props) {
   const { children, pageTitle } = props
   /* Estado global de la sidebar */
@@ -16,7 +15,7 @@ function Sidebar(props) {
   const toggle = useStore((state) => state.showSidebar)
   const subNav = useSubItem((state) => state.subNav)
  
-  console.log(isOpen)
+  // console.log(isOpen)
 
   return (
     <>

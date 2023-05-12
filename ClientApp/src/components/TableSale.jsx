@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Table, Input } from 'reactstrap'
 import dayjs from 'dayjs'
 import Skeleton from 'react-loading-skeleton'
 import { AiFillPlusSquare, AiFillMinusSquare } from 'react-icons/ai'
 
-function TableSale() {
+function TableSale({noComanda, saleDetail}) {
+
   return (
     <Table 
       bordered
@@ -15,6 +16,9 @@ function TableSale() {
         <tr>
           <th>
             No. Comanda
+          </th>
+          <th>
+            Fecha
           </th>
           <th>
             Cantidad
@@ -31,45 +35,58 @@ function TableSale() {
         </tr>
       </thead>
       <tbody>
+      {saleDetail.map((platillo, index) => 
+      saleDetail.length === 0 ? (
+        <tr>
+          <td colSpan="5" align="center">No hay items seleccionados</td>
+        </tr>
+      ) : (
+      <tr key={index}>
+        <td scope="row">
+          {/* Si no se a registrado el número de comanda -> renderiza # */}
+          {noComanda.trim() === "" ? "#" : noComanda}
+        </td>
+        <td>
+          {dayjs().format('DD/MM/YYYY')}
+        </td>
+        <td>
+          <div className="table-buttons">
+          <input
+            className="form-control input-cantidad"
+            id="exampleEmail"
+            name="email"
+            type="number"
+            tabIndex={index + 1}
+          />
+            <button className="btn-plus">
+              <AiFillPlusSquare 
+                size={24}
+                color="#0d6efd"
+              />
+            </button>
+            <button className="btn-minus">
+              <AiFillMinusSquare 
+                size={24}
+                color="#dc3545"
+              />
+            </button>
+          </div>
+        </td>
+        <td>
+          {platillo.name}
+        </td>
+        <td>
+          {platillo.phone}
+        </td>
+        <td>
+          @mdo
+        </td>
+      </tr>
+      )
+      )}
     <tr>
-      <th scope="row">
-        1
-      </th>
-      <td>
-        <div className="table-buttons">
-        <Input
-          id="exampleEmail"
-          name="email"
-          type="number"
-        />
-          <button className="btn-plus">
-            <AiFillPlusSquare 
-              size={24}
-              color="#0d6efd"
-            />
-          </button>
-          <button className="btn-minus">
-            <AiFillMinusSquare 
-              size={24}
-              color="#dc3545"
-            />
-          </button>
-
-        </div>
-      </td>
-      <td>
-        Otto
-      </td>
-      <td>
-        @mdo
-      </td>
-      <td>
-        @mdo
-      </td>
-    </tr>
-    <tr>
-      <td colspan="4" className="footer-table">Total Comanda: </td>
-      <td>Sumatoria</td>
+      <th colSpan="5" className="footer-table">Total Comanda: </th>
+      <td>Q.350.00</td>
     </tr>
    
   </tbody>

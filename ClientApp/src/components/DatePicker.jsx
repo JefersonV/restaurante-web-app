@@ -51,7 +51,7 @@ function DatePicker() {
     setSelectedDateRange([ranges.selection]);
   };
   
-  /* Opciones del datepicker range */
+  /* Opciones de personalización del datepicker range */
   const options = {
     locale: es,
     ranges: selectedDateRange,

@@ -1,57 +1,113 @@
-.search-bar-dropdown {
-  width: 20%;
+/* SearchBarContainer */
+.SearchBarContainer {
+  display: flex;
+  flex-direction: column;
+  width: 34em;
+  height: 3.8em;
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0px 2px 12px 3px rgba(0, 0, 0, 0.14);
 }
 
-#CustomerForm {
-  position: absolute;
-  width: 23%;
-  overflow-y: scroll;
-  height: 20em;
-  
-  z-index: 500;
-  /* border-bottom: 1px #eeeeee solid; */
-}
-
-#customer-btn {
-  position: absolute;
-  top: .4em;
-  /* right: -1.5em; */
-}
-#search-bar {
-  width: inherit;
+/* SearchInputContainer */
+.SearchInputContainer {
+  width: 100%;
+  min-height: 4em;
+  display: flex;
+  align-items: center;
   position: relative;
-  top: .4em;
-  /* left: -1.5em; */
-}
-/* #CustomerForm > button {
-  background-color: #fafafa;
-}
- */
-/* width */
-::-webkit-scrollbar {
-  width: 10px;
+  padding: 2px 15px;
 }
 
-/* Track */
-::-webkit-scrollbar-track {
-  background-color: #eeeeee;
-  border-radius: 10px;
+/* SearchInput */
+.SearchInput {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  border: none;
+  font-size: 21px;
+  color: #12112e;
+  font-weight: 500;
+  border-radius: 6px;
+  background-color: transparent;
 }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 10px;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+.SearchInput:focus {
+  outline: none;
 }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
+.SearchInput::placeholder {
+  color: #bebebe;
+  transition: all 250ms ease-in-out;
 }
 
-@media screen and (max-width: 1220px) {
-  .search-bar-dropdown {
-    width: 18%;
-  }
+.SearchInput:focus::placeholder {
+  opacity: 0;
+}
+
+/* SearchIcon */
+.SearchIcon {
+  color: #bebebe;
+  font-size: 27px;
+  margin-right: 10px;
+  margin-top: 6px;
+  vertical-align: middle;
+}
+
+/* CloseIcon */
+.CloseIcon {
+  color: #bebebe;
+  font-size: 23px;
+  vertical-align: middle;
+  transition: all 200ms ease-in-out;
+  cursor: pointer;
+}
+
+.CloseIcon:hover {
+  color: #dfdfdf;
+}
+
+/* LineSeperator */
+.LineSeperator {
+  display: flex;
+  min-width: 100%;
+  min-height: 2px;
+  background-color: #d8d8d878;
+}
+
+/* SearchContent */
+.SearchContent {
+  // width: 100%;
+  width: inherit;
+  // height: auto;
+  height: 16em;
+
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  position: absolute;
+  top: 15.2em;
+  background: #fff;
+  overflow-y: auto;
+  border-radius: 1em;
+  box-shadow: rgba(0, 0, 0, 0.14) 0px 2px 12px 3px;
+  // overflow-y: scroll;
+}
+
+/* LoadingWrapper */
+.LoadingWrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* WarningMessage */
+.WarningMessage {
+  color: #a1a1a1;
+  font-size: 14px;
+  display: flex;
+  align-self: center;
+  justify-self: center;
 }

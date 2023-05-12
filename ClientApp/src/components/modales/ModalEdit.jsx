@@ -12,7 +12,7 @@ function ModalEdit(props) {
   const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
   /* Identifica a cuál de los items de la tabla se le hizo click */
   const [itemId, setItemId] = useState("")
-//   console.log('elemento', itemId  )
+	//console.log('elemento', itemId  )
 
   const [data, setData] = useState({
 		nombre: "",
@@ -42,10 +42,6 @@ function ModalEdit(props) {
 		}
   }
 
-	const onChangeData = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-    console.log(e.target.name, e.target.value);
-  };
 	
   useEffect(() => {
     if(itemId) {
