@@ -6,7 +6,7 @@ function Users(props) {
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
     props.setTitle("Usuarios");
-  });
+  }, []);
   
   return (
     <div className={ isOpen ? "wrapper" : "side" }>

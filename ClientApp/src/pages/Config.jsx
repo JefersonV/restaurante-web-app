@@ -6,7 +6,7 @@ function Config(props) {
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
     props.setTitle("Configuración");
-  });
+  }, []);
 
   return (
     <div className={ isOpen ? "wrapper" : "side" }>

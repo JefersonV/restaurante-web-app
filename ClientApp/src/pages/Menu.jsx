@@ -12,7 +12,7 @@ function Menu(props) {
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
     props.setTitle("Menú de platillos");
-  });
+  }, []);
 
   /* ------ Fetch */
    const [dataApi, setDataApi] = useState([])
@@ -58,13 +58,7 @@ function Menu(props) {
         </div>
         <div className="row d-flex justify-content-center align-items-center">
           <div className="col">
-          <Button 
-            color="danger"
-            outline
-            >
-            Registrar nuevo
-            <ModalAdd />
-          </Button>
+          <ModalAdd />
           <Button 
             color="primary"
             outline

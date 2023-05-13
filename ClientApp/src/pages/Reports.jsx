@@ -6,7 +6,7 @@ function Reports(props) {
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
     props.setTitle("Reportes");
-  });
+  }, []);
   return (
     <div className={ isOpen ? "wrapper" : "side" }>
       <h1>Reports</h1>

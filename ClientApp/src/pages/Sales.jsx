@@ -14,7 +14,7 @@ function Sales(props) {
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
     props.setTitle("Ventas");
-  });
+  }, []);
   /* ------ Fetch */
   const [dataApi, setDataApi] = useState([])
   const getData = async () => {

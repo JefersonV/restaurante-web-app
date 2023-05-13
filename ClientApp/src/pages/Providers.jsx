@@ -14,7 +14,7 @@ function Providers(props) {
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
     props.setTitle("Proveedores");
-  });
+  }, []);
   /* Skeleton para la UI, mientras se carga la data de la API */
   const [isLoading, setIsLoading] = useState(true)
   /* ------ Fetch */

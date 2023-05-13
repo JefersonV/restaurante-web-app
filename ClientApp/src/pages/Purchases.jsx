@@ -6,7 +6,7 @@ function Purchases(props) {
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
     props.setTitle("Compras");
-  });
+  }, []);
   
   return (
     <div className={ isOpen ? "wrapper" : "side" }>

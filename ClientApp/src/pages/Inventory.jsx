@@ -10,7 +10,7 @@ function Inventory(props) {
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
     props.setTitle("Inventario");
-  });
+  }, []);
   
   return (
     <div className={ isOpen ? "wrapper" : "side" }>
