@@ -10,7 +10,7 @@ export const SearchBarContainer = forwardRef(({ isExpanded, containerVariants, c
         display: "flex",
         flexDirection: "column",
         width: "34em",
-        height: "3.8em",
+        height: "3.6em",
         backgroundColor: "#fff",
         borderRadius: "6px",
         boxShadow: "0px 2px 12px 3px rgba(0, 0, 0, 0.14)"

@@ -25,7 +25,7 @@
   height: 100%;
   outline: none;
   border: none;
-  font-size: 21px;
+  font-size: 18px;
   color: #12112e;
   font-weight: 500;
   border-radius: 6px;
@@ -51,7 +51,8 @@
   font-size: 27px;
   margin-right: 10px;
   margin-top: 6px;
-  vertical-align: middle;
+  // vertical-align: middle;
+  align-self: baseline;
 }
 
 /* CloseIcon */
@@ -75,6 +76,10 @@
   background-color: #d8d8d878;
 }
 
+.DataContainer:hover {
+  background-color: #e9ecef;
+}
+
 /* SearchContent */
 .SearchContent {
   // width: 100%;
@@ -86,7 +91,7 @@
   flex-direction: column;
   padding: 1em;
   position: absolute;
-  top: 15.2em;
+  top: 12em;
   background: #fff;
   overflow-y: auto;
   border-radius: 1em;

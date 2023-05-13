@@ -5,7 +5,24 @@ import Skeleton from 'react-loading-skeleton'
 import { AiFillPlusSquare, AiFillMinusSquare } from 'react-icons/ai'
 
 function TableSale({noComanda, saleDetail}) {
+  const [cantidades, setCantidades] = useState(Array(saleDetail.length).fill(0));
+  console.log(cantidades)
+  const handleCantidadChange = (index, value) => {
+    // NewCantidades hace una copia de cantidades
+    const newCantidades = [...cantidades];
+    // Coincide index y value
+    newCantidades[index] = value;
+    setCantidades(newCantidades);
+  }
 
+  const handleIncrement = (index) => {
+  // const newCantidades = [...cantidades];
+  // newCantidades[index] += 1;
+  // setCantidades(newCantidades);
+  const newCantidades = [...cantidades];
+  newCantidades[index] += 1;
+  setCantidades(newCantidades);
+  }
   return (
     <Table 
       bordered
@@ -53,12 +70,19 @@ function TableSale({noComanda, saleDetail}) {
           <div className="table-buttons">
           <input
             className="form-control input-cantidad"
-            id="exampleEmail"
-            name="email"
+            name={`input-${index}`}
+            id="cantidad-platillo"
             type="number"
             tabIndex={index + 1}
+            value={cantidades[index]}
+            onChange={(e) =>
+              handleCantidadChange(index, e.target.value)
+            }
           />
-            <button className="btn-plus">
+            <button 
+              className="btn-plus"
+              onClick={(index) => handleIncrement(index)}
+            >
               <AiFillPlusSquare 
                 size={24}
                 color="#0d6efd"

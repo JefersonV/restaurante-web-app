@@ -78,15 +78,15 @@ function IndividualSale(props) {
       <section className="comanda">
         <h2>Comanda digital</h2>
         <form className="comanda-form">
-          <FormGroup row>
-            <Label htmlFor="input-comanda" sm={3}>No. Comanda</Label>
-            <Col sm={6}>
-              <Input type="number" id="input-comanda" value={numeroComanda} onChange={handleChange}/>
-            </Col>
-          </FormGroup> 
-          <FormGroup row>
-            <Label htmlFor="input-platillo" sm={3}>Platillo</Label>
-            <Col sm={6}>
+        <div className="container">
+          <div className="row">
+            <div className="col-3">
+              <div className="form-floating mb-3">
+                <input type="number" className="form-control" id="input-comanda" placeholder="1332" onChange={handleChange}/>
+                <label htmlFor="input-comanda">No. de Comanda</label>
+              </div>
+            </div>
+            <div className="col-9">
               <SearchBarDrop 
                 itemSelected={itemSelected} 
                 setItemSelectedList={setItemSelectedList}
@@ -94,13 +94,9 @@ function IndividualSale(props) {
                 setNoDataMenu={setNoDataMenu}
                 noDataMenu={noDataMenu}
               />
-              {/* <Input type="search" id="input-platillo"/> */}
-            </Col>
-            <Col sm={2}>
-              {/* <span className="d-block">Precio</span>
-              <span>Q.50.00</span> */}
-            </Col>
-          </FormGroup>
+            </div>
+          </div>          
+        </div>
         </form>
       </section>
       <section className="comanda-table">
