@@ -16,35 +16,37 @@ function IndividualSale(props) {
   // 
   const [noDataMenu, setNoDataMenu] = useState(false);
   const [numeroComanda, setNumeroComanda] = useState("")
-  // Item seleccionado de <SearchBarDrop />
+  // Item seleccionado prop de <SearchBarDrop />
   const [itemSelected, setItemSelected] = useState(null)
+  // Platillos seleccionados
+  const [saleDetail, setSaleDetail] = useState([])
 
-  // Función que se manda como prop al componente nieto :v
+  // Identifica el item de <searchbardrop> seleccionado -> prop al componente nieto :v
   const setItemSelectedList = (id) => {
-    // Si el item ya existe en el array saleDetail, corta la secuencia de este bloque de código
-    if(saleDetail.find((item) => item.id === id)) return
+    // Sin repetidos: si el item ya existe en el array saleDetail, corta la secuencia de este bloque de código
+    if(saleDetail.find((item) => item.idPlatillo === id)) return
     // Busca los items que coincidan entre dataApi e ItemSelected
-    const selectedItem = menu.find((item) => item.id === id)
+    const selectedItem = menu.find((item) => item.idPlatillo === id)
     console.log(selectedItem)
 
     setItemSelected(id)
     // Agregamos al array el nuevo item, y además no se repite ningún item
-    setSaleDetail((prevSaleDetail) => [...prevSaleDetail, selectedItem])  
+    setSaleDetail((prevSaleDetail) => [...prevSaleDetail, selectedItem])
   }
   
-  // Platillos seleccionados
-  const [saleDetail, setSaleDetail] = useState([])
-  /*
-  {
-    idPlatillo: '',
-    nombre: '',
-    precio: '',
-  }
-  */
-  useEffect(() => {
+  /* Eliminar un item de la venta */
+  const deleteSaleDetail = (id) => {
+    setSaleDetail((prevSaleDetail) => {
+      // si el id del elemento actual es diferente al id que se pasa como argumento
+      const nuevosElementos = prevSaleDetail.filter((item) => item.idPlatillo !== id);
+      return nuevosElementos;
+    });
+  };
+
+ /*  useEffect(() => {
     console.warn('Final -->')
     console.log(saleDetail)
-  }, [setItemSelectedList])
+  }, [setItemSelectedList]) */
   
   const getData = async () => {
     try {
@@ -53,7 +55,11 @@ function IndividualSale(props) {
       // setLoading(true)
       setNoDataMenu(false)
       // if(response.data && response.data.length === 0) setNoDataMenu(true)
-      const response = await fetch('https://jsonplaceholder.typicode.com/users')
+      const response = await fetch('http://localhost:5173/api/Menu', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.token}`
+        }
+      })
       const json = await response.json() 
       setMenu(json)
       console.log(json)
@@ -68,11 +74,12 @@ function IndividualSale(props) {
   }, [])
 
   // console.log(menu)
-  
+  // Manejador del número de comanda
   const handleChange = (e) => {
     e.preventDefault()
     setNumeroComanda(e.target.value)
   }
+
   return (
     <div className={ isOpen ? "wrapper" : "side" }>
       <section className="comanda">
@@ -104,6 +111,9 @@ function IndividualSale(props) {
           noComanda={numeroComanda}
           /* Nuevo array con los items seleccionados */
           saleDetail={saleDetail}
+          deleteSaleDetail={deleteSaleDetail}
+          // setSaleDetail={}
+          // deleteSaleDetail={(id) => deleteSaleDetail(id)}
         />
       </section>
     </div>

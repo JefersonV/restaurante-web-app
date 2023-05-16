@@ -1,38 +1,67 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Table, Input } from 'reactstrap'
 import dayjs from 'dayjs'
 import Skeleton from 'react-loading-skeleton'
 import { AiFillPlusSquare, AiFillMinusSquare } from 'react-icons/ai'
+import { BsFillTrashFill } from 'react-icons/bs';
 
-function TableSale({noComanda, saleDetail}) {
-  const [cantidades, setCantidades] = useState(Array(saleDetail.length).fill(0));
-  console.log(cantidades)
-  const handleCantidadChange = (index, value) => {
-    // NewCantidades hace una copia de cantidades
-    const newCantidades = [...cantidades];
-    // Coincide index y value
-    newCantidades[index] = value;
-    setCantidades(newCantidades);
-  }
+function TableSale({noComanda, saleDetail, deleteSaleDetail }) {
+  // 1 por defecto
+  const [cantidades, setCantidades] = useState([1]);
+  const [totalesPlatillos, setTotalPlatillos] = useState([])
 
-  const handleIncrement = (index) => {
-  // const newCantidades = [...cantidades];
-  // newCantidades[index] += 1;
-  // setCantidades(newCantidades);
-  const newCantidades = [...cantidades];
-  newCantidades[index] += 1;
-  setCantidades(newCantidades);
-  }
+  /* ------ Función para manejar el cambio de cantidad de un elemento -------*/
+  const handleCantidadChange = (indice, e) => {
+    // Identifica que input está siendo modificado
+    const nuevaCantidad = parseInt(e.target.value);
+    // Actualiza el array de cantidades
+    setCantidades((prevCantidades) => {
+      // Nuevas cantidades es una copia de prevCantidades [2,3,43 ... etc] cada número simboliza el value de cada input
+      const nuevasCantidades = [...prevCantidades];
+      // Indice representa la posición del elemento en el array de cantidades que queremos modificar.
+      nuevasCantidades[indice] = nuevaCantidad; // nuevaCantidad es el nuevo valor de la cantidad que se ha ingresado en el input
+      console.warn('nuevas')
+      console.log(nuevasCantidades)
+      
+      return nuevasCantidades;
+    });
+  };
+
+  const handleCantidadChangePlus = (indice, incremento) => {
+    setCantidades((prevCantidades) => {
+      const nuevasCantidades = [...prevCantidades];
+      nuevasCantidades[indice] += incremento;
+      return nuevasCantidades;
+    });
+  };
+
+  const handleCantidadChangeMinus = (indice, incremento) => {
+    setCantidades((prevCantidades) => {
+      const nuevasCantidades = [...prevCantidades];
+      nuevasCantidades[indice] -= incremento;
+      return nuevasCantidades;
+    });
+  };
+
+
+  const handleDelete = (id) => {
+    console.log(id)
+    deleteSaleDetail(id); // Llama a la función deleteSaleDetail del componente padre
+    console.log(saleDetail)
+  };
+
+  console.log(saleDetail)
+  const [totalPlatillo, setTotalPlatillo] = useState(50)
   return (
     <Table 
       bordered
-      // hover
+      hover
       responsive
     >
       <thead>
         <tr>
           <th>
-            No. Comanda
+            # Comanda
           </th>
           <th>
             Fecha
@@ -75,13 +104,11 @@ function TableSale({noComanda, saleDetail}) {
             type="number"
             tabIndex={index + 1}
             value={cantidades[index]}
-            onChange={(e) =>
-              handleCantidadChange(index, e.target.value)
-            }
+            onChange={(event) => handleCantidadChange(index, event)}
           />
             <button 
               className="btn-plus"
-              onClick={(index) => handleIncrement(index)}
+              onClick={() => handleCantidadChangePlus(index, 1)}
             >
               <AiFillPlusSquare 
                 size={24}
@@ -92,18 +119,26 @@ function TableSale({noComanda, saleDetail}) {
               <AiFillMinusSquare 
                 size={24}
                 color="#dc3545"
+                onClick={() => handleCantidadChangeMinus(index, 1)}
               />
             </button>
           </div>
         </td>
         <td>
-          {platillo.name}
+          {platillo.platillo}
         </td>
         <td>
-          {platillo.phone}
+          Q.{platillo.precio.toFixed(2)}
         </td>
         <td>
-          @mdo
+          Q.{totalPlatillo.toFixed(2)}
+          <button
+            onClick={() => handleDelete(platillo.idPlatillo)}
+          >
+            <BsFillTrashFill 
+              color="#FF0000"
+            />
+          </button>
         </td>
       </tr>
       )

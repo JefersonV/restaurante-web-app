@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import '../..//styles/MenuDrop.scss'
 
 function DataMenuDrop(props) {
-  const { menuName, index, id, itemSelected, setItemSelectedList } = props
+  const { menuName, index, id, itemSelected, setItemSelectedList, price } = props
   // const [itemSelected, setItemSelected] = useState(null)
   useEffect(() => {
     // id del item seleccionado
@@ -17,7 +17,7 @@ function DataMenuDrop(props) {
   return (
     <>
       <button className="DataContainer" onClick={handleClick}>
-        {index + 1}  {menuName}
+        {index + 1}  {menuName} <span className="precio"> Q.{price.toFixed(2)}</span> 
       </button>
     </>
   )

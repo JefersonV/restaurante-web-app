@@ -19,13 +19,12 @@ function Providers(props) {
   const [isLoading, setIsLoading] = useState(true)
   /* ------ Fetch */
   const [dataApi, setDataApi] = useState([])
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiamVmZmVyc29uIiwicm9sZSI6IkFkbWluaXN0cmFkb3IiLCJuYmYiOjE2ODMwMDA5NTksImV4cCI6MTY4MzAzNjk1OCwiaWF0IjoxNjgzMDAwOTU5LCJpc3MiOiJHb0VhdCIsImF1ZCI6IkxhQ2VudGVuYXJpYSJ9.Vww8GeQr1Dp8-LMMUncyvQQozJVxxHL4_pLXy74X0ro'
   const getData = async () => {
     try {
       // https://jsonplaceholder.typicode.com/comments
       const response = await fetch('http://localhost:5173/api/Proveedor', {
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${localStorage.token}`
         }
       })
       const json = await response.json() 

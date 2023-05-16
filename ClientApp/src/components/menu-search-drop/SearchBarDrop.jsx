@@ -53,7 +53,7 @@ function SearchBarDrop(props) {
   const filtradoMenu = !searchQuery ? props.menuState
   // Si se ha ingresado información al input, que la compare a los criterios y los filtre
   : props.menuState.filter((item) =>
-    item.name.toLowerCase().includes(searchQuery.toLocaleLowerCase() ||
+    item.platillo.toLowerCase().includes(searchQuery.toLocaleLowerCase() ||
     parseInt(item.index).toLocaleLowerCase().includes(parseInt(searchQuery).toLocaleLowerCase()))
   )
 
@@ -121,10 +121,11 @@ function SearchBarDrop(props) {
                   <DataMenuDrop
                     itemSelected={props.itemSelected}
                     setItemSelectedList={props.setItemSelectedList}
-                    key={item.id}
-                    menuName={item.name}
+                    key={item.idPlatillo}
+                    menuName={item.platillo}
+                    price={item.precio}
                     index={index}
-                    id={item.id}
+                    id={item.idPlatillo}
                   />
                 )}
               </>
