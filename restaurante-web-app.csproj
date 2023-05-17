@@ -16,7 +16,8 @@
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-    <PackageReference Include="iTextSharp" Version="5.5.13" />
+    <PackageReference Include="itext7" Version="8.0.0" />
+    <PackageReference Include="iTextSharp" Version="5.5.13.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="6.0.14" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.4" />

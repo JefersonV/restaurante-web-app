@@ -20,14 +20,14 @@ namespace restaurante_web_app.Controllers
             _dbContext = dbContext;
         }
 
-        [Authorize(Roles = "Administrador, Invitado")]
+        //[Authorize(Roles = "Administrador, Invitado")]
         [HttpGet]
         public async Task<IEnumerable<Mesero>> GetAll()
         {
             return await _dbContext.Meseros.OrderByDescending(m => m.IdMesero).ToListAsync();
         }
 
-        [Authorize(Roles = "Administrador, Invitado")]
+        //[Authorize(Roles = "Administrador, Invitado")]
         [HttpGet]
         [Route("{idMesero:int}")]
         public async Task<ActionResult<Mesero>> GetById(int idMesero)
@@ -39,7 +39,7 @@ namespace restaurante_web_app.Controllers
             return mesero;
         }
 
-        [Authorize(Roles = "Administrador")]
+        //[Authorize(Roles = "Administrador")]
         [HttpPost]
         public async Task<Mesero> Create(Mesero newMesero)
         {
@@ -49,7 +49,7 @@ namespace restaurante_web_app.Controllers
             return newMesero;
         }
 
-        [Authorize(Roles = "Administrador")]
+        //[Authorize(Roles = "Administrador")]
         [HttpPut]
         [Route("{idMesero:int}")]
         public async Task<IActionResult> Update(int idMesero, Mesero mesero)
@@ -70,7 +70,7 @@ namespace restaurante_web_app.Controllers
             }
         }
 
-        [Authorize(Roles = "Administrador")]
+        //[Authorize(Roles = "Administrador")]
         [HttpDelete]
         [Route("{idMesero:int}")]
         public async Task<IActionResult> Delete(int idMesero)
