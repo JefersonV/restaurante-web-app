@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 import { useStore } from '../providers/GlobalProvider'
+import { FaCashRegister } from 'react-icons/fa'
+import '../styles/Cash.scss'
 function CashBox(props) {
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
@@ -10,7 +12,23 @@ function CashBox(props) {
   
   return (
     <div className={ isOpen ? "wrapper" : "side" }>
-      <h1>Cash-box</h1>
+      <div className="card-front">
+        <div className="card-up">
+          <p>Caja Cerrada</p>
+          <FaCashRegister 
+            size={28}
+          />
+        </div>
+        <div className="card-bottom">
+          <label htmlFor="Abrir">
+            Click para Aperturar 
+          </label>
+          <span>
+            <FaCashRegister />
+          </span>
+          <button className="d-none" id="Abrir"></button>
+        </div>
+      </div>
     </div>
   )
 }

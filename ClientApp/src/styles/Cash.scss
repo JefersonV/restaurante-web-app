@@ -1,0 +1,28 @@
+.card-front{
+	width: 350px;
+	border: 1px solid red;
+	background-color: #DC3545;
+	border-radius: 0.5em;
+	overflow: hidden;
+	color: white;
+	margin-top: 5em;
+}
+.card-up {
+	display: flex;
+	justify-content: space-between;
+	padding: 2em 1em;
+
+}
+.card-bottom {
+	display: flex;
+	justify-content: space-between;
+	padding-left: 1em;
+	background-color: #BA434E;
+	padding: 0 1em;
+	label {
+		width: 100%;
+		cursor: pointer;
+
+	}
+}
+

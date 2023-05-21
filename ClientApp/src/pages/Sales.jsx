@@ -17,18 +17,23 @@ function Sales(props) {
   }, []);
   /* ------ Fetch */
   const [dataApi, setDataApi] = useState([])
+
   const getData = async () => {
     try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/comments')
+      const response = await fetch('http://localhost:5173/api/Venta', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.token}`
+        }
+      })
       const json = await response.json() 
       setDataApi(json)
-      console.log(json)
     }
     catch(err) {
       console.error(err)
     }
   }
   useEffect(() => {
+    console.log(dataApi)
     getData()
   }, [])
 

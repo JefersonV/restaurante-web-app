@@ -3,8 +3,8 @@ import { useStore } from '../providers/GlobalProvider'
 import Searchbar from '../components/Searchbar'
 import { FcPlus, FcPrint } from 'react-icons/fc'
 import { Button } from 'reactstrap'
-import TableData from '../components/TableData'
-import ModalAdd from '../components/modales/ModalAdd'
+import TableMenu from '../components/menu/TableMenu'
+import ModalAddMenu from '../components/menu/ModalAddMenu'
 
 function Menu(props) {
   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
@@ -18,7 +18,11 @@ function Menu(props) {
    const [dataApi, setDataApi] = useState([])
    const getData = async () => {
      try {
-       const response = await fetch('https://jsonplaceholder.typicode.com/comments')
+       const response = await fetch('http://localhost:5173/api/Menu', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.token}`
+        }
+       })
        const json = await response.json() 
        setDataApi(json)
        console.log(json)
@@ -58,7 +62,9 @@ function Menu(props) {
         </div>
         <div className="row d-flex justify-content-center align-items-center">
           <div className="col">
-          <ModalAdd />
+          <ModalAddMenu
+            actualizarListaMenu={getData}
+          />
           <Button 
             color="primary"
             outline
@@ -70,7 +76,10 @@ function Menu(props) {
         </div>
         <div className="row">
           <div className="col">
-            <TableData data={results} />
+            {/* <TableData data={results} /> */}
+            <TableMenu 
+              data={results}
+              actualizarListaMenu={getData} />
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useStore } from '../providers/GlobalProvider';
 import { FormGroup, Label, Col, Input } from 'reactstrap';
 import TableSale from '../components/TableSale';
+import Swal from "sweetalert2";
 import '../styles/IndividualSale.scss';
 import SearchBarDrop from '../components/menu-search-drop/SearchBarDrop';
 
@@ -13,6 +14,14 @@ function IndividualSale(props) {
 
   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
   const isOpen = useStore((state) => state.sidebar);
+  /* Data que se enviará en la solicitud POST */
+  const [dataPost, setDataPost] = useState({
+    NumeroComanda: "",
+    Fecha: "",
+    IdMesero: 1,
+    IdCliente: 1,
+    DetalleVenta: []
+  });
   // DataApi
   const [menu, setMenu] = useState([]);
   //
@@ -24,6 +33,21 @@ function IndividualSale(props) {
   const [saleDetail, setSaleDetail] = useState([]);
   // Cantidades del input del componente <TableSale/>
   const [cantidades, setCantidades] = useState([]);
+  /* Fecha por defecto del input date */
+  const defaultDateString = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  const [defaultDate, setDefaulDate] = useState(defaultDateString())
+  
+  const changeDate = (e) => {
+    console.log(e.target.value)
+    setDefaulDate(e.target.value)
+    // defaultDateString = dayjs(defaultDate).format('YYYY-MM-DD');
+  }
 
   // Identifica el item de <searchbardrop> seleccionado -> prop al componente nieto :v
   const setItemSelectedList = (id) => {
@@ -38,6 +62,15 @@ function IndividualSale(props) {
     setSaleDetail((prevSaleDetail) => [...prevSaleDetail, selectedItem]);
     // Inicializamos el valor en 1
     setCantidades((prevCantidades) => [...prevCantidades, 1]);
+    /* Actualización del estado que se enviará por POST */
+    /* for(let i=0; i<saleDetail.length; i++) {
+      setDataPost({
+        ...dataPost,
+        DetalleVenta: [
+          { IdPlatillo: saleDetail[i].idPlatillo, Cantidad: cantidades[i]},
+        ]
+      })
+    } */
   };
 
   /* Eliminar un item de la venta */
@@ -48,11 +81,6 @@ function IndividualSale(props) {
       return nuevosElementos;
     });
   };
-
-  /*  useEffect(() => {
-    console.warn('Final -->')
-    console.log(saleDetail)
-  }, [setItemSelectedList]) */
 
   const getData = async () => {
     try {
@@ -78,14 +106,25 @@ function IndividualSale(props) {
     getData();
   }, []);
 
-  // console.log(menu)
   // Manejador del número de comanda
   const handleChange = (e) => {
     e.preventDefault();
     setNumeroComanda(e.target.value);
+    setDataPost((prevDataPost) => ({
+      ...prevDataPost,
+      NumeroComanda: e.target.value,
+      Fecha: defaultDate || dayjs().format('YYYY-MM-DD'),
+    }));
+    /* setDataPost({
+      ...dataPost,
+      NumeroComanda: numeroComanda,
+      Fecha: defaultDate || dayjs().format('YYYY-MM-DD'),
+      IdMesero: 1,
+      IdCliente: 1,
+    }) */
   };
 
-  // Actualiza la cantidad asociada al item agregado a la comanda, si el item 
+  /*  Actualiza la cantidad asociada al item agregado a la comanda, si el item */ 
   const updateCantidades = (index, nuevaCantidad) => {
     setCantidades((prevCantidades) => {
       // Nuevas cantidades es una copia de prevCantidades [2,3,43 ... etc] cada número simboliza el value de cada input
@@ -97,6 +136,7 @@ function IndividualSale(props) {
     });
   };
 
+  /*  Actualiza la cantidad al momento de eliminar */
   const updateCantidadesDelete = (indexItem) => {
     setCantidades((prevCantidades) => {
       const cantidadesActualizadas = prevCantidades.filter((_, index) => index !== indexItem);
@@ -104,49 +144,110 @@ function IndividualSale(props) {
     });
   };
 
+  const changeCantidad = (id, incremento, operacion) => {
+    setCantidades((prevCantidades) => {
+      const nuevasCantidades = [...prevCantidades];
+      const index = saleDetail.findIndex((item) => item.idPlatillo === id);
+      if (index !== -1) {
+        if (operacion === "aumentar") {
+          nuevasCantidades[index] += incremento;
+        } else if (operacion === "disminuir") {
+          nuevasCantidades[index] -= incremento;
+        }
+      }
+      return nuevasCantidades;
+    });
+  };
+  
+
+  /* Capturar data para enviarla en POST */
+  const postSale = async (e) => {
+    e.preventDefault()
+    try {
+      /* Capturar los datos que sirven para POST del state saleDetail */
+      const detalleVenta = saleDetail.map((item, index) => ({
+        IdPlatillo: item.idPlatillo,
+        Cantidad: cantidades[index]
+      }));
+
+      const postData = {
+        ...dataPost,
+        DetalleVenta: detalleVenta
+      };
+      console.log(postData)
+      const response = await fetch('http://localhost:5173/api/Venta', {
+      method: 'POST',  
+      headers: {
+          'Authorization': `Bearer ${localStorage.token}`,
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(postData)
+      })
+      if (response.ok) {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Registro agregado correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        setNumeroComanda("")
+        setSaleDetail([])
+        setCantidades([])
+      } 
+    }
+    
+    catch(error) {
+      console.log(error)
+    }
+  }
   return (
     <div className={isOpen ? "wrapper" : "side"}>
-      <section className="comanda">
-        <h2>Comanda digital</h2>
-        <form className="comanda-form">
-          <div className="container">
-            <div className="row">
-              <div className="col-3">
-                <div className="form-floating mb-3">
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="input-comanda"
-                    placeholder="1332"
-                    onChange={handleChange}
+      <form className="comanda-form" onSubmit={postSale}>
+        <section className="comanda">
+          <h2>Comanda digital</h2>
+            <div className="container">
+              <div className="row">
+                <div className="col-md-10 col-lg-3">
+                  <div className="form-floating mb-3">
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="input-comanda"
+                      placeholder="1332"
+                      onChange={handleChange}
+                    />
+                    <label htmlFor="input-comanda">No. de Comanda</label>
+                  </div>
+                </div>
+                <div className="col-md-12 col-lg-9">
+                  <SearchBarDrop
+                    itemSelected={itemSelected}
+                    setItemSelectedList={setItemSelectedList}
+                    menuState={menu}
+                    setNoDataMenu={setNoDataMenu}
+                    noDataMenu={noDataMenu}
                   />
-                  <label htmlFor="input-comanda">No. de Comanda</label>
                 </div>
               </div>
-              <div className="col-9">
-                <SearchBarDrop
-                  itemSelected={itemSelected}
-                  setItemSelectedList={setItemSelectedList}
-                  menuState={menu}
-                  setNoDataMenu={setNoDataMenu}
-                  noDataMenu={noDataMenu}
-                />
-              </div>
             </div>
-          </div>
-        </form>
-      </section>
-      <section className="comanda-table">
-        <TableSale
-          noComanda={numeroComanda}
-          /* Nuevo array con los items seleccionados */
-          cantidades={cantidades}
-          saleDetail={saleDetail}
-          deleteSaleDetail={deleteSaleDetail}
-          updateCantidades={updateCantidades}
-          updateCantidadesDelete={updateCantidadesDelete}
-        />
-      </section>
+        </section>
+        <section className="comanda-table">
+          <TableSale
+            noComanda={numeroComanda}
+            defaultDate={defaultDate}
+            changeDate={changeDate}
+            /* Nuevo array con los items seleccionados */
+            cantidades={cantidades}
+            saleDetail={saleDetail}
+            deleteSaleDetail={deleteSaleDetail}
+            updateCantidades={updateCantidades}
+            updateCantidadesDelete={updateCantidadesDelete}
+            changeCantidad={changeCantidad}
+            postSale={postSale}
+            />
+        </section>
+      </form>
     </div>
   );
 }
