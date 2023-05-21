@@ -9,30 +9,15 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  { name: "Enero", Total: 1200 },
-  { name: "Feb", Total: 2200 },
-  { name: "Marzo", Total: 3200 },
-  { name: "Abril", Total: 4200 },
-  { name: "Mayo", Total: 1100 },
-  { name: "Junio", Total: 3200 },
-  { name: "Julio", Total: 4000 },
-  { name: "Agosto", Total: 4200 },
-  { name: "Sept", Total: 5000 },
-  { name: "Oct", Total: 4500 },
-  { name: "Nov", Total: 3500 },
-  { name: "Dic", Total: 4000 },
-];
-
-const Chart = () => {
+const Chart = (props) => {
   return (
     <div className="chart">
       <div className="title">Ingresos del año, segmentado por meses</div>
-      <ResponsiveContainer width="100%" aspect={2 / 1}>
+      <ResponsiveContainer width="100%" aspect={2 / 0.7}>
         <AreaChart
           width={730}
           height={250}
-          data={data}
+          data={props.datos}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
         >
           <defs>
@@ -45,13 +30,13 @@ const Chart = () => {
               <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
             </linearGradient> */}
           </defs>
-          <XAxis dataKey="name" stroke="gray" />
+          <XAxis dataKey="mes" stroke="gray" />
           <YAxis />
           <CartesianGrid strokeDasharray="3 3" className="chartGrid" />
           <Tooltip />
           <Area
             type="monotone"
-            dataKey="Total"
+            dataKey="total"
             stroke="#8884d8"
             fillOpacity={1}
             fill="url(#Total)"
