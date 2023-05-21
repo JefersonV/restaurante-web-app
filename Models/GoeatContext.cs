@@ -59,6 +59,9 @@ public partial class GoeatContext : DbContext
             entity.Property(e => e.SaldoInicial)
                 .HasColumnType("money")
                 .HasColumnName("saldo_inicial");
+            entity.Property(e => e.Estado)
+            .HasColumnType("boolean")
+            .HasColumnName("estado");
         });
 
         modelBuilder.Entity<Cliente>(entity =>
