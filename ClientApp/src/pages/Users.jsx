@@ -3,7 +3,7 @@ import { useStore } from '../providers/GlobalProvider'
 import TableUsers from '../components/usuarios/TableUsers';
 function Users(props) {
   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
-  const isOpen = useStore((state) => state.sidebar)
+  const isOpen = useStore((state) => state.sidebar);
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
     props.setTitle("Control de Usuarios");
@@ -35,7 +35,7 @@ function Users(props) {
         data={dataApi}
       />
     </div>
-  )
+  );
 }
 
-export default Users
+export default Users;

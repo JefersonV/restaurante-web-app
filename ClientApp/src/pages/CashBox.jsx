@@ -8,8 +8,8 @@ function CashBox(props) {
     props.setTitle("Caja");
   }, []);
   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
-  const isOpen = useStore((state) => state.sidebar)
-  
+  const isOpen = useStore((state) => state.sidebar);
+
   return (
     <div className={ isOpen ? "wrapper" : "side" }>
       <div className="card-front">
@@ -30,7 +30,7 @@ function CashBox(props) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default CashBox
+export default CashBox;
