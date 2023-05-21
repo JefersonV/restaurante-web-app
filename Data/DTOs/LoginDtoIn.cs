@@ -8,6 +8,6 @@ namespace restaurante_web_app.Data.DTOs
         public string Usuario { get; set; } = null!;
 
         [Required(ErrorMessage = "La contraseña es requerida")]
-        public string Contraseña { get; set; } = null!;
+        public string Contrasenia { get; set; } = null!;
     }
 }
