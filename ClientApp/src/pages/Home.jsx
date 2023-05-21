@@ -11,17 +11,19 @@ function Home (props) {
   }, []);
   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
   const isOpen = useStore((state) => state.sidebar)
-  
+
+ 
+
   return (
     <div className={isOpen === true ? "wrapper" : "side"}>
-      <div className="home">
-        <div className="homeContainer">
-          <div className="widgets">
-            <Widget type={"ventasMes"} />
-            <Widget type={"bolsasVend"} />
-            <Widget type={"cliente"} />
-            <Widget type={"bolsasDisp"} />
-          </div>
+          <div className="home">
+              <div className="homeContainer" style={{ marginTop: "1rem", marginRight: "1rem" }}>
+            <div className="widgets" style={{gap: "1rem"}}>
+            <Widget type={"ingresosMes"} />
+            <Widget type={"gastosMes"} />
+            <Widget type={"gananciaMes"} />
+            <Widget type={"saldoCaja"} />
+            </div>
           <div className="charts">
             {/* <Featured /> */}
             <Chart />

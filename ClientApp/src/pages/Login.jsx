@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 function Login() {
     const [user, setUser] = useState("");
@@ -13,23 +13,29 @@ function Login() {
         backgroundColor: "#031633",
     };
 
-    useEffect(() => {
-        const handleSubmit = async (event) => {
-            event.preventDefault();
-            const requestOptions = {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ usuario: user, contrasenia: password }),
-            };
-            const response = await fetch("http://localhost:5173/api/Account/login", requestOptions);
-            const data = await response.json();
-            setResponse(data);
+    const handleSubmit = async (event) => {
+       event.preventDefault();
+       const requestOptions = {
+           method: "POST",
+           headers: { "Content-Type": "application/json" },
+           body: JSON.stringify({ usuario: user, contrasenia: password }),
+       };
+       const response = await fetch("http://localhost:5173/api/Account/login", requestOptions);
+       const data = await response.json();
+        setResponse(data);
+        if (data.token != undefined) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', data.nombreUsuario);
             localStorage.setItem('rol', data.rol);
             window.location.href = '/';
-        };
-    }, [])
+        }
+    };    
+
+    const handleUserChange = (event) => {
+        const lowercaseValue = event.target.value.toLowerCase();
+        const onlyLowerCase = lowercaseValue.replace(/[^a-z]/g, "");
+        setUser(onlyLowerCase);
+    };
 
     return (
         <>
@@ -47,7 +53,8 @@ function Login() {
                                     className="form-control"
                                     id="inputUser"
                                     value={user}
-                                    onChange={(event) => setUser(event.target.value)}
+                                    onChange={handleUserChange}
+                                    required
                                 />
                             </div>
                             <div className="mb-3">
@@ -61,6 +68,7 @@ function Login() {
                                     placeholder="Password"
                                     value={password}
                                     onChange={(event) => setPassword(event.target.value)}
+                                    required
                                 />
                             </div>
                             <button type="submit" className="btn btn-success">

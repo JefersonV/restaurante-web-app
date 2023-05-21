@@ -71,11 +71,11 @@ const Widget = ({ type }) => {
 
   let data = {}
   switch (type) {
-    case "ventasMes":
+    case "ingresosMes":
       data = {
-        title: "VENTAS DEL MES",
+        title: "INGRESOS DEL MES",
         isMoney: true,
-        link: "Ver todas las ventas",
+        link: "Ver los ingresos",
         path: "/sales",
         monto: 5000,
         // monto: venta.suma_total,
@@ -87,15 +87,17 @@ const Widget = ({ type }) => {
               backgroundColor: "rgba(255, 0, 0, 0.2)",
             }}
           />
-        ),
+          ),
+        colors: { backgroundColor: "#ffc107", color: "black" },
+        colorSpam: {color: "black"},
       };
       break;
-    case "bolsasVend":
+    case "gastosMes":
       data = {
-        title: "BOLSAS VENDIDAS",
-        isMoney: false,
+        title: "GASTOS DEL MES",
+        isMoney: true,
         link: "Ver todas...",
-        path: "/sales",
+        path: "/purchases",
         monto: 5000,
         // monto: bolsasVendidas.bolsas_vendidas,
         icon: (
@@ -106,16 +108,18 @@ const Widget = ({ type }) => {
               backgroundColor: "rgba(255, 0, 0, 0.2)",
             }}
           />
-        ),
+          ),
+          colors: { backgroundColor: "#dc3545", color: "white" },
+          colorSpam: { color: "white" },
       };
       break;
-    case "cliente":
+    case "gananciaMes":
       data = {
-        title: "CLIENTES FRECUENTES",
-        isMoney: false,
+        title: "GANANCIA DEL MES",
+        isMoney: true,
         link: "Ver todos...",
-        path: "/customers",
-        monto: 'someone',
+        path: "/reports",
+        monto: 500,
         // monto: clientesFrec.clientes_frecuentes,
         icon: (
           <FaIcons.FaUserAlt
@@ -125,15 +129,17 @@ const Widget = ({ type }) => {
               color: "purple",
             }}
           />
-        ),
+          ),
+          colors: { backgroundColor: "#198754", color: "white" },
+          colorSpam: { color: "white" },
       };
       break;
-    case "bolsasDisp":
+    case "saldoCaja":
       data = {
-        title: "BOLSAS DISPONIBLES",
-        isMoney: false,
+        title: "SALDO EN CAJA",
+        isMoney: true,
         link: "Ver todos...",
-        path: "/products",
+        path: "/cash-box",
         // monto: bolsasDispon.bolsas_disponibles,
         monto: 500,
         icon: (
@@ -144,18 +150,20 @@ const Widget = ({ type }) => {
               color: "goldenrod",
             }}
           />
-        ),
+          ),
+          colors: { backgroundColor: "#0dcaf0", color: "black" },
+          colorSpam: { color: "black" },
       };
       break;
     default:
       break;
   }
 
-  return (
-    <div className="widget">
+    return (
+    <div className="widget" style={data.colors}>
       <div className="left">
-        <span className="title">{data.title}</span>
-        <span className="counter">
+        <span className="title" style={data.colorSpam}>{data.title}</span>
+        <span className="counter" style={data.colorSpam}>
           {data.isMoney && "Q"} {data.monto}
         </span>
         {/* <span className="link">{data.link}</span> */}
