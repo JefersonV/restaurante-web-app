@@ -74,7 +74,7 @@ function IndividualSale(props) {
     setNumeroComanda(e.target.value)
   }
   return (
-    <div className={ isOpen ? "wrapper" : "side" }>
+    <div className={isOpen ? "wrapper" : "side"}>
       <section className="comanda">
         <h2>Comanda digital</h2>
         <form className="comanda-form">
@@ -107,7 +107,7 @@ function IndividualSale(props) {
         />
       </section>
     </div>
-  )
+  );
 }
 
-export default IndividualSale
+export default IndividualSale;
