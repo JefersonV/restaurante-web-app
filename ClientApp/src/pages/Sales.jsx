@@ -27,6 +27,8 @@ function Sales(props) {
       })
       const json = await response.json() 
       setDataApi(json)
+    } catch(error) {
+      console.log(error)
     }
   };
   useEffect(() => {
