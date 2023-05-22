@@ -3,10 +3,10 @@ import { useStore } from "../providers/GlobalProvider";
 import Searchbar from "../components/Searchbar";
 import { FcPlus, FcPrint } from "react-icons/fc";
 import { Button } from "reactstrap";
-import TableData from "../components/TableData";
+import TableCliente from "../components/clientes/TableCliente"
 import ModalAdd from "../components/modales/ModalAdd";
 
-function Clientes(props) {
+function Customers(props) {
   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
   const isOpen = useStore((state) => state.sidebar);
   useEffect(() => {
@@ -19,8 +19,12 @@ function Clientes(props) {
   const getData = async () => {
     try {
       const response = await fetch(
-        "https://jsonplaceholder.typicode.com/comments"
-      );
+        "http://localhost:5173/api/Cliente", {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.token}`
+          }
+        });
       const json = await response.json();
       setDataApi(json);
       console.log(json);
@@ -60,7 +64,9 @@ function Clientes(props) {
         </div>
         <div className="row d-flex justify-content-center align-items-center">
           <div className="col">
-          <ModalAdd />
+          <ModalAdd 
+            actualizarListaClientes={getData}
+          />
           <Button 
             color="primary"
             outline
@@ -72,7 +78,10 @@ function Clientes(props) {
         </div>
         <div className="row">
           <div className="col">
-            <TableData data={results} />
+            <TableCliente 
+              data={results}
+              actualizarListaClientes={getData}
+            />
           </div>
         </div>
       </div>
@@ -80,4 +89,4 @@ function Clientes(props) {
   );
 }
 
-export default Clientes;
+export default Customers;

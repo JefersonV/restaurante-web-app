@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Table } from 'reactstrap'
-import ModalEditMenu from './ModalEditMenu'
-import SwalDeleteMenu from './SwalDeleteMenu'
+import ModalEditCliente from './ModalEditCliente'
+import SwalDeleteCliente from './SwalDeleteCliente'
 import '../../styles/Table.scss'
 import Skeleton from 'react-loading-skeleton'
+import dayjs from 'dayjs'
 
-export default function TableMenu(props) {
-  const { data, actualizarListaMenu } = props
+function TableDataCliente(props) {
+  const { data, actualizarListaClientes } = props
 
   return (
     <Table
@@ -21,20 +22,17 @@ export default function TableMenu(props) {
       <th>
         #
       </th>
-      {/* <th>
+      <th>
         Fecha
-      </th> */}
+      </th>
       <th>
         Nombre
       </th>
       <th>
-        Precio
+        Empresa o institución
       </th>
-      {/* <th>
-        Total
-      </th> */}
       <th>
-        Acciones
+        Puesto
       </th>
     </tr>
   </thead>
@@ -54,27 +52,27 @@ export default function TableMenu(props) {
           <th scope="row">
             {index + 1}
           </th>
-          {/* <td>
-            {dayjs().format('DD/MM/YYYY')}
-          </td> */}
           <td>
-            {item.platillo}
+            {dayjs(item.fecha).format('DD/MM/YYYY')}
           </td>
           <td>
-            Q.{item.precio.toFixed(2)}
+            {item.nombreApellido}
           </td>
-          {/* <td>
-            Q.500.00
-          </td> */}
+          <td>
+            {item.institucion}
+          </td>
+          <td>
+            {item.puesto}
+          </td>
           <td>
               {/* Item que fue clickado  */}
-            <ModalEditMenu
-              idPlatillo={item.idPlatillo} 
-              actualizarListaMenu={actualizarListaMenu}
+            <ModalEditCliente
+              idCliente={item.idCliente} 
+              actualizarListaClientes={actualizarListaClientes}
             />
-            <SwalDeleteMenu 
-              idPlatillo={item.idPlatillo} 
-              actualizarListaMenu={actualizarListaMenu}
+            <SwalDeleteCliente 
+              idCliente={item.idCliente} 
+              actualizarListaClientes={actualizarListaClientes}
             />
           </td>
         </tr>
@@ -87,3 +85,5 @@ export default function TableMenu(props) {
 </Table>
   )
 }
+
+export default TableDataCliente

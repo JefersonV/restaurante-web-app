@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { IoClose, IoSearch } from "react-icons/io5";
-import { AnimatePresence, motion } from 'framer-motion'
-import { MoonLoader } from 'react-spinners';
+import { AnimatePresence } from 'framer-motion'
 import '../../styles/Searchbar.scss'
 import DataMenuDrop from './DataMenuDrop';
 import { SearchBarContainer } from './SearchBarContainer';
-import CloseIcon from './CloseIcon';
-import { useDebounce } from '../../Hooks/UseDebounce';
 import { useClickOutside } from '../../Hooks/UseClickOutside';
 
 function SearchBarDrop(props) {

@@ -2,7 +2,7 @@ import React, { useState, useEffect} from 'react'
 import Swal from 'sweetalert2'
 import { BsFillTrashFill } from 'react-icons/bs';
 
-function SwalDelete({idPlatillo, actualizarListaMenu}) {
+function SwalDeleteCliente({idPlatillo, actualizarListaMenu}) {
   const deleteSweet = (id) => {
     Swal.fire({
       title: "Eliminar registro",
@@ -51,4 +51,4 @@ function SwalDelete({idPlatillo, actualizarListaMenu}) {
   )
 }
 
-export default SwalDelete
+export default SwalDeleteCliente

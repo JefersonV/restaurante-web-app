@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import { BiEditAlt } from 'react-icons/bi'
 import { TbTruck } from 'react-icons/tb';
 
-function ModalEditMenu(props) {
+function ModalEditCliente(props) {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal)
   const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
@@ -29,7 +29,7 @@ function ModalEditMenu(props) {
 /* Traer la data del item seleccionado */
   const getDataId = async (id) => {
 		try {
-			const response = await fetch(`http://localhost:5173/api/Menu/${id}`, {
+			const response = await fetch(`http://localhost:5173/api/Cliente/${id}`, {
 				headers: {
 					'Authorization': `Bearer ${localStorage.token}`,
 					'Content-Type': 'application/json'
@@ -64,7 +64,7 @@ function ModalEditMenu(props) {
 					/* Abrir modal */
           toggle()
 					/* Captura el item que fue seleccionado */
-          setItemId(props.idPlatillo)
+          setItemId(props.idCliente)
         }} />
       <Modal isOpen={modal} fade={false} toggle={toggle} centered={true}>
         <ModalHeader toggle={toggle}><TbTruck size={30} /> Editar Platillo</ModalHeader>
@@ -219,4 +219,4 @@ function ModalEditMenu(props) {
   )
 }
 
-export default ModalEditMenu
+export default ModalEditCliente

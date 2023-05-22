@@ -7,7 +7,7 @@ import { TbTruck } from 'react-icons/tb'
 import Swal from 'sweetalert2'
 import '../../styles/Formulario.scss'
 
-function ModalAdd (props) {
+function ModalAddCliente (props) {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
   /* Formik */
@@ -174,4 +174,4 @@ function ModalAdd (props) {
   )
 }
 
-export default ModalAdd
+export default ModalAddCliente
