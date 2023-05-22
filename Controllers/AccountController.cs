@@ -8,9 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using restaurante_web_app.Data.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Microsoft.AspNetCore.Cors;
 
 namespace restaurante_web_app.Controllers
 {
+    //añadir las reglas de cors dentro de cada controlador
+    [EnableCors("ReglasCors")]
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
