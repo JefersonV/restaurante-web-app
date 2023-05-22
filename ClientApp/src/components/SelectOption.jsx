@@ -1,11 +1,5 @@
-import * as React from 'react';
-
-import '../styles/Select-mui.scss'
+import * as React from "react";
 
 export default function SelectOption() {
-  return (
-    <>
-      Select
-    </>
-  );
+  return <h1>Hola</h1>;
 }

@@ -1,27 +1,39 @@
+.comanda-digital {
+  display: grid;
+  grid-template-columns: 65% 30%;
+  gap: 2em;
+  max-width: 100%;
+  .table-resumen {
+    max-width: 100%;
+  }
+}
 .comanda {
   display: grid;
   justify-content: center;
   // border: 1px solid #eee;
   h2 {
     text-align: center;
+    color: #8b1e3f;
   }
   &-form {
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
+    /* background-color: #f5f5f5; */
+    /* border: 1px solid #ccc;*/   
     border-radius: 20px;
     padding: 1em;
     margin-bottom: 2em; 
   }
 }
 .table-buttons {
-  display: grid;
+  display: flex;
+
+  /* display: grid;
   height: 50px;
   grid-template-areas: 
     "cantidad btnplus"
     "cantidad  btnminus";
     grid-template-rows: 50% 50%;
     grid-template-columns: 75% 25%;
-  justify-content: center;
+  justify-content: center; */
 }
 
 th {
@@ -29,23 +41,73 @@ th {
 }
 
 td .input-cantidad {
-  width: 90px;
+  width: 68px;
+}
+
+button svg {
+  border-radius: 2em;
+  overflow: hidden;
 }
 
 .btn-plus {
-  grid-area: btnplus;
-  border-radius: 1em;
-  justify-self: baseline;
+  border: 1px solid #ccc;
+  border-radius: .5em;
+  padding: .5em;
+}
+.svg:hover {
+  color: #4c1022
 }
 
 .btn-minus {
-  grid-area: btnminus;
-  justify-self: baseline;
+  border: 1px solid #ccc;
+  border-radius: .5em;
+  padding: .5em;
 }
 
 .footer-table {
   text-align: right;
 }
+/* Componente inferior */
+.resumen-comanda {
+  border: 1px solid #ccc;
+  border-radius: 2em;
+  padding: 1em;
+  box-shadow: 2px 2px 8px #acabab;
+}
 
+tr {
+  text-align: center;
+}
+
+.table-resumen-body .row-resumen {  
+  display: block;
+  text-align: center;
+  width: 100%;
+  height: 3.5em;
+/*   text-align: center; */
+}
+
+td .total-comanda {
+  font-weight: bold;
+}
+
+thead tr .resumen-title {
+  text-align: center;
+  color: #8b1e3f;
+  font-size: 1.1em;
+}
+
+.resumen-total {
+  color: #8b1e3f;
+}
 /* #0b5ed7 */
 /* #bb2d3b */
+@media screen and (max-width: 768px) {
+  .comanda-digital {
+    grid-template-columns: auto;
+    .resumen-comanda {
+      width: 75%;
+      justify-self: center;
+    }
+  }
+}

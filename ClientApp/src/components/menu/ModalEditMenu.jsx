@@ -15,21 +15,21 @@ function ModalEdit(props) {
 	//console.log('elemento', itemId  )
 
   const [data, setData] = useState({
-		nombre: "",
-		telefono: ""
+		platillo: "",
+		precio: ""
 	})
 	
 	/* Objeto que se enviará en la solicitud PUT */
 	let bodyTest = {
-		idProveedor: "",
-		nombre: "",
-		telefono: ""
+		idPlatillo: "",
+		platillo: "",
+		precio: ""
 	}
 
 /* Traer la data del item seleccionado */
   const getDataId = async (id) => {
 		try {
-			const response = await fetch(`http://localhost:5173/api/Proveedor/${id}`, {
+			const response = await fetch(`http://localhost:5173/api/Menu/${id}`, {
 				headers: {
 					'Authorization': `Bearer ${localStorage.token}`,
 					'Content-Type': 'application/json'
@@ -39,8 +39,8 @@ function ModalEdit(props) {
 			console.warn(dataFetch)
 			setData({
 				...data,
-				nombre: dataFetch.nombre,
-				telefono: dataFetch.telefono
+				platillo: dataFetch.platillo,
+				precio: dataFetch.precio
 			})
 		} catch(error) {
 			console.log('Error Message: ' + error.ErrorMessage)
@@ -64,33 +64,33 @@ function ModalEdit(props) {
 					/* Abrir modal */
           toggle()
 					/* Captura el item que fue seleccionado */
-          setItemId(props.idProveedor)
+          setItemId(props.idPlatillo)
         }} />
       <Modal isOpen={modal} fade={false} toggle={toggle} centered={true}>
-        <ModalHeader toggle={toggle}><TbTruck size={30} /> Editar Proveedor</ModalHeader>
+        <ModalHeader toggle={toggle}><TbTruck size={30} /> Editar Platillo</ModalHeader>
         <ModalBody>
         <Formik
 				initialValues={{
-					nombre: data.nombre,
-					telefono: data.telefono
+					platillo: data.platillo,
+					precio: data.precio
 					// data
 				}}
 				enableReinitialize={true}
 				validate={(valores) => {
 					let errores = {};
 					console.log(valores)
-					// Validacion nombre
-					if(!valores.nombre){
-						errores.nombre = 'Por favor ingresa un nombre'
-					} else if(!/^[a-zA-ZÀ-ÿ\s.]{1,25}$/.test(valores.nombre)){
-						errores.nombre = 'El nombre debe tener un máximo de 25 caracteres, solo puede contener letras y espacios'
+					// Validacion platillo
+					if(!valores.platillo){
+						errores.platillo = 'Por favor ingresa un platillo'
+					} else if(!/^[a-zA-ZÀ-ÿ\s.]{1,25}$/.test(valores.platillo)){
+						errores.platillo = 'El platillo debe tener un máximo de 25 caracteres, solo puede contener letras y espacios'
 					}
-					// Validacion telefono
-					if(!valores.telefono){
-						errores.telefono = 'Por favor ingresa un número telefónico'
-						/* !/^[0-9]{9}$/.test(valores.telefono) */ 
-					} else if(!/^[0-9]{8}$/.test(valores.telefono)){
-						errores.telefono = 'El teléfono debe tener un máximo de 8 números, y debe escribirse sin espacios ni guiones'
+					// Validacion precio
+					if(!valores.precio){
+						errores.precio = 'Por favor ingresa un número telefónico'
+						/* !/^[0-9]{9}$/.test(valores.precio) */ 
+					} else if(!/^[0-9]{8}$/.test(valores.precio)){
+						errores.precio = 'El teléfono debe tener un máximo de 8 números, y debe escribirse sin espacios ni guiones'
 					}
 					
 					return errores;
@@ -99,9 +99,9 @@ function ModalEdit(props) {
 					console.warn(' dd')
 					console.log(valores)
 
-					bodyTest.idProveedor = itemId,
-					bodyTest.nombre = valores.nombre,
-					bodyTest.telefono = valores.telefono
+					bodyTest.idPlatillo = itemId,
+					bodyTest.platillo = valores.platillo,
+					bodyTest.precio = valores.precio
 
           cambiarFormularioEnviado(true);
 					setTimeout(() => cambiarFormularioEnviado(false), 5000);
@@ -109,12 +109,13 @@ function ModalEdit(props) {
 					console.log(bodyTest)
 
 					try {
-						const response = await fetch(`http://localhost:5173/api/Proveedor/${itemId}`, 
+						const response = await fetch(`http://localhost:5173/api/Menu/${itemId}`, 
 						{
 							method: "PUT",
 							body: JSON.stringify(bodyTest),
 							headers: {
-								"Content-Type": "application/json",
+								'Authorization': `Bearer ${localStorage.token}`,
+								'Content-Type': 'application/json'
 							}
 						})
 						console.log(response)
@@ -142,51 +143,51 @@ function ModalEdit(props) {
 					<form className="formulario" onSubmit={handleSubmit}>
 						<FormGroup row>
 							<Label 
-								for="input-nombre"
+								for="input-platillo"
 								sm={2}
 								
 							>
-								Nombre
+								platillo
 							</Label>
 							<Col sm={10}>
 								<Input 
 									type="text"
-									id="input-nombre"
-									name="nombre"
+									id="input-platillo"
+									name="platillo"
 									placeholder="Magnus S.A."
 									autoComplete="off"
-									value={ values.nombre }
+									value={ values.platillo }
 									onChange={handleChange}
 									onBlur={handleBlur}
 									/* Feedback para el usuario con el prop valid o invalid de reactstrap */
-									valid={!errors.nombre && values.nombre.length > 0}
-									invalid={!!errors.nombre}
+									valid={!errors.platillo && values.platillo.length > 0}
+									invalid={!!errors.platillo}
 									/>
-								<ErrorMessage name="nombre" component={() => (<div className="error">{errors.nombre}</div>)} />
+								<ErrorMessage name="platillo" component={() => (<div className="error">{errors.platillo}</div>)} />
 							</Col>
 						</FormGroup>
 						<FormGroup row>
 							<Label 
-									for="input-telefono"
+									for="input-precio"
 									sm={2}
 									>
-									Telefono
+									precio
 								</Label>
 								<Col sm={10}>
 									<Input 
 										type="text"
-										id="input-telefono"
-										name="telefono"
+										id="input-precio"
+										name="precio"
 										placeholder="77623030"
 										autoComplete="off"
-										value={values.telefono}
+										value={values.precio}
 										onBlur={handleBlur}
 										onChange={handleChange}
 										/* Feedback para el usuario con el prop valid o invalid de reactstrap */
-										valid={!errors.telefono && values.telefono.length > 0}
-										invalid={!!errors.telefono}
+										valid={!errors.precio && values.precio.length > 0}
+										invalid={!!errors.precio}
 									/>
-									<ErrorMessage name="telefono" component={() => (<div className="error">{errors.telefono}</div>)} />
+									<ErrorMessage name="precio" component={() => (<div className="error">{errors.precio}</div>)} />
 								</Col>
 						</FormGroup>
 						{/* <button type="submit" >enviar</button> */}

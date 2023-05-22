@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import { FormGroup, Label, Col, Input } from 'reactstrap'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { BiEditAlt } from 'react-icons/bi'
+import { BiEditAlt, BiFoodMenu } from 'react-icons/bi'
 import { TbTruck } from 'react-icons/tb'
 import Swal from 'sweetalert2'
 import '../../styles/Formulario.scss'
@@ -14,8 +14,8 @@ function ModalAdd (props) {
   const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
 
 	const bodyProvider = {
-		nombre: "",
-		telefono: ""	
+		platillo: "",
+		precio: ""	
 	}
 
   return (
@@ -29,41 +29,41 @@ function ModalAdd (props) {
 			<BiEditAlt  />
 		</Button>
       <Modal isOpen={modal} fade={false} toggle={toggle} centered={true}>
-        <ModalHeader toggle={toggle}><TbTruck size={30}/> Ingreso de nuevo Proveedor</ModalHeader>
+        <ModalHeader toggle={toggle}><BiFoodMenu size={30}/> Ingreso de nuevo Platillo</ModalHeader>
         <ModalBody>
         <Formik
 				initialValues={{
-					nombre: '',
-					telefono: ''
+					platillo: '',
+					precio: ''
 				}}
 				validate={(valores) => {
 					let errores = {};
-					// Validacion nombre
-					if(!valores.nombre){
-						errores.nombre = 'Por favor ingresa un nombre'
-					} else if(!/^[a-zA-ZÀ-ÿ\s.]{1,25}$/.test(valores.nombre)){
-						errores.nombre = 'El nombre debe tener un máximo de 25 caracteres, solo puede contener letras y espacios'
+					// Validacion platillo
+					if(!valores.platillo){
+						errores.platillo = 'Por favor ingresa un platillo'
+					} else if(!/^[a-zA-ZÀ-ÿ\s.]{1,25}$/.test(valores.platillo)){
+						errores.platillo = 'El platillo debe tener un máximo de 25 caracteres, solo puede contener letras y espacios'
 					}
-					// Validacion telefono
-					if(!valores.telefono){
-						errores.telefono = 'Por favor ingresa un número telefónico'
-						/* !/^[0-9]{9}$/.test(valores.telefono) */ 
-					} else if(!/^[0-9]{8}$/.test(valores.telefono)){
-						errores.telefono = 'El teléfono debe tener un máximo de 8 números, y debe escribirse sin espacios ni guiones'
+					// Validacion precio
+					if(!valores.precio){
+						errores.precio = 'Por favor ingresa un número telefónico'
+						/* !/^[0-9]{9}$/.test(valores.precio) */ 
+					} else if(!/^[0-9]{8}$/.test(valores.precio)){
+						errores.precio = 'El teléfono debe tener un máximo de 8 números, y debe escribirse sin espacios ni guiones'
 					}
 					return errores;
 				}}
 				onSubmit={async (valores, {resetForm}) => {
 					console.log(valores)
 					/* Captura de la data que se va a enviar con post */
-					bodyProvider.nombre = valores.nombre
-					bodyProvider.telefono = valores.telefono
+					bodyProvider.platillo = valores.platillo
+					bodyProvider.precio = valores.precio
 					console.warn('json')
 					console.log(bodyProvider)
 
 					/* Método Post */
 					try {
-						const response = await fetch('http://localhost:5173/api/Proveedor', {
+						const response = await fetch('http://localhost:5173/api/Menu', {
 							method: 'POST',
 							headers: {
 								'Authorization': `Bearer ${localStorage.token}`,
@@ -80,7 +80,7 @@ function ModalAdd (props) {
 								timer: 1500
 							})
 							/* Si post fue exitoso se actualiza la data de la tabla */
-							props.actualizarListaProveedores()
+							props.actualizarListaMenu()
 							console.log('Formulario enviado con éxito')
 							// State 
 							cambiarFormularioEnviado(true);
@@ -99,55 +99,55 @@ function ModalAdd (props) {
 					<form className="formulario" onSubmit={handleSubmit}>
 						<FormGroup row>
 							<Label 
-								for="input-nombre"
+								for="input-platillo"
 								sm={2}
 								
 							>
-								Nombre
+								platillo
 							</Label>
 							<Col sm={10}>
 								<Input 
 									type="text"
-									id="input-nombre"
-									name="nombre"
+									id="input-platillo"
+									name="platillo"
 									placeholder="Magnus S.A."
 									autoComplete="off"
-									value={values.nombre }
+									value={values.platillo }
 									onChange={handleChange}
 									onBlur={handleBlur}
 									/* Feedback para el usuario con el prop valid o invalid de reactstrap */
-									valid={touched.nombre && !errors.nombre && values.nombre.length > 0}
-									invalid={touched.nombre && !!errors.nombre}
+									valid={touched.platillo && !errors.platillo && values.platillo.length > 0}
+									invalid={touched.platillo && !!errors.platillo}
 									/>
-									{touched.nombre && errors.nombre && <div className="error">{errors.nombre}</div>}
-								{/* <ErrorMessage name="nombre" component={() => (<div className="error">{errors.nombre}</div>)} /> */}
+									{touched.platillo && errors.platillo && <div className="error">{errors.platillo}</div>}
+								{/* <ErrorMessage name="platillo" component={() => (<div className="error">{errors.nombre}</div>)} /> */}
 							</Col>
 						</FormGroup>
 						<FormGroup row>
 							<Label 
-									for="input-telefono"
+									for="input-precio"
 									sm={2}
 									>
-									Telefono
+									precio
 								</Label>
 								<Col sm={10}>
 									<Input 
 										type="text"
-										id="input-telefono"
-										name="telefono"
+										id="input-precio"
+										name="precio"
 										placeholder="77623030"
 										autoComplete="off"
-										value={values.telefono}
+										value={values.precio}
 										onBlur={handleBlur}
 										onChange={handleChange}
 										/* Feedback para el usuario con el prop valid o invalid de reactstrap */
-										valid={touched.telefono && !errors.telefono && values.telefono.length > 0}
-										invalid={touched.telefono && !!errors.telefono}
+										valid={touched.precio && !errors.precio && values.precio.length > 0}
+										invalid={touched.precio && !!errors.precio}
 
 									/>
 									
-									{/* <ErrorMessage name="telefono" component={() => (<div className="error">{errors.telefono}</div>)} /> */}
-									{touched.telefono && errors.telefono && <div className="error">{errors.telefono}</div>}
+									{/* <ErrorMessage name="precio" component={() => (<div className="error">{errors.precio}</div>)} /> */}
+									{touched.precio && errors.precio && <div className="error">{errors.precio}</div>}
 								</Col>
 						</FormGroup>
 						{/* <button type="submit" >enviar</button> */}

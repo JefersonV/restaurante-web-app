@@ -19,9 +19,9 @@ function DatePicker() {
   ]);
   /* Rango seleccionado */
   useEffect(() => {
-    console.log('rango de fechas')
-    console.log(dayjs(selectedDateRange[0].startDate).format('DD/MM/YYYY'))
-    console.log(dayjs(selectedDateRange[0].endDate).format('DD/MM/YYYY'))
+    // console.log('rango de fechas')
+    // console.log(dayjs(selectedDateRange[0].startDate).format('DD/MM/YYYY'))
+    // console.log(dayjs(selectedDateRange[0].endDate).format('DD/MM/YYYY'))
   }, [selectedDateRange])
   /* Abrir y cerrar el datepicker */
   const [openDate, setOpenDate] = useState(false)
@@ -36,7 +36,7 @@ function DatePicker() {
   }
 
   const hideOnEscape = (e) => {
-    console.log(e.key)
+    // console.log(e.key)
     if(e.key === "Escape") {
       setOpenDate(false)
     }
