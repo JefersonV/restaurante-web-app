@@ -24,7 +24,7 @@ namespace restaurante_web_app.Controllers
             _config = config;
         }
 
-        //[Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador")]
         [HttpPost("register")]
         public async Task<ActionResult<Usuario>> Register(UsuarioDtoIn usuarioDtoIn)
         {
@@ -115,7 +115,7 @@ namespace restaurante_web_app.Controllers
             }
         }
 
-        //[Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UsuarioDtoOut>>> GetUsuarios()
         {
@@ -141,7 +141,7 @@ namespace restaurante_web_app.Controllers
             }
         }
 
-        //[Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador")]
         [HttpGet("{id}")]
         public async Task<ActionResult<UsuarioDtoOut>> GetUsuario(Guid id)
         {
@@ -172,7 +172,7 @@ namespace restaurante_web_app.Controllers
             }
         }
 
-        //[Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUsuario(Guid id)
         {

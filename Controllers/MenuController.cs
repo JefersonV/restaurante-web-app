@@ -20,7 +20,7 @@ namespace restaurante_web_app.Controllers
             _dbContext = dbContext;
         }
 
-        //[Authorize(Roles = "Administrador, Invitado")]
+        [Authorize(Roles = "Administrador, Invitado")]
         [HttpGet]
         public async Task<IEnumerable<Menu>> GetAll()
         {
@@ -28,7 +28,7 @@ namespace restaurante_web_app.Controllers
             return await _dbContext.Menus.OrderByDescending(m => m.IdPlatillo).ToListAsync();
         }
 
-        //[Authorize(Roles = "Administrador, Invitado")]
+        [Authorize(Roles = "Administrador, Invitado")]
         [HttpGet]
         [Route("{idPlatillo:int}")]
         public async Task<ActionResult<Menu>> GetById(int idPlatillo)
@@ -40,7 +40,7 @@ namespace restaurante_web_app.Controllers
             return menu;
         }
 
-        //[Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         public async Task<Menu> Create(Menu newMenu)
         {
@@ -50,7 +50,7 @@ namespace restaurante_web_app.Controllers
             return newMenu;
         }
 
-        //[Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador")]
         [HttpPut]
         [Route("{idMenu:int}")]
         public async Task<IActionResult> Update(int idMenu, Menu menu)
@@ -74,7 +74,7 @@ namespace restaurante_web_app.Controllers
             }
         }
 
-        //[Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador")]
         [HttpDelete]
         [Route("{idMenu:int}")]
         public async Task<IActionResult> Delete(int idMenu)
