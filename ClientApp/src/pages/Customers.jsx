@@ -4,7 +4,7 @@ import Searchbar from "../components/Searchbar";
 import { FcPlus, FcPrint } from "react-icons/fc";
 import { Button } from "reactstrap";
 import TableCliente from "../components/clientes/TableCliente"
-import ModalAdd from "../components/modales/ModalAdd";
+import ModalAddCliente from "../components/clientes/ModalAddCliente";
 
 function Customers(props) {
   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
@@ -64,7 +64,7 @@ function Customers(props) {
         </div>
         <div className="row d-flex justify-content-center align-items-center">
           <div className="col">
-          <ModalAdd 
+          <ModalAddCliente
             actualizarListaClientes={getData}
           />
           <Button 
