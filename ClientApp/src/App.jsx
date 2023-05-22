@@ -6,7 +6,7 @@ import Inventory from './pages/Inventory'
 import Purchases from './pages/Purchases'
 import Sales from './pages/Sales'
 import CashBox from './pages/CashBox'
-import Reports from './pages/Reports'
+import Reports from './pages/report/Reports'
 import Users from './pages/Users'
 import Config from './pages/Config'
 import Sidebar from './components/sidebar/Sidebar'
@@ -15,6 +15,10 @@ import Providers from './pages/Providers'
 import Customers from './pages/Customers'
 import IndividualSale from './pages/IndividualSale'
 import GroupSale from './pages/GroupSale'
+import Reportsweek from './pages/report/Reportweek'
+// import Rango from './pages/report/Rango.jsx'
+import Rango from './pages/report/Rango.jsx'
+
 import {
   BrowserRouter,
   Routes,
@@ -22,6 +26,8 @@ import {
   Link
 } from "react-router-dom";
 import { SkeletonTheme } from 'react-loading-skeleton'
+// import Rango from './pages/report/Rango'
+// import Rango from './pages/report/rango'
 
 function App() {
   const [pageTitle, setPageTitle] = useState("")
@@ -77,6 +83,14 @@ function App() {
               <Route
                 path="/reports"
                 element={<Reports setTitle={setTitle} />}
+              />
+              <Route
+                path="/reports/week"
+                element={<Reportsweek setTitle={setTitle} />}
+              />
+              <Route
+                path="/rango"
+                element={<Rango setTitle={setTitle} />}
               />
               <Route
                 path="/config"

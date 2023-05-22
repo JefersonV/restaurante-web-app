@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { useStore } from '../providers/GlobalProvider'
-import DatePicker from '../components/DatePicker';
-import Searchbar from '../components/Searchbar';
-import Select from '../components/Select';
-import TableData from '../components/TableData';
-import ButtonDrop from '../components/ButtonDrop';
+import { useStore } from '../../providers/GlobalProvider'
+import DatePicker from '../../components/DatePicker';
+import Searchbar from '../../components/Searchbar';
+// import Select from '../../components/Select';
+import Select from '../../components/report/SelecttReport';
+import TableData from '../../components/TableData';
+// import Tablaprueba from '../components/tprueba';
+import ButtonDrop from '../../components/ButtonDrop';
 import { Col, Button, Label, Input, } from 'reactstrap'
+import Tablep from '../../components/tprueba';
 // import { Row, Col,  Button } from "reactstrap";
 import { FcPrint } from 'react-icons/fc';
-import ModalNewSale from '../components/modales/ModalNewSale';
+import ModalNewSale from '../../components/modales/ModalNewSale';
 // function Reports(props) {
 //   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
 //   const isOpen = useStore((state) => state.sidebar)
@@ -58,19 +61,38 @@ import ModalNewSale from '../components/modales/ModalNewSale';
 
 
 
-function Reports (props)  {
+function Reportsweek (props)  {
   const isOpen = useStore((state) => state.sidebar)
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
-    props.setTitle("Reportes");
+    props.setTitle("Reporte Semanal");
   });
   //   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
   // const isOpen = useStore((state) => state.sidebar)
   const [seledia, setseledia] = useState([]);
 
+  useEffect(() => {
+    // Obtener la fecha actual en formato 'YYYY-MM-DD'
+    // const today = new Date().toISOString().split('T')[0];
+  
+    // setseledia(today);
+
+    const today = new Date();
+today.setDate(today.getDate() - 1);
+const formattedDate = today.toISOString().split('T')[0];
+
+setseledia(formattedDate);
+    console.log("Fecha: ",today)
+  }, []);
+
+  const today = new Date(); console.log(today)
+  const now = today.toLocaleDateString();
+  console.log(now)
   const ManejoCambioFecha = (event) => {
+    
     setseledia(event.target.value);
   };
+  
 
   // const handleGeneratePdf = () => {
   //   const url = `http://localhost:5173/api/pdf?date=${selectedDate}`;
@@ -97,8 +119,8 @@ function Reports (props)  {
   //     });
   // };
 
-  const generarPdf = () => {
-    const url = `http://localhost:5173/api/pdf?date=${seledia}`;
+  const generarPdf = () => {//http://localhost:5188/api/pdf/reportweek
+    const url = `http://localhost:5188/api/pdf/reportweek`;
     fetch(url, {
       method: 'GET',
       headers: {
@@ -118,6 +140,18 @@ function Reports (props)  {
         console.error('Error:', error);
       });
   };
+
+  // ++++++++++******************
+  // const apiurl = 'http://localhost:5173/api/Proveedor';
+  // const columna = ['Nombre', 'Dirección'];
+
+  const info = {
+    apiurl: 'http://localhost:5173/api/Venta',
+    columna: ['Index','Nombre', 'Dirección'],
+  };
+
+
+  // *************************
 
     /* ----- Buscador */
   // state para buscador
@@ -144,7 +178,7 @@ function Reports (props)  {
 
   
   return (
-
+    
 
 
   //   <Row className="justify-content-center">
@@ -163,50 +197,47 @@ function Reports (props)  {
   // </Row>
 
   <div className={ isOpen ? "wrapper" : "side" }>
-      <div className="container-fluid mt-4">
-        <div className="row">
-          {/* <div className="col">
-            <DatePicker />
-          </div> */}
-          <div className="col">
-            {/* <Searchbar searcher={searcher}/> */}search
-          </div>
-        </div>
-        <div className="row d-flex justify-content-center align-items-center">
-          <div className="col">
-            <Select />
-          </div>
-        
-        <Col className="border p-3" >
-            {/* <ButtonDrop>
-              <FcPrint />
-            </ButtonDrop> */}
-            <Label htmlFor="dateInput">Seleccionar fecha:</Label>
-            <Input
-              type="date"
-              id="dateInput"
-              value={seledia}
-              onChange={ManejoCambioFecha}
-            />
-            <Button
-              onClick={generarPdf}
-              color="primary"
-              outline
-            >
-              Generar reporte
-              <FcPrint />
-            </Button>
-          </Col>
-        
-          
-        </div>
-        <div className="row">
-          <div className="col">
-            {/* <TableData data={results} /> */}TableData
-          </div>
-        </div>
+  <div className="container-fluid mt-4">
+    <div className="row">
+      {/* <div className="col">
+        <DatePicker />
+      </div> */}
+      <div className="col">
+        {/* <Searchbar searcher={searcher}/> */}search
       </div>
     </div>
+    <div className="row d-flex justify-content-center align-items-center">
+      <div className="col">
+        <Select />
+      </div>
+    
+    <Col className="border p-3" >
+        {/* <ButtonDrop>
+          <FcPrint />
+        </ButtonDrop> */}
+        <Label htmlFor="dateInput">Seleccionar fecha:</Label>
+        <Button
+          onClick={generarPdf}
+          color="primary"
+          outline
+        >
+          Generar reporte
+          <FcPrint />
+        </Button>
+      </Col>
+    
+      
+    </div>
+    <div className="row">
+      <div className="col">
+        {/* <TableData data={results} /> */}
+        {/* <Tablep info={info}/> */}
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 
 
@@ -214,4 +245,4 @@ function Reports (props)  {
   );
 };
 
-export default Reports;
+export default Reportsweek;

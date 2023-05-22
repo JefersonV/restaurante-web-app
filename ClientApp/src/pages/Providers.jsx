@@ -23,7 +23,7 @@ function Providers(props) {
   const getData = async () => {
     try {
       // https://jsonplaceholder.typicode.com/comments
-      const response = await fetch('http://localhost:5188/api/Proveedor')
+      const response = await fetch('http://localhost:5173/api/Proveedor')
       // const response = await fetch('http://localhost:5188/api/Proveedor')
       const json = await response.json() 
       setDataApi(json)
@@ -41,7 +41,7 @@ function Providers(props) {
 
   const handleDownload = async () => {
     const response = await fetch(
-      "http://localhost:5188/api/pdf",
+      "http://localhost:5173/api/pdf",
       {
         method: "GET",
         headers: {
