@@ -59,6 +59,9 @@ public partial class GoeatContext : DbContext
             entity.Property(e => e.SaldoInicial)
                 .HasColumnType("money")
                 .HasColumnName("saldo_inicial");
+            entity.Property(e => e.Estado)
+            .HasColumnType("boolean")
+            .HasColumnName("estado");
         });
 
         modelBuilder.Entity<Cliente>(entity =>
@@ -249,7 +252,7 @@ public partial class GoeatContext : DbContext
             entity.Property(e => e.IdUsuario)
                 .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("id_usuario");
-            entity.Property(e => e.Contraseña)
+            entity.Property(e => e.Contrasenia)
                 .HasMaxLength(300)
                 .HasColumnName("contraseña");
             entity.Property(e => e.IdTipoUsuario).HasColumnName("id_tipo_usuario");

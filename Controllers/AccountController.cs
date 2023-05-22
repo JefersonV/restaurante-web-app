@@ -8,9 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using restaurante_web_app.Data.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Microsoft.AspNetCore.Cors;
 
 namespace restaurante_web_app.Controllers
 {
+    //añadir las reglas de cors dentro de cada controlador
+    [EnableCors("ReglasCors")]
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -43,7 +46,7 @@ namespace restaurante_web_app.Controllers
                 {
                     Nombre = usuarioDtoIn.Nombre,
                     Usuario1 = GenerateUsername(usuarioDtoIn.Nombre),
-                    Contraseña = BCrypt.Net.BCrypt.HashPassword(usuarioDtoIn.Contraseña),
+                    Contrasenia = BCrypt.Net.BCrypt.HashPassword(usuarioDtoIn.Contrasenia),
                     IdTipoUsuario = usuarioDtoIn.IdTipoUsuario
                 };
 
@@ -79,7 +82,7 @@ namespace restaurante_web_app.Controllers
                     return BadRequest(new { mensaje = "Usuario o contraseña incorrectos" });
                 }
 
-                if (!BCrypt.Net.BCrypt.Verify(loginDtoIn.Contraseña, usuario.Contraseña))
+                if (!BCrypt.Net.BCrypt.Verify(loginDtoIn.Contrasenia, usuario.Contrasenia))
                 {
                     return BadRequest(new { mensaje = "Usuario o contraseña incorrectos" });
                 }

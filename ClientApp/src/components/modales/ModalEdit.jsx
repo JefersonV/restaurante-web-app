@@ -12,7 +12,7 @@ function ModalEdit(props) {
   const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
   /* Identifica a cuál de los items de la tabla se le hizo click */
   const [itemId, setItemId] = useState("")
-//   console.log('elemento', itemId  )
+	//console.log('elemento', itemId  )
 
   const [data, setData] = useState({
 		nombre: "",
@@ -29,7 +29,12 @@ function ModalEdit(props) {
 /* Traer la data del item seleccionado */
   const getDataId = async (id) => {
 		try {
-			const response = await fetch(`http://localhost:5173/api/Proveedor/${id}`)
+			const response = await fetch(`http://localhost:5173/api/Proveedor/${id}`, {
+				headers: {
+					'Authorization': `Bearer ${localStorage.token}`,
+					'Content-Type': 'application/json'
+				}
+			})
 			const dataFetch = await response.json()
 			console.warn(dataFetch)
 			setData({
@@ -42,11 +47,6 @@ function ModalEdit(props) {
 		}
   }
 
-	const onChangeData = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-    console.log(e.target.name, e.target.value);
-  };
-	
   useEffect(() => {
     if(itemId) {
       getDataId(itemId)
@@ -113,6 +113,7 @@ function ModalEdit(props) {
 							method: "PUT",
 							body: JSON.stringify(bodyTest),
 							headers: {
+								Authorization: `Bearer ${localStorage.token}`,
 								"Content-Type": "application/json",
 							}
 						})

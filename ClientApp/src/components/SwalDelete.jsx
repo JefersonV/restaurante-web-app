@@ -28,7 +28,8 @@ function SwalDelete({idProveedor, actualizarListaProveedores}) {
     const response = await fetch(`http://localhost:5173/api/Proveedor/${id}`, {
       method: "DELETE",
       headers: {
-        token: localStorage.token,
+        'Authorization': `Bearer ${localStorage.token}`,
+				'Content-Type': 'application/json'
       },
     });
     // setData(data.filter((data) => data.id_cliente !== id));
