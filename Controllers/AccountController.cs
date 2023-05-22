@@ -24,7 +24,7 @@ namespace restaurante_web_app.Controllers
             _config = config;
         }
 
-        //[Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador")]
         [HttpPost("register")]
         public async Task<ActionResult<Usuario>> Register(UsuarioDtoIn usuarioDtoIn)
         {
