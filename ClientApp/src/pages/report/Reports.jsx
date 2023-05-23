@@ -21,30 +21,21 @@ function Reports (props)  {
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
     props.setTitle("Reporte Diario");
-  });
+  }, []);
 
 
-//*****************************************MOSTRAR VENTAS DIARIOS TABLA */
-  /* Skeleton para la UI, mientras se carga la data de la API */
-  // const [isLoading, setIsLoading] = useState(true)
-  // /* ------ Fetch */
-  // const [dataApi, setDataApi] = useState([])
-  
-  // const [modalOpen, setModalOpen] = useState(false);
+  const defaultDateString = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 
-
-//   const today = new Date().toISOString().substr(0, 10); // Obtener la fecha de hoy en el formato "YYYY-MM-DD"
-//   // const today = new Date().toISOString().split('T')[0];
-//   console.log(today)  
-// const [selectedDate, setSelectedDate] = useState(today);
-
-//   const handleDateChange = (e) => {
-//     setSelectedDate(e.target.value);
-//   }; 
-
-  const [selectedDate1, setSelectedDate1] = useState(new Date().toISOString().split('T')[0]);
+  const [selectedDate1, setSelectedDate1] = useState(defaultDateString());
   const [salesData, setSalesData] = useState([]);
-  const [hasSales, setHasSales] = useState(false);
+  const [hasSales, setHasSales] = useState(null);
+  const [loading, setLoading] = useState(false);
 
 // const getDataday = async () => {
 
@@ -106,11 +97,16 @@ function Reports (props)  {
   }, []); // Ejecutar una vez al cargar la página
   
   const checkSales = (date) => {
+    setLoading(true);
     if (date) {
       const formattedDate = date.toISOString().split('T')[0];
   
       // Realizar la solicitud a la API para obtener los datos de ventas en la fecha seleccionada
-      fetch(`http://localhost:5188/api/ReportDay/day?fecha=${formattedDate}`)
+      fetch(`http://localhost:5173/api/ReportDay/day?fecha=${formattedDate}`,{
+        headers: {
+          'Authorization': `Bearer ${localStorage.token}`,
+        }
+      })
         .then((response) => response.json())
         .then((data) => {
           // Verificar la respuesta de la API y actualizar los datos de ventas y el estado hasSales en consecuencia
@@ -121,6 +117,7 @@ function Reports (props)  {
           console.error('Error:', error);
         });
     }
+    setLoading(false)
   };
   
   const handleDateChange1 = (event) => {
@@ -234,7 +231,10 @@ function Reports (props)  {
         
         <div className="row">
           <div className="col">
-      {hasSales  ? (
+      {loading ? (
+        <p>Cargando</p>
+      ):
+      hasSales  ? (
         // <Alert color="success">Hay ventas en la fecha seleccionada.</Alert>
         <Tablep data={results} />
         // <Alert color="warning">No hay ventas en la fecha seleccionada.</Alert>

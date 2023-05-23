@@ -80,7 +80,7 @@ namespace restaurante_web_app.Controllers
 
 
             // Group the data by customer
-            var groupedData = data.GroupBy(item => item.IdCliente);
+            var groupedData = data.GroupBy(item => item.IdVenta);
 
             //suma de hoy
             //decimal totalVentas = groupedData.Sum(group => group.Sum(item => item.Subtotal ?? 0));
@@ -257,34 +257,46 @@ namespace restaurante_web_app.Controllers
 
 
         //[HttpGet]
-        [HttpGet("reportweek")]
-        public IActionResult GeneratePdfWeek(int month, int weekNumber)
+        [HttpGet("reportmonth")]
+        public IActionResult GeneratePdfMonth(int month)
         {
 
-            //DateTime today = DateTime.Today;
-            //DateTime weekStart = today.AddDays(-(today.DayOfWeek - DayOfWeek.Monday + 7) % 7);
-            //DateTime weekEnd = weekStart.AddDays(7);
 
             int currentYear = DateTime.Today.Year;
 
-            // Calcular la fecha de inicio de la semana y la fecha de fin de la semana
-            DateTime weekStart = GetFirstDayOfWeek(currentYear, month, weekNumber);
-            DateTime weekEnd = weekStart.AddDays(7);
+            // Obtener el primer día del mes seleccionado
+            DateTime monthStart = new DateTime(currentYear, month, 1);
+
+            // Obtener el primer día del mes siguiente
+            DateTime nextMonthStart = monthStart.AddMonths(1);
+
+            // Convertir a DateOnly
+            DateOnly monthStartDate = DateOnly.FromDateTime(monthStart);
+            DateOnly nextMonthStartDate = DateOnly.FromDateTime(nextMonthStart);
+
+
+            //int currentYear = DateTime.Today.Year;
+
+            // Obtener el primer día del mes seleccionado
+            //DateTime monthStart = new DateTime(currentYear, month, 1);
+
+            // Obtener el número de la semana correspondiente al primer día del mes
+            //int monthStartWeekNumber = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(monthStart, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
+
+            //// Obtener el inicio y fin del mes
+            //DateTime monthStartDate = GetFirstDayOfWeek(currentYear, monthStartWeekNumber);
+            //DateTime monthEndDate = monthStartDate.AddMonths(1);
 
             //// Convertir a DateOnly
-            //DateOnly weekStartDate = DateOnly.FromDateTime(weekStart);
-            //DateOnly weekEndDate = DateOnly.FromDateTime(weekEnd);
+            //DateOnly monthDateStart = DateOnly.FromDateTime(monthStartDate);
+            //DateOnly monthDateEnd = DateOnly.FromDateTime(monthEndDate);
 
-            // Convert to DateOnly
-            DateOnly weekStartDate = DateOnly.FromDateTime(weekStart);
-            DateOnly weekEndDate = DateOnly.FromDateTime(weekEnd);
-
-            // Get the data from the database for the current week
+            // Obtener los datos de la base de datos para el mes actual
             var data = from c in _dbContext.Clientes
                        join v in _dbContext.Ventas on c.IdCliente equals v.IdCliente
                        join d in _dbContext.DetalleVenta on v.IdVenta equals d.IdVenta
                        join m in _dbContext.Menus on d.IdPlatillo equals m.IdPlatillo
-                       where v.Fecha >= weekStartDate && v.Fecha < weekEndDate
+                       where v.Fecha >= monthStartDate && v.Fecha < nextMonthStartDate
                        select new
                        {
                            v.IdVenta,
@@ -304,7 +316,149 @@ namespace restaurante_web_app.Controllers
             decimal totalVentas = data.Sum(item => item.Subtotal ?? 0);
 
             // Group the data by customer
-            var groupedData = data.GroupBy(item => item.IdCliente);
+            var groupedData = data.GroupBy(item => item.IdVenta);
+
+            // Create a PDF document
+            Document document = new Document();
+
+            // Create a MemoryStream to save the PDF file
+            MemoryStream memoryStream = new MemoryStream();
+            PdfWriter writer = PdfWriter.GetInstance(document, memoryStream);
+
+            // Add metadata
+            document.AddTitle("Facturas de ventas");
+            document.AddSubject("Facturas de ventas de la base de datos");
+            document.AddKeywords("ventas, base de datos, PDF");
+            document.AddCreator("Mi aplicación");
+
+            // Define the default font style
+            // FontFactory.Register(openSansFontPath, "Roboto Mono");
+
+            // Open the PDF document
+            document.Open();
+
+            // Loop through the groups and add a new page for each customer
+            foreach (var group in groupedData)
+            {
+                // Add the customer details to the page
+                Paragraph customer = new Paragraph($"Cliente: {group.Key}, {group.First().Institucion}, {group.First().NombreApellido}, {group.First().Fecha}");
+                customer.Alignment = Element.ALIGN_LEFT;
+                document.Add(customer);
+
+                // Add the sale items
+                PdfPTable table = new PdfPTable(4);
+                table.WidthPercentage = 100;
+                table.SetWidths(new float[] { 1f, 1f, 1f, 1f });
+                table.DefaultCell.Padding = 5;
+                table.DefaultCell.BackgroundColor = new BaseColor(240, 240, 240);
+                table.AddCell("Platillo");
+                table.AddCell("Cantidad");
+                table.AddCell("Precio");
+                table.AddCell("Subtotal");
+                foreach (var item in group)
+                {
+                    table.AddCell(item.Platillo);
+                    table.AddCell(item.Cantidad.ToString());
+                    table.AddCell(item.Precio.ToString());
+                    table.AddCell(item.Subtotal.ToString());
+                }
+
+                // Add the table to the document
+                document.Add(table);
+
+                // Add the total
+                Paragraph total = new Paragraph($"Total: {group.Sum(item => item.Subtotal).ToString()}");
+                total.Alignment = Element.ALIGN_RIGHT;
+                document.Add(total);
+            }
+
+            if (totalVentas > 0)
+            {
+                // Add the total sales for the month
+                Paragraph totalSales = new Paragraph($"Total de ventas del mes: {totalVentas.ToString("C")}");
+                totalSales.Alignment = Element.ALIGN_RIGHT;
+                document.Add(totalSales);
+            }
+            else
+            {
+                // Add a message if there are no sales for the month
+                Paragraph noSalesMessage = new Paragraph($"No hay ventas para mostrar");
+                noSalesMessage.Alignment = Element.ALIGN_RIGHT;
+                document.Add(noSalesMessage);
+            }
+
+            // Close the document
+            document.Close();
+
+            // Convert the PDF document to an array of bytes
+            byte[] bytes = memoryStream.ToArray();
+
+            return File(bytes, "application/pdf");
+        }
+
+        private DateTime GetFirstDayOfWeek(int year, int month, int weekNumber)
+        {
+            DateTime firstDayOfMonth = new DateTime(year, month, 1);
+            DayOfWeek dayOfWeek = firstDayOfMonth.DayOfWeek;
+            int daysToAdd = (int)DayOfWeek.Monday - (int)dayOfWeek;
+            if (daysToAdd > 0)
+                daysToAdd -= 7;
+
+            int weeksToAdd = weekNumber - 1;
+
+            return firstDayOfMonth.AddDays(daysToAdd + (7 * weeksToAdd));
+        }
+
+
+
+
+        [HttpGet("repormes")]
+        public IActionResult GeneratePdfmes(int month)
+        {
+
+            //DateTime today = DateTime.Today;
+            //DateTime weekStart = today.AddDays(-(today.DayOfWeek - DayOfWeek.Monday + 7) % 7);
+            //DateTime weekEnd = weekStart.AddDays(7);
+
+            int currentYear = DateTime.Today.Year;
+
+            // Obtener el primer día del mes seleccionado
+            DateTime monthStart = new DateTime(currentYear, month, 1);
+
+            // Obtener el primer día del mes siguiente
+            DateTime nextMonthStart = monthStart.AddMonths(1);
+
+            // Convertir a DateOnly
+            DateOnly monthStartDate = DateOnly.FromDateTime(monthStart);
+            DateOnly nextMonthStartDate = DateOnly.FromDateTime(nextMonthStart);
+
+            // Get the data from the database for the current week
+            var data = from c in _dbContext.Clientes
+                       join v in _dbContext.Ventas on c.IdCliente equals v.IdCliente
+                       join d in _dbContext.DetalleVenta on v.IdVenta equals d.IdVenta
+                       join m in _dbContext.Menus on d.IdPlatillo equals m.IdPlatillo
+                       //where v.Fecha >= weekStartDate && v.Fecha < weekEndDate
+                       where v.Fecha >= monthStartDate && v.Fecha < nextMonthStartDate
+                       select new
+                       {
+                           v.IdVenta,
+                           v.NumeroComanda,
+                           v.Fecha,
+                           v.Total,
+                           v.IdMesero,
+                           c.IdCliente,
+                           c.NombreApellido,
+                           c.Institucion,
+                           d.Cantidad,
+                           d.Subtotal,
+                           m.Platillo,
+                           m.Precio
+                       };
+
+            decimal totalVentas = data.Sum(item => item.Subtotal ?? 0);
+
+            // Group the data by customer
+            var groupedData = data.GroupBy(item => item.IdVenta);
 
             // Calculate the total sales for the week
             //decimal totalVentas = groupedData.Sum(group => group.Sum(item => item.Subtotal));
@@ -375,7 +529,7 @@ namespace restaurante_web_app.Controllers
                 document.Add(totalSales1);
             }
 
-            
+
 
             // Close the document
             document.Close();
@@ -396,18 +550,6 @@ namespace restaurante_web_app.Controllers
             return File(bytes, "application/pdf"); ;
 
         }
-        private DateTime GetFirstDayOfWeek(int year, int month, int weekNumber)
-        {
-            DateTime firstDayOfMonth = new DateTime(year, month, 1);
-            DayOfWeek dayOfWeek = firstDayOfMonth.DayOfWeek;
-            int daysToAdd = (int)DayOfWeek.Monday - (int)dayOfWeek;
-            if (daysToAdd > 0)
-                daysToAdd -= 7;
-
-            int weeksToAdd = weekNumber - 1;
-
-            return firstDayOfMonth.AddDays(daysToAdd + (7 * weeksToAdd));
-        }
 
 
 
@@ -423,7 +565,8 @@ namespace restaurante_web_app.Controllers
                         join d in _dbContext.DetalleVenta on v.IdVenta equals d.IdVenta
                         join m in _dbContext.Menus on d.IdPlatillo equals m.IdPlatillo
                         where v.Fecha >= selectedDateDesde && v.Fecha <= selectedDateHasta
-                        group new { v, d, m } by new { c.IdCliente, c.NombreApellido, c.Institucion } into groupedData
+                        // agregar IdVenta pero fallo quitar
+                        group new { v, d, m } by new { v.IdVenta, c.IdCliente, c.NombreApellido, c.Institucion } into groupedData
                         select new
                         {
                             Cliente = new

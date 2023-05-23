@@ -16,17 +16,19 @@ export default function Tablep ( props ) {
             <th>Cliente</th>
             <th>Ventas</th>
             <th>Total</th>
+            <th>Fecha</th>
           </tr>
         </thead>
         <tbody>
           {data.map((item, index) => (
-            <tr key={index}>
+            <tr key={index} >
               <td>{index+1}</td>
               <td>{item.cliente.nombreApellido}</td>
-              <td>
+              <td align="left">
                 <ul>
                   {item.ventas.map((venta, index1) => (
                     <li key={index1}>
+                      <>No.</> {index1 +1} <br />
                       <>Ordenó: </> {venta.platillo} <br /> 
                       <>Cantidad: </> {venta.cantidad}, <br /> 
                       <>Subtotal: </> {venta.subtotal} <br /> 
@@ -35,6 +37,9 @@ export default function Tablep ( props ) {
                 </ul>
               </td>
               <td>{item.total}</td>
+              <td>
+                 {item.ventas.length > 0 && item.ventas[0].fecha}
+              </td>
             </tr>
           ))}
         </tbody>

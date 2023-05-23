@@ -3,10 +3,10 @@ import { Label } from 'reactstrap'
 import { FormGroup } from 'reactstrap'
 import { Input } from 'reactstrap'
 import { useNavigate } from 'react-router-dom'
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import NativeSelect from '@mui/material/NativeSelect';
+// import Box from '@mui/material/Box';
+// import InputLabel from '@mui/material/InputLabel';
+// import FormControl from '@mui/material/FormControl';
+// import NativeSelect from '@mui/material/NativeSelect';
 // import '../styles/Select.scss'
 // import '../styles/Select.scss'
 
@@ -35,7 +35,7 @@ const  Select = () => {
     {
       value: '3',
       label: 'rango',
-      href: '/rango',
+      href: '/reports/rango',
     },
     
   ];
