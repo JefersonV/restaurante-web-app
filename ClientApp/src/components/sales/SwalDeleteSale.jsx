@@ -1,8 +1,7 @@
-import React, { useState, useEffect} from 'react'
+import React from 'react'
 import Swal from 'sweetalert2'
 import { BsFillTrashFill } from 'react-icons/bs';
-
-function SwalDelete({idPlatillo, actualizarListaMenu}) {
+function SwalDeleteSale({idVenta, actualizarListaVentas}) {
   const deleteSweet = (id) => {
     Swal.fire({
       title: "Eliminar registro",
@@ -16,12 +15,12 @@ function SwalDelete({idPlatillo, actualizarListaMenu}) {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire("Eliminado!", "El registro se ha elimando", "success");
-        providerDelete(id)
+        saleDelete(id)
       }
     });
   };
 
-  const providerDelete = async (id) => {
+  const saleDelete = async (id) => {
     console.log("click -> Id: ", id);
     const response = await fetch(`http://localhost:5173/api/Menu/${id}`, {
       method: "DELETE",
@@ -32,21 +31,19 @@ function SwalDelete({idPlatillo, actualizarListaMenu}) {
     // setData(data.filter((data) => data.id_cliente !== id));
     if(response.ok) {
       /* Prop para actualizar la tabla en tiempo real, después de eliminar el registro. */
-      actualizarListaMenu()
+      actualizarListaVentas()
     }
   };
-
   return (
     <>
-      <button onClick={() => deleteSweet(idPlatillo)}>
         <BsFillTrashFill
+          onClick={() => deleteSweet(idVenta)}
           className="icon-action icon-action--delete"
           title="Eliminar venta individual"
-          size={22}
+          size={20}
         />
-      </button>
     </>
   )
 }
 
-export default SwalDelete
+export default SwalDeleteSale

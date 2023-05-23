@@ -62,15 +62,7 @@ function IndividualSale(props) {
     setSaleDetail((prevSaleDetail) => [...prevSaleDetail, selectedItem]);
     // Inicializamos el valor en 1
     setCantidades((prevCantidades) => [...prevCantidades, 1]);
-    /* Actualización del estado que se enviará por POST */
-    /* for(let i=0; i<saleDetail.length; i++) {
-      setDataPost({
-        ...dataPost,
-        DetalleVenta: [
-          { IdPlatillo: saleDetail[i].idPlatillo, Cantidad: cantidades[i]},
-        ]
-      })
-    } */
+
   };
 
   /* Eliminar un item de la venta */
@@ -115,13 +107,6 @@ function IndividualSale(props) {
       NumeroComanda: e.target.value,
       Fecha: defaultDate || dayjs().format('YYYY-MM-DD'),
     }));
-    /* setDataPost({
-      ...dataPost,
-      NumeroComanda: numeroComanda,
-      Fecha: defaultDate || dayjs().format('YYYY-MM-DD'),
-      IdMesero: 1,
-      IdCliente: 1,
-    }) */
   };
 
   /*  Actualiza la cantidad asociada al item agregado a la comanda, si el item */ 
@@ -212,10 +197,13 @@ function IndividualSale(props) {
                   <div className="form-floating mb-3">
                     <input
                       type="number"
+                      pattern="/^(\d{1,13})$/"
                       className="form-control"
                       id="input-comanda"
                       placeholder="1332"
                       onChange={handleChange}
+                      title="Introduce un número entero válido"
+                      required
                     />
                     <label htmlFor="input-comanda">No. de Comanda</label>
                   </div>

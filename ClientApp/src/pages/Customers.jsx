@@ -51,7 +51,9 @@ function Customers(props) {
     ? dataApi
     : // Si se ha ingresado información al input, que la compare a los criterios y los filtre
       dataApi.filter((item) =>
-        item.email.toLowerCase().includes(search.toLocaleLowerCase())
+        item.nombreApellido.toLowerCase().includes(search.toLocaleLowerCase()) /* ||
+        item.institucion.toLowerCase().includes(search.toLocaleLowerCase()) ||
+        item.puesto.toLowerCase().includes(search.toLocaleLowerCase()) */
       );
 
   return (
