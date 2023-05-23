@@ -1,31 +1,29 @@
-import React, { useState, useEffect } from 'react'
-import { useStore } from '../providers/GlobalProvider'
-import TableUsers from '../components/usuarios/TableUsers';
-import Searchbar from '../components/Searchbar';
-import ModalAddUser from "../components/usuarios/ModalAddUser";
-import { Button } from "reactstrap";
+import React, { useState, useEffect } from "react";
+import { useStore } from "../providers/GlobalProvider";
+import TableWaiters from "../components/meseros/TableWaiters";
+import ModalAddMesero from "../components/meseros/ModalAddMesero";
+import Searchbar from "../components/Searchbar";
 import { FcPrint } from "react-icons/fc";
+import { Button } from "reactstrap";
 
-function Users(props) {
+function Waiters(props) {
   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
   const isOpen = useStore((state) => state.sidebar);
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
-    props.setTitle("Control de Usuarios");
+    props.setTitle("Meseros");
   }, []);
-  
+
   const [dataApi, setDataApi] = useState([]);
   const getData = async () => {
     try {
-      // https://jsonplaceholder.typicode.com/comments
-      const response = await fetch("http://localhost:5173/api/Account", {
+      const response = await fetch("http://localhost:5173/api/Mesero", {
         headers: {
           Authorization: `Bearer ${localStorage.token}`,
         },
       });
       const json = await response.json();
       setDataApi(json);
-      console.log(json);
     } catch (err) {
       console.error(err);
     }
@@ -53,29 +51,26 @@ function Users(props) {
       );
 
   return (
-    <div className={ isOpen ? "wrapper" : "side" }>
+    <div className={isOpen ? "wrapper" : "side"}>
       <div className="container-fluid mt-4">
-      <div className="row">
+        <div className="row">
           <div className="col">
             <Searchbar searcher={searcher} />
           </div>
         </div>
         <div className="row d-flex justify-content-center align-items-center">
           <div className="col">
-            <ModalAddUser actualizarListaUsuario={getData} />
+            <ModalAddMesero actualizarListaMesero={getData} />
             <Button color="primary" outline>
               Imprimir lista
               <FcPrint />
             </Button>
           </div>
         </div>
-      <TableUsers 
-        data={results}
-        actualizarListaUsuario={getData}
-      />
+        <TableWaiters data={results} actualizarListaMesero={getData} />
       </div>
     </div>
   );
 }
 
-export default Users;
+export default Waiters;

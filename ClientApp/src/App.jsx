@@ -19,6 +19,7 @@ import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import { SkeletonTheme } from "react-loading-skeleton";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import useAuthStore from "./providers/User";
+import Waiters from "./pages/Waiters";
 
 function App() {
   const [pageTitle, setPageTitle] = useState("");
@@ -114,6 +115,10 @@ function App() {
                   path="/customers"
                   element={<Customers setTitle={setTitle} />}
                 />
+                <Route
+                  path="/waiters"
+                  element={<Waiters setTitle={setTitle} />}
+                />
                 {/* Colocar las demas */}
               </Route>
               {/* Rutas que pueden ser accedidas por usuarios autenticados y que sean 'Invitado' o 'Administrador' */}
