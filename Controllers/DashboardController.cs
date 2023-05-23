@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using restaurante_web_app.Data.DTOs;
 using restaurante_web_app.Models;
 
 
@@ -27,6 +28,11 @@ namespace restaurante_web_app.Controllers
             //DateOnly fechaActual = new DateOnly(2023, 4, 14);
             //DateOnly fechaMesAnterior = new DateOnly(2023, 3, 14);
 
+            var cajaDiaria = await _dbContext.CajaDiaria
+                .OrderByDescending(c => c.Fecha)
+                .FirstOrDefaultAsync(c => c.Fecha == new DateOnly(2023, 5, 22));
+
+
             decimal? totalVentas = await GetTotalByMonth("Ventas", fechaActual);
             decimal? totalVentasMesAnterior = await GetTotalByMonth("Ventas", fechaMesAnterior);
 
@@ -40,6 +46,13 @@ namespace restaurante_web_app.Controllers
             decimal? porcentajeCambioGastos = CalculatePorcentajeCambio(totalGastos, totalGastosMesAnterior);
             decimal? porcentajeCambioGanancia = CalculatePorcentajeCambio(ganancia, gananciaMesAnterior);
 
+            decimal? cajaActual = 0;
+
+            if (cajaDiaria.Estado)
+            {
+                cajaActual = cajaDiaria.SaldoInicial + (totalVentas ?? 0) - (totalGastos ?? 0);
+            }
+
             var data = new
             {
                 totalVentasMesActual = totalVentas,
@@ -47,7 +60,8 @@ namespace restaurante_web_app.Controllers
                 totalGastosMesActual = totalGastos,
                 porcentajeCambioGastos,
                 ganancia,
-                porcentajeCambioGanancia
+                porcentajeCambioGanancia,
+                cajaActual
             };
 
             return new JsonResult(data);
