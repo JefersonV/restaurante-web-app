@@ -119,6 +119,10 @@ namespace restaurante_web_app.Controllers
                 return NotFound();
             }
             decimal? cajaActual = cajaDiaria.SaldoInicial + (totalVentas ?? 0) - (totalGastos ?? 0);
+            if(cajaActual < cajaUpdateDto.CantidadSacar)
+            {
+                return BadRequest(new { mensaje = "La cantidad en caja no es sufciente" });
+            }
             cajaDiaria.SaldoFinal = cajaActual - cajaUpdateDto.CantidadSacar;
             cajaDiaria.Estado = false;
 
