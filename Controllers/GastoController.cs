@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using restaurante_web_app.Data.DTOs;
 using restaurante_web_app.Models;
+using System.Data;
 
 namespace restaurante_web_app.Controllers
 {
@@ -20,6 +22,7 @@ namespace restaurante_web_app.Controllers
             _dbContext = dbContext;
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpGet]
         public async Task<ActionResult<GastoDtoOut>> GetAll()
         {
@@ -48,7 +51,7 @@ namespace restaurante_web_app.Controllers
             }
         }
 
-
+        [Authorize(Roles = "Administrador")]
         [HttpGet]
         [Route("{idGasto:long}")]
         public async Task<ActionResult<GastoDtoOut>> GetById(long idGasto)
@@ -82,6 +85,7 @@ namespace restaurante_web_app.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         public async Task<ActionResult<GastoDtoOut>> Create(GastoDtoIn gastoDtoIn)
         {
@@ -127,6 +131,7 @@ namespace restaurante_web_app.Controllers
             return CreatedAtAction(nameof(GetById), new { id = gasto.IdGasto }, gastoDtoOut);
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPut("{idGasto:long}")]
         public async Task<IActionResult> Update(long idGasto, GastoDtoIn gastoDto)
         {
@@ -149,6 +154,7 @@ namespace restaurante_web_app.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpDelete("{idGasto:long}")]
         public async Task<IActionResult> Delete(long idGasto)
         {
