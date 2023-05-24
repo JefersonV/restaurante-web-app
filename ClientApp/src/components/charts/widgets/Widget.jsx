@@ -14,7 +14,7 @@ const Widget = ({ type, monto, porcentaje = 0 }) => {
         title: "INGRESOS DEL MES",
         isMoney: true,
         link: "Ver todas...",
-        path: "/purchases",
+        path: "/sales",
         monto: 5000,
         // monto: venta.suma_total,
         icon: <BsCash className="icon" color="black" />,
