@@ -22,7 +22,14 @@ import useAuthStore from "./providers/User";
 import Reports from "./pages/report/Reports";
 // import Rango from "./pages/report/rango";
 import Rango from "./pages/report/Rango.jsx";
+import Reportmonth from "./pages/report/Reportmonth";
 import Reportsweek from "./pages/report/Reportweek.jsx";
+import ShoppDay from "./pages/report/ShoppDay";
+import Shoppweek from "./pages/report/ShoppWeek";
+import ShoppRange from "./pages/report/ShoppRange";
+import ShoppMonth from "./pages/report/ShoppMonth";
+import ShoppAll from "./pages/report/ShoppAll";
+import ReportAll from "./pages/report/ReportAll";
 
 function App() {
   const [pageTitle, setPageTitle] = useState("");
@@ -110,8 +117,36 @@ function App() {
                   element={<Reportsweek setTitle={setTitle} />}
                 />
                 <Route
+                  path="/reports/month"
+                  element={<Reportmonth setTitle={setTitle} />}
+                />
+                <Route
                   path="/reports/rango"
                   element={<Rango setTitle={setTitle} />}
+                />
+                <Route
+                  path="/reports/all"
+                  element={<ReportAll setTitle={setTitle} />}
+                />
+                <Route
+                  path="/purchasesday"
+                  element={<ShoppDay setTitle={setTitle} />}
+                />
+                <Route
+                  path="/purchasesweek"
+                  element={<Shoppweek setTitle={setTitle} />}
+                />
+                <Route
+                  path="/purchasesrange"
+                  element={<ShoppRange setTitle={setTitle} />}
+                />
+                <Route
+                  path="/purchasesmonth"
+                  element={<ShoppMonth setTitle={setTitle} />}
+                />
+                <Route
+                  path="/purchasesall"
+                  element={<ShoppAll setTitle={setTitle} />}
                 />
                 <Route
                   path="/config"
