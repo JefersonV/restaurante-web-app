@@ -5,13 +5,13 @@ import { BsFillTrashFill } from 'react-icons/bs';
 const SwalDelete = ({ idUsuario, actualizarListaUsuario }) => {
 
   const [data, setData] = useState({
-    usuario: '',
+    tipoUsuario: '',
   });
 
   
   const deleteSweet = () => {
     getUsuarioData(idUsuario)
-    if (data.usuario !== 'bryanchavajay' && data.usuario !== "mariaadmin") { // Verificar si el usuario no es el administrador
+    if (data.tipoUsuario !== 'Administrador') { // Verificar si el usuario no es el administrador
       Swal.fire({
         title: 'Eliminar registro',
         text: '¿Estás seguro que quieres eliminar el registro?',
@@ -44,7 +44,7 @@ const SwalDelete = ({ idUsuario, actualizarListaUsuario }) => {
       const usuarioData = await response.json();
       setData({
         ...data,
-        usuario: usuarioData.usuario1,
+        tipoUsuario: usuarioData.tipoUsuario,
       });
     } catch (error) {
       console.log('Error Message: ' + error.ErrorMessage);
