@@ -238,7 +238,7 @@ namespace restaurante_web_app.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Administrador")]
+        //[Authorize(Roles = "Administrador")]
         //Eliminar detalles de una venta -> no elimina la venta solo los detalles que se indique
         [HttpDelete("{idVenta:long}/detalleVenta/{idDetalleVenta:long}")]
         public async Task<ActionResult> DeleteDetalleVenta(long idVenta, long idDetalleVenta)

@@ -6,7 +6,7 @@ import Inventory from "./pages/Inventory";
 import Purchases from "./pages/Purchases";
 import Sales from "./pages/Sales";
 import CashBox from "./pages/CashBox";
-import Reports from "./pages/Reports";
+// import Reports from "./pages/Reports";
 import Users from "./pages/Users";
 import Config from "./pages/Config";
 import Sidebar from "./components/sidebar/Sidebar";
@@ -20,6 +20,10 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import useAuthStore from "./providers/User";
 import Waiters from "./pages/Waiters";
+import Reports from "./pages/report/Reports";
+// import Rango from "./pages/report/rango";
+import Rango from "./pages/report/Rango.jsx";
+import Reportsweek from "./pages/report/Reportweek.jsx";
 
 function App() {
   const [pageTitle, setPageTitle] = useState("");
@@ -103,6 +107,14 @@ function App() {
                   element={<Reports setTitle={setTitle} />}
                 />
                 <Route
+                  path="/reports/week"
+                  element={<Reportsweek setTitle={setTitle} />}
+                />
+                <Route
+                  path="/reports/rango"
+                  element={<Rango setTitle={setTitle} />}
+                />
+                <Route
                   path="/config"
                   element={<Config setTitle={setTitle} />}
                 />
@@ -119,6 +131,7 @@ function App() {
                   path="/waiters"
                   element={<Waiters setTitle={setTitle} />}
                 />
+                
                 {/* Colocar las demas */}
               </Route>
               {/* Rutas que pueden ser accedidas por usuarios autenticados y que sean 'Invitado' o 'Administrador' */}
