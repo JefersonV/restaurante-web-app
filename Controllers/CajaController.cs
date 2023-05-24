@@ -111,6 +111,11 @@ namespace restaurante_web_app.Controllers
             var cajaDiaria = await _dbContext.CajaDiaria
                 .FirstOrDefaultAsync(c => c.IdCajaDiaria == id);
 
+            if (cajaDiaria == null)
+            {
+                return NotFound();
+            }
+
             decimal? totalVentas = await GetTotalByMonth("Ventas", cajaDiaria.Fecha);
             decimal? totalGastos = await GetTotalByMonth("Gastos", cajaDiaria.Fecha);
 
