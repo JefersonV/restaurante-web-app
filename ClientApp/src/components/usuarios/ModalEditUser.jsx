@@ -9,7 +9,7 @@ const ModalEditUser = (props) => {
   const [modal, setModal] = useState(false);
   const toggleModal = () => setModal(!modal);
   const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
-  const { idUsuario, actualizarListaUsuarios } = props;
+  const { idUsuario, actualizarListaUsuario } = props;
   const [data, setData] = useState({
     nombre: '',
     contrasenia: '',
@@ -20,7 +20,7 @@ const ModalEditUser = (props) => {
 
   const getUsuarioData = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5173/api/Usuario/${id}`, {
+      const response = await fetch(`http://localhost:5173/api/Account/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.token}`,
           'Content-Type': 'application/json'
@@ -30,7 +30,7 @@ const ModalEditUser = (props) => {
       setData({
         ...data,
         nombre: usuarioData.nombre,
-        idTipoUsuario: usuarioData.idTipoUsuario
+        idTipoUsuario: usuarioData.tipoUsuario
       });
     } catch (error) {
       console.log('Error Message: ' + error.ErrorMessage);
@@ -47,7 +47,7 @@ const ModalEditUser = (props) => {
     const bodyTest = {
       idUsuario: idUsuario,
       nombre: values.nombre,
-      contrasenia: values.contrasenia,
+      contrasenia: values.contrasenia ? values.contrasenia : '',
       idTipoUsuario: values.idTipoUsuario
     };
 
@@ -57,7 +57,7 @@ const ModalEditUser = (props) => {
     console.log(bodyTest);
 
     try {
-      const response = await fetch(`http://localhost:5173/api/Usuario/${idUsuario}`, {
+      const response = await fetch(`http://localhost:5173/api/Account/update/${idUsuario}`, {
         method: 'PUT',
         body: JSON.stringify(bodyTest),
         headers: {
@@ -78,7 +78,7 @@ const ModalEditUser = (props) => {
           timer: 1500
         });
         /* Prop para actualizar la data de la tabla */
-        actualizarListaUsuarios();
+        actualizarListaUsuario();
       }
     } catch (error) {
       console.log(error);
@@ -102,7 +102,7 @@ const ModalEditUser = (props) => {
               nombre: data.nombre,
               contrasenia: data.contrasenia,
               confirmarContrasenia: data.confirmarContrasenia,
-              idTipoUsuario: data.idTipoUsuario
+              // idTipoUsuario: data.idTipoUsuario
             }}
             enableReinitialize={true}
             validate={(values) => {
@@ -113,11 +113,11 @@ const ModalEditUser = (props) => {
                 errors.nombre =
                   'El nombre debe tener un máximo de 25 caracteres y solo puede contener letras';
               }
-              if (!values.contrasenia) {
-                errors.contrasenia = 'Por favor ingresa una contraseña';
-              } else if (values.contrasenia.length < 6) {
-                errors.contrasenia = 'La contraseña debe tener al menos 6 caracteres';
-              }
+              // if (!values.contrasenia) {
+              //   errors.contrasenia = 'Por favor ingresa una contraseña';
+              // } else if (values.contrasenia.length < 6) {
+              //   errors.contrasenia = 'La contraseña debe tener al menos 6 caracteres';
+              // }
               if (values.contrasenia !== values.confirmarContrasenia) {
                 errors.confirmarContrasenia = 'Las contraseñas no coinciden';
               }
@@ -137,11 +137,10 @@ const ModalEditUser = (props) => {
                       name="nombre"
                       id="nombre"
                       autoComplete='off'
-                      value={props.values.nombre}
+                      value={data.nombre}
                       onChange={props.handleChange}
                       onBlur={props.handleBlur}
-                      /* Feedback para el usuario con el prop valid o invalid de reactstrap */
-									valid={props.touched.nombre && !props.errors.nombre && props.values.nombre.length > 0}
+                      valid={props.touched.nombre && !props.errors.nombre && props.values.nombre.length > 0}
                       invalid={props.touched.nombre && props.errors.nombre}
                     />
                     <ErrorMessage name="nombre" component="div" className="field-error text-danger" />
@@ -156,6 +155,7 @@ const ModalEditUser = (props) => {
                       type={mostrarContrasenia ? 'text' : 'password'}
                       name="contrasenia"
                       id="contrasenia"
+                      placeholder='Ingrese la nueva contraseña'
                       value={props.values.contrasenia}
                       onChange={props.handleChange}
                       onBlur={props.handleBlur}
@@ -183,6 +183,7 @@ const ModalEditUser = (props) => {
                       type={mostrarContrasenia ? 'text' : 'password'}
                       name="confirmarContrasenia"
                       id="confirmarContrasenia"
+                      placeholder='Confirme su contraseña'
                       value={props.values.confirmarContrasenia}
                       onChange={props.handleChange}
                       onBlur={props.handleBlur}
@@ -214,25 +215,28 @@ const ModalEditUser = (props) => {
                       type="select"
                       name="idTipoUsuario"
                       id="idTipoUsuario"
-                      value={props.values.idTipoUsuario}
+                      value={props.values.idTipoUsuario || ""}
                       onChange={props.handleChange}
                       onBlur={props.handleBlur}
                       invalid={props.touched.idTipoUsuario && props.errors.idTipoUsuario}
                     >
-                      <option value="">Seleccionar tipo de usuario</option>
+                      <option value="" disabled>
+                        {data.idTipoUsuario ? data.idTipoUsuario : 'Seleccionar tipo de usuario'}
+                      </option>
                       <option value="1">Administrador</option>
                       <option value="2">Invitado</option>
                     </Input>
                     <ErrorMessage name="idTipoUsuario" component="div" className="field-error text-danger" />
                   </Col>
                 </FormGroup>
-                <Button type="submit" color="primary" outline>
-                  Actualizar
-                </Button>
-                <Button color="secondary" onClick={toggleModal}>
-                  Cancelar
-                </Button>
-                {formularioEnviado && <p className="exito">Formulario enviado con éxito</p>}
+                <ModalFooter>
+                  <Button color="primary" type="submit" disabled={formularioEnviado}>
+                    {formularioEnviado ? 'Enviando...' : 'Guardar Cambios'}
+                  </Button>{' '}
+                  <Button color="secondary" onClick={toggleModal}>
+                    Cancelar
+                  </Button>
+                </ModalFooter>
               </form>
             )}
           </Formik>
