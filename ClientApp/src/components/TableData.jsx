@@ -6,7 +6,7 @@ import dayjs from 'dayjs'
 import '../styles/Table.scss'
 import Skeleton from 'react-loading-skeleton'
 
-export default function TableData(props) {
+function TableData(props) {
   const { data, actualizarListaProveedores } = props
 
   return (
@@ -88,3 +88,5 @@ export default function TableData(props) {
 </Table>
   )
 }
+
+export default TableData

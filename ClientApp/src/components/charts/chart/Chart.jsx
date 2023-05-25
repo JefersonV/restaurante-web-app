@@ -13,7 +13,7 @@ const Chart = (props) => {
   return (
     <div className="chart">
       <div className="title">Ingresos del año, segmentado por meses</div>
-      <ResponsiveContainer width="100%" aspect={2 / 0.7}>
+      <ResponsiveContainer width="100%" aspect={2 / 0.6}>
         <AreaChart
           width={730}
           height={250}

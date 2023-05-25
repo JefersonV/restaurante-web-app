@@ -18,7 +18,9 @@ function ModalNewSale() {
         outline
         onClick={toggle}
       >
-        <FcPlus />
+      <FcPlus 
+        
+      />
         Nueva venta
       </Button>
       <Modal isOpen={modal} fade={false} toggle={toggle} centered={true}>

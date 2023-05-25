@@ -25,7 +25,7 @@
 }
 .table-buttons {
   display: flex;
-
+  justify-content: center;
   /* display: grid;
   height: 50px;
   grid-template-areas: 
@@ -95,6 +95,9 @@ thead tr .resumen-title {
   text-align: center;
   color: #8b1e3f;
   font-size: 1.1em;
+}
+.table-buttons .input-cantidad-edit {
+  width: 60px;
 }
 
 .resumen-total {

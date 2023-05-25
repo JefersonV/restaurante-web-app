@@ -1,22 +1,22 @@
-import React, { useState } from 'react'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
-import { FormGroup, Label, Col, Input } from 'reactstrap'
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { BiEditAlt } from 'react-icons/bi'
-import { GrUser } from "react-icons/gr";
-import Swal from 'sweetalert2'
-import '../../styles/Formulario.scss'
+import React, { useState } from "react";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { FormGroup, Label, Col, Input } from "reactstrap";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { BiEditAlt } from "react-icons/bi";
+import { TbTruck } from "react-icons/tb";
+import Swal from "sweetalert2";
+import "../../styles/Formulario.scss";
 
-function ModalAdd (props) {
+function ModalAdd(props) {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
   /* Formik */
   const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
 
-	const bodyProvider = {
-		nombre: "",
-		telefono: ""	
-	}
+  const bodyProvider = {
+    nombre: "",
+    telefono: "",
+  };
 
   return (
     <>
@@ -26,7 +26,7 @@ function ModalAdd (props) {
       </Button>
       <Modal isOpen={modal} fade={false} toggle={toggle} centered={true}>
         <ModalHeader toggle={toggle}>
-          <GrUser size={30} /> Ingreso de nuevo Cliente
+          <TbTruck size={30} /> Ingreso de nuevo Proveedor
         </ModalHeader>
         <ModalBody>
           <Formik
@@ -117,7 +117,7 @@ function ModalAdd (props) {
                       type="text"
                       id="input-nombre"
                       name="nombre"
-                      placeholder="Nombre cliente"
+                      placeholder="Magnus S.A."
                       autoComplete="off"
                       value={values.nombre}
                       onChange={handleChange}
@@ -145,7 +145,7 @@ function ModalAdd (props) {
                       type="text"
                       id="input-telefono"
                       name="telefono"
-                      placeholder="55555555"
+                      placeholder="77623030"
                       autoComplete="off"
                       value={values.telefono}
                       onBlur={handleBlur}
@@ -185,4 +185,4 @@ function ModalAdd (props) {
   );
 }
 
-export default ModalAdd
+export default ModalAdd;

@@ -18,23 +18,32 @@ function TableSale({
   updateCantidadesDelete,
   changeCantidad,
 }) {
+  // State para validar el formulario
+  const [isFormValid, setIsFormValid] = useState(true);
   
+  useEffect(() => {
+    setIsFormValid(saleDetail.length > 0);
+  }, [saleDetail]);
   /* ------ Función para manejar el cambio de cantidad de un elemento -------*/
 
   /* Nota: el state cantidades está definido en el componente padre, y se recibe como prop */
   // Manejador del <input /> de cantidad de la tabla, identifica que input está siendo modificado
   const handleCantidadChange = (index, e) => {
-    const nuevaCantidad =
-    // Si no se a ingresado una cantidad, o el usuario la borra antes de eliminar el item, entonces se iguala a 1 y se agrega al array cantidades como [...items,1]
-      e.target.value.trim() === "" ||
-      e.target.value === undefined ||
-      e.target.value === null
-        ? 0
-        // si ingresa correctamente un número, entonces se parsea y agrega el número al array "cantidades"
-        : 
-      parseInt(e.target.value);
-    // Prop -> Actualizamos el state con el array de cantidades
-    updateCantidades(index, nuevaCantidad);
+      // Elimina los espacios en blanco antes o después del número
+      const inputValue = e.target.value.trim();
+      // Item que se agregará al array cantidades = [1,2,....]
+      let nuevaCantidad
+      // Si es un número válido
+      if(/^\d+$/.test(inputValue)) {
+        // parsea la cantidad
+        nuevaCantidad = parseInt(inputValue);
+      } else {
+        // si es cualquier otra cosa como una letra o símbolo
+        nuevaCantidad = 0
+      }
+
+      // Array de cantidades 
+      updateCantidades(index, nuevaCantidad);
   };
 
   // Problema: al eliminar el item del array saleDetail [{props}] se debe de eliminar también la cantidad asociada =[10,2,3 ....] en la tabla
@@ -82,15 +91,15 @@ function TableSale({
           </tr>
         </thead>
         <tbody>
-          {saleDetail.map((platillo, index) =>
-            saleDetail.length === 0 ? (
-              <tr>
-                <td colSpan="5" align="center">
-                  No hay items seleccionados
-                </td>
-              </tr>
-            ) : (
-              <tr key={index}>
+        {saleDetail.length === 0 ? (
+          <tr>
+            <td colSpan="5" align="center">
+              Debes seleccionar los items, da click en el buscador 😊
+            </td>
+          </tr>
+        ) : (
+          saleDetail.map((platillo, index) => (
+            <tr key={index}>
                 <td>{platillo.platillo}</td>
                 <td>
                   <div className="table-buttons">
@@ -111,6 +120,7 @@ function TableSale({
                       type="text"
                       tabIndex={index + 1}
                       value={cantidades[index]}
+                      /* pattern="/^(\d{1,4})$/" */
                       onChange={(e) => handleCantidadChange(index, e)}
                     />
                     <button
@@ -144,9 +154,10 @@ function TableSale({
                   </button>
                 </td>
               </tr>
-            )
-          )}  
+          ))
+        )}
         </tbody>
+        {/* Tabla de resumen de comanda */}
       </Table>
       <div className="resumen-comanda">
         <table className="table responsive table-resumen">
@@ -157,9 +168,9 @@ function TableSale({
           </thead>
           <tbody className="table-resumen-body">
             <tr className="row-resumen">
-              <td >
+              <th >
                 No. {noComanda}
-              </td>
+              </th>
             </tr>
             <tr>
               <td className="row-resumen">Fecha: 
@@ -177,7 +188,7 @@ function TableSale({
             </tr>
             <tr className="row-resumen">
               <td>
-                <input className="btn btn-primary" type="submit" value="Guardar" />
+                <input className="btn btn-primary" type="submit" value="Guardar" disabled={!isFormValid} />
               </td>
             </tr>
           </tbody>

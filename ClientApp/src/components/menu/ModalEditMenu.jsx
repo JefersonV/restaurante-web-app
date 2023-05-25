@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import { BiEditAlt } from 'react-icons/bi'
 import { TbTruck } from 'react-icons/tb';
 
-function ModalEdit(props) {
+function ModalEditMenu(props) {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal)
   const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
@@ -89,7 +89,7 @@ function ModalEdit(props) {
 					if(!valores.precio){
 						errores.precio = 'Por favor ingresa un número telefónico'
 						/* !/^[0-9]{9}$/.test(valores.precio) */ 
-					} else if(!/^[0-9]{8}$/.test(valores.precio)){
+					} else if(!/^\d{1,5}(\.\d{1,2})?$/.test(valores.precio)){
 						errores.precio = 'El teléfono debe tener un máximo de 8 números, y debe escribirse sin espacios ni guiones'
 					}
 					
@@ -219,4 +219,4 @@ function ModalEdit(props) {
   )
 }
 
-export default ModalEdit
+export default ModalEditMenu

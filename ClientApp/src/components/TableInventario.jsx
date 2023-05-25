@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Table } from 'reactstrap'
-import ModalEditMenu from './ModalEditMenu'
-import SwalDeleteMenu from './SwalDeleteMenu'
-import '../../styles/Table.scss'
+import '../styles/Table.scss'
 import Skeleton from 'react-loading-skeleton'
 
-export default function TableMenu(props) {
-  const { data, actualizarListaMenu } = props
+export default function TableInventario(props) {
+  const { data } = props
 
   return (
     <Table
@@ -25,16 +23,13 @@ export default function TableMenu(props) {
         Fecha
       </th> */}
       <th>
-        Nombre
+        Tipo Movimiento
       </th>
       <th>
-        Precio
+        Fecha
       </th>
-      {/* <th>
+      <th>
         Total
-      </th> */}
-      <th>
-        Acciones
       </th>
     </tr>
   </thead>
@@ -54,28 +49,14 @@ export default function TableMenu(props) {
           <th scope="row">
             {index + 1}
           </th>
-          {/* <td>
-            {dayjs().format('DD/MM/YYYY')}
-          </td> */}
           <td>
-            {item.platillo}
+            {item.tipoMovimiento}
           </td>
           <td>
-            Q.{item.precio.toFixed(2)}
+            {item.fechaCaja}
           </td>
-          {/* <td>
-            Q.500.00
-          </td> */}
           <td>
-              {/* Item que fue clickado  */}
-            <ModalEditMenu
-              idPlatillo={item.idPlatillo} 
-              actualizarListaMenu={actualizarListaMenu}
-            />
-            <SwalDeleteMenu 
-              idPlatillo={item.idPlatillo} 
-              actualizarListaMenu={actualizarListaMenu}
-            />
+            Q.{item.total.toFixed(2)}
           </td>
         </tr>
       )

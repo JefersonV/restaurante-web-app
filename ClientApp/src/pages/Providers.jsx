@@ -78,7 +78,9 @@ function Providers(props) {
 
         <div className="row">
           <div className="col">
-            <TableData data={results} actualizarListaProveedores={getData} />
+            <TableData 
+              data={results} 
+              actualizarListaProveedores={getData} />
           </div>
         </div>
       </div>

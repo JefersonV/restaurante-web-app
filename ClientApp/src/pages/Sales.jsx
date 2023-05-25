@@ -4,6 +4,7 @@ import DatePicker from "../components/DatePicker";
 import Searchbar from "../components/Searchbar";
 import Select from "../components/Select";
 import TableData from "../components/TableData";
+import SummaryTableSale from "../components/sales/SummaryTableSale";
 import ButtonDrop from "../components/ButtonDrop";
 import { FcPrint } from "react-icons/fc";
 import ModalNewSale from "../components/modales/ModalNewSale";
@@ -51,7 +52,7 @@ function Sales(props) {
     ? dataApi
     : // Si se ha ingresado información al input, que la compare a los criterios
       dataApi.filter((item) =>
-        item.email.toLowerCase().includes(search.toLocaleLowerCase())
+        item.cliente.toLowerCase().includes(search.toLocaleLowerCase())
       );
   return (
     <div className={isOpen ? "wrapper" : "side"}>
@@ -66,7 +67,9 @@ function Sales(props) {
         </div>
         <div className="row d-flex justify-content-center align-items-center">
           <div className="col">
-            <Select />
+            <Select 
+              data={results}
+            />
           </div>
           <div className="col">
             <ModalNewSale />
@@ -79,7 +82,10 @@ function Sales(props) {
         </div>
         <div className="row">
           <div className="col">
-            <TableData data={results} />
+            <SummaryTableSale 
+              data={results}
+              actualizarListaVentas={getData}
+            />
           </div>
         </div>
       </div>

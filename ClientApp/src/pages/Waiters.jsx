@@ -1,33 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { useStore } from "../providers/GlobalProvider";
+import TableWaiters from "../components/meseros/TableWaiters";
+import ModalAddMesero from "../components/meseros/ModalAddMesero";
 import Searchbar from "../components/Searchbar";
-import { FcPlus, FcPrint } from "react-icons/fc";
+import { FcPrint } from "react-icons/fc";
 import { Button } from "reactstrap";
-import TableCliente from "../components/clientes/TableCliente"
-import ModalAddCliente from "../components/clientes/ModalAddCliente";
 
-function Customers(props) {
+function Waiters(props) {
   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
   const isOpen = useStore((state) => state.sidebar);
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
-    props.setTitle("Clientes");
+    props.setTitle("Meseros");
   }, []);
 
-  /* ------ Fetch */
   const [dataApi, setDataApi] = useState([]);
   const getData = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:5173/api/Cliente", {
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.token}`
-          }
-        });
+      const response = await fetch("http://localhost:5173/api/Mesero", {
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+        },
+      });
       const json = await response.json();
       setDataApi(json);
-      console.log(json);
     } catch (err) {
       console.error(err);
     }
@@ -51,9 +47,7 @@ function Customers(props) {
     ? dataApi
     : // Si se ha ingresado información al input, que la compare a los criterios y los filtre
       dataApi.filter((item) =>
-        item.nombreApellido.toLowerCase().includes(search.toLocaleLowerCase()) /* ||
-        item.institucion.toLowerCase().includes(search.toLocaleLowerCase()) ||
-        item.puesto.toLowerCase().includes(search.toLocaleLowerCase()) */
+        item.nombre.toLowerCase().includes(search.toLocaleLowerCase())
       );
 
   return (
@@ -66,29 +60,17 @@ function Customers(props) {
         </div>
         <div className="row d-flex justify-content-center align-items-center">
           <div className="col">
-          <ModalAddCliente
-            actualizarListaClientes={getData}
-          />
-          <Button 
-            color="primary"
-            outline
-            >
-            Imprimir lista 
-            <FcPrint />
-          </Button>
+            <ModalAddMesero actualizarListaMesero={getData} />
+            <Button color="primary" outline>
+              Imprimir lista
+              <FcPrint />
+            </Button>
           </div>
         </div>
-        <div className="row">
-          <div className="col">
-            <TableCliente 
-              data={results}
-              actualizarListaClientes={getData}
-            />
-          </div>
-        </div>
+        <TableWaiters data={results} actualizarListaMesero={getData} />
       </div>
     </div>
   );
 }
 
-export default Customers;
+export default Waiters;

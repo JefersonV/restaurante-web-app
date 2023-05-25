@@ -47,7 +47,6 @@ function ModalEdit(props) {
 		}
   }
 
-	
   useEffect(() => {
     if(itemId) {
       getDataId(itemId)
@@ -114,6 +113,7 @@ function ModalEdit(props) {
 							method: "PUT",
 							body: JSON.stringify(bodyTest),
 							headers: {
+								Authorization: `Bearer ${localStorage.token}`,
 								"Content-Type": "application/json",
 							}
 						})

@@ -19,6 +19,7 @@ import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import { SkeletonTheme } from "react-loading-skeleton";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import useAuthStore from "./providers/User";
+import Waiters from "./pages/Waiters";
 
 function App() {
   const [pageTitle, setPageTitle] = useState("");
