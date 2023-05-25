@@ -32,11 +32,6 @@ namespace restaurante_web_app.Controllers
                 .OrderByDescending(c => c.Fecha)
                 .FirstOrDefaultAsync(c => c.Fecha == fechaActual);
 
-            if (cajaDiaria == null)
-            {
-                return new JsonResult("Caja no encontrado");
-            }
-
             decimal? totalVentas = await GetTotalByMonth("Ventas", fechaActual);
             decimal? totalVentasMesAnterior = await GetTotalByMonth("Ventas", fechaMesAnterior);
 
@@ -52,7 +47,7 @@ namespace restaurante_web_app.Controllers
 
             decimal? cajaActual = 0;
 
-            if (cajaDiaria.Estado == true)
+            if (cajaDiaria != null && cajaDiaria.Estado == true)
             {
                 cajaActual = cajaDiaria.SaldoInicial + (totalVentas ?? 0) - (totalGastos ?? 0);
             }
