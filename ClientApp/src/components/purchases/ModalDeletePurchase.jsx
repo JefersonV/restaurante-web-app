@@ -25,13 +25,16 @@ function SwalDelete({ idplatillo, actualizarListaMenu }) {
 
   const providerDelete = async (id) => {
     console.log("click -> Id: ", id);
-    const response = await fetch(`http://localhost:5173/api/Gasto/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${localStorage.token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/Gasto/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
     // setData(data.filter((data) => data.id_cliente !== id));
     if (response.ok) {
       /* Prop para actualizar la tabla en tiempo real, después de eliminar el registro. */

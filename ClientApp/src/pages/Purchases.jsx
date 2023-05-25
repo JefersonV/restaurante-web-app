@@ -1,16 +1,33 @@
 import { useEffect, useState } from "react";
 import { useStore } from "../providers/GlobalProvider";
-import { Button, Table } from "reactstrap";
-import { HiPencilAlt } from "react-icons/hi";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { FormGroup, Input } from "reactstrap";
+import { FormGroup, Input, Button } from "reactstrap";
 import TablePurchases from "../components/purchases/TablePurchases";
-import ModalAdd from '../components/purchases/ModalAddPurchase'
+import ModalAdd from '../components/purchases/ModalAddPurchase';
+import DatePicker from "../components/purchases/DatePicker";
+import dayjs from "dayjs";
+import addDays from "date-fns/addDays";
+
 import "../styles/Select.scss";
 
 function Purchases(props) {
   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
   const isOpen = useStore((state) => state.sidebar);
+
+   const [selectedDateRange, setSelectedDateRange] = useState([
+     {
+      startDate: new Date(),
+       endDate: addDays(new Date(),7),
+       key: 'selection',
+     },
+   ]);
+   useEffect(() => {
+     //console.log('rango de fechas')
+     //console.log(dayjs(selectedDateRange[0].startDate).format('DD/MM/YYYY'))
+     //console.log(dayjs(selectedDateRange[0].endDate).format('DD/MM/YYYY'))
+   }, [selectedDateRange])
+   const handleDateChange = (ranges) => {
+     setSelectedDateRange([ranges.selection]);
+   };
 
   //Estados necesarios
   const [reporteCompras, setReporteCompras] = useState([]);
@@ -28,13 +45,13 @@ function Purchases(props) {
       },
     };
     const response = await fetch(
-      "http://localhost:5173/api/Gasto",
+      `${import.meta.env.VITE_BACKEND_URL}/api/Gasto`,
       requestOptions
     );
     const data = await response.json();
     setReporteCompras(data);
     setDatosTabla(filterDataByMonth(data));
-    setSelectedOption(1)
+    setSelectedOption(1);
   };
 
   //Funciones necesarias para el sistema
@@ -73,7 +90,7 @@ function Purchases(props) {
       currentDate.getMonth() + 1,
       0
     );
-
+    
     const filteredData = jsonData.filter((item) => {
       const itemDate = new Date(item.fecha);
       return itemDate >= startOfMonth && itemDate <= endOfMonth;
@@ -106,6 +123,20 @@ function Purchases(props) {
       const itemDate = new Date(fecha);
       return itemDate >= startOfYear && itemDate <= endOfYear;
     });
+  };
+  const filterDataByCustomDateRange = (data, startDate, endDate) => {
+    // const startDate = new Date(); // Fecha de inicio de la semana actual
+    // startDate.setDate(startDate.getDate() - startDate.getDay());
+
+    // const endDate = new Date(); // Fecha de cierre de la semana actual
+    // endDate.setDate(endDate.getDate() + (6 - endDate.getDay()));
+    
+    const filteredData = data.filter((item) => {
+      const itemDate = item.fecha;
+      return itemDate >= startDate && itemDate <= endDate;
+    });
+
+    return filteredData;
   };
 
   //Funciones para detectar la selección
@@ -156,6 +187,16 @@ function Purchases(props) {
     // Función para la opción número 2
     setDatosTabla(reporteCompras);
   };
+  const handleOption7 = () => {
+    // Función para la opción número 2
+    setDatosTabla(
+      filterDataByCustomDateRange(
+        reporteCompras,
+        dayjs(selectedDateRange[0].startDate).format("YYYY-MM-DD"),
+        dayjs(selectedDateRange[0].endDate).format("YYYY-MM-DD")
+      )
+    );
+  };
 
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
@@ -168,7 +209,15 @@ function Purchases(props) {
       <div className="container-fluid mt-4">
         <div className="row">
           <div className="col">
-            <h3>Barra para buscar entre fechas</h3>
+            <DatePicker
+              selectedDateRange={selectedDateRange}
+              handleDateChange={handleDateChange}
+            />
+          </div>
+          <div className="col">
+            <Button outline color="info" onClick={handleOption7}>
+              Buscar
+            </Button>
           </div>
         </div>
         <div className="row d-flex justify-content-center align-items-center">

@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
+  const api = import.meta.env.VITE_BACKEND_URL;
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [response, setResponse] = useState("");
@@ -37,7 +38,7 @@ function Login() {
       body: JSON.stringify({ usuario: user, contrasenia: password }),
     };
     const response = await fetch(
-      "http://localhost:5173/api/Account/login",
+      `${api}/api/Account/login`,
       requestOptions
     );
     const data = await response.json();

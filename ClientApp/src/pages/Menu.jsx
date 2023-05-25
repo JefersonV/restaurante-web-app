@@ -18,11 +18,14 @@ function Menu(props) {
    const [dataApi, setDataApi] = useState([])
    const getData = async () => {
      try {
-       const response = await fetch('http://localhost:5173/api/Menu', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.token}`
-        }
-       })
+       const response = await fetch(
+         `${import.meta.env.VITE_BACKEND_URL}/api/Menu`,
+         {
+           headers: {
+             Authorization: `Bearer ${localStorage.token}`,
+           },
+         }
+       );
        const json = await response.json() 
        setDataApi(json)
        console.log(json)
