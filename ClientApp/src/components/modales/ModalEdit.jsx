@@ -29,7 +29,12 @@ function ModalEdit(props) {
 /* Traer la data del item seleccionado */
   const getDataId = async (id) => {
 		try {
-			const response = await fetch(`http://localhost:5173/api/Proveedor/${id}`)
+			const response = await fetch(`http://localhost:5173/api/Proveedor/${id}`, {
+				headers: {
+					'Authorization': `Bearer ${localStorage.token}`,
+					'Content-Type': 'application/json'
+				}
+			})
 			const dataFetch = await response.json()
 			console.warn(dataFetch)
 			setData({
@@ -42,7 +47,6 @@ function ModalEdit(props) {
 		}
   }
 
-	
   useEffect(() => {
     if(itemId) {
       getDataId(itemId)
@@ -109,6 +113,7 @@ function ModalEdit(props) {
 							method: "PUT",
 							body: JSON.stringify(bodyTest),
 							headers: {
+								Authorization: `Bearer ${localStorage.token}`,
 								"Content-Type": "application/json",
 							}
 						})

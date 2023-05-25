@@ -1,75 +1,13 @@
 import React, { useEffect, useState } from "react";
 import * as FaIcons from "react-icons/fa";
+import { BsCash } from "react-icons/bs";
+import { AiOutlineStock } from "react-icons/ai";
+import { FaCashRegister } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "./widget.scss";
 
-const Widget = ({ type }) => {
-/*   //Urls para las peticiones
-  const urlSuma = "http://localhost:3000/dashboard/suma";
-  const urlBolsasVend = "http://localhost:3000/dashboard/bolsas-vendidas";
-  const urlBolsasDisp = "http://localhost:3000/dashboard/bolsas-disponibles";
-  const urlClientesFrec = "http://localhost:3000/dashboard/clientes-frec";
-
-  //estado para la suma de todas las ventas del mes
-  const [venta, setVenta] = useState([]);
-  //estado para las bolsas vendidas durante el mes
-  const [bolsasVendidas, setBolsasVendidas] = useState([]);
-  //estado para las bolsas disponibles para la venta
-  const [bolsasDispon, setBolsasDispon] = useState([]);
-  //estado para clientes frecuentas
-  const [clientesFrec, setClientesFrec] = useState([]);
-
-  //Funcion para obtener la lista de datos
-  const getSumaVenta = async (url) => {
-    const response = await fetch(url, {
-      headers: {
-        token: localStorage.token,
-      },
-    });
-    const data = await response.json();
-    setVenta(data[0]);
-  };
-  //Funcion para obtener la lista de datos
-  const getBolsasVend = async (url) => {
-    const response = await fetch(url, {
-      headers: {
-        token: localStorage.token,
-      },
-    });
-    const data = await response.json();
-    setBolsasVendidas(data[0]);
-  };
-  //Funcion para obtener la lista de datos
-  const getBolsasDisp = async (url) => {
-    const response = await fetch(url, {
-      headers: {
-        token: localStorage.token,
-      },
-    });
-    const data = await response.json();
-    setBolsasDispon(data[0]);
-  };
-  //Funcion para obtener la lista de datos
-  const getClientesFrec = async (url) => {
-    const response = await fetch(url, {
-      headers: {
-        token: localStorage.token,
-      },
-    });
-    const data = await response.json();
-    setClientesFrec(data);
-  };
-  //funcion useffect para llamar y cargar los datos
-  useEffect(() => {
-    getSumaVenta(urlSuma);
-    getBolsasVend(urlBolsasVend);
-    getBolsasDisp(urlBolsasDisp);
-    getClientesFrec(urlClientesFrec);
-  }, []);
-
-  let data = {}; */
-
-  let data = {}
+const Widget = ({ type, monto, porcentaje = 0 }) => {
+  let data = {};
   switch (type) {
     case "ingresosMes":
       data = {
@@ -172,8 +110,21 @@ const Widget = ({ type }) => {
         </Link>
       </div>
       <div className="right">
-        <div className="percentage positive">
-          <FaIcons.FaAngleUp />
+        <div
+          className="percentage positive"
+          style={{ backgroundColor: "white", borderRadius: "5px" }}
+        >
+          {porcentaje > 0 ? (
+            <>
+              <span style={{ color: "green" }}>{porcentaje}</span>
+              <FaIcons.FaAngleUp color="green" />
+            </>
+          ) : (
+            <>
+              <span style={{ color: "red" }}>{porcentaje}</span>
+              <FaIcons.FaAngleUp color="red" />
+            </>
+          )}
         </div>
         {data.icon}
       </div>

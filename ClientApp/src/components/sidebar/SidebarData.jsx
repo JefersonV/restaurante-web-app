@@ -89,6 +89,12 @@ export const SidebarData = [
         icon: <FaHouseUser />,
         class: "nav-subItem",
       },
+      {
+        title: "Meseros",
+        path: "/waiters",
+        icon: <FaHouseUser />,
+        class: "nav-subItem",
+      },
     ]
   }
 ];

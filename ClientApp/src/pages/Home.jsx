@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
-import { useStore } from '../providers/GlobalProvider'
-import Widget from '../components/charts/widgets/Widget'
+import React, { useEffect, useState } from "react";
+import { useStore } from "../providers/GlobalProvider";
+import Widget from "../components/charts/widgets/Widget";
 // import Featured from "../components/featured/Featured";
-import Chart from '../components/charts/chart/Chart'
+import Chart from "../components/charts/chart/Chart";
 
-function Home (props) {
+function Home(props) {
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
     props.setTitle("Dashboard");
@@ -26,12 +26,12 @@ function Home (props) {
             </div>
           <div className="charts">
             {/* <Featured /> */}
-            <Chart />
+            <Chart datos={datosAnuales} />
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

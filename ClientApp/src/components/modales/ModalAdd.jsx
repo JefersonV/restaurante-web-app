@@ -15,7 +15,7 @@ function ModalAdd (props) {
 
 	const bodyProvider = {
 		nombre: "",
-    	telefono: ""
+		telefono: ""	
 	}
 
   return (
@@ -66,6 +66,7 @@ function ModalAdd (props) {
 						const response = await fetch('http://localhost:5173/api/Proveedor', {
 							method: 'POST',
 							headers: {
+								'Authorization': `Bearer ${localStorage.token}`,
 								'Content-Type': 'application/json'
 							},
 							body: JSON.stringify(bodyProvider)

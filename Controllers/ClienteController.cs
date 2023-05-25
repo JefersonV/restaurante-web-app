@@ -24,7 +24,7 @@ namespace restaurante_web_app.Controllers
         [HttpGet]
         public async Task<IEnumerable<Cliente>> GetAll()
         {
-            return await _dbContext.Clientes.ToListAsync();
+            return await _dbContext.Clientes.OrderByDescending(c => c.IdCliente).ToListAsync();
         }
 
         [Authorize(Roles = "Administrador, Invitado")]
