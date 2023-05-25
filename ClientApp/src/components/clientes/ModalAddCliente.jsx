@@ -45,13 +45,13 @@ function ModalAddCliente(props) {
               // Validacion nombre
               if (!valores.nombreApellido) {
                 errores.nombreApellido = "Por favor ingresa un nombre";
-              } else if (!/^[a-zA-ZÀ-ÿ\s.]{1,25}$/.test(valores.nombre)) {
+              } else if (!/^[a-zA-ZÀ-ÿ\s.]{1,35}$/.test(valores.nombre)) {
                 errores.nombreApellido =
-                  "El nombre debe tener un máximo de 25 caracteres, solo puede contener letras y espacios";
+                  "El nombre debe tener un máximo de 35 caracteres, solo puede contener letras y espacios";
               }
               // Validacion telefono
               if (!valores.fecha) {
-                errores.fecha = "Por favor ingresa un número telefónico";
+                errores.fecha = "Por favor ingrese una fecha";
                 /* !/^[0-9]{9}$/.test(valores.fecha) */
               } 
               if (!valores.institucion) {
@@ -65,7 +65,7 @@ function ModalAddCliente(props) {
                 errores.puesto = "Por favor ingresa un puesto de trabajo";
               } else if (!/^[a-zA-ZÀ-\s.]{1,25}$/.test(valores.puesto)) {
                 errores.puesto =
-                  "El nombre de la institución debe tener un máximo de 25 caracteres, solo puede contener letras y espacios";
+                  "El puesto debe tener un máximo de 25 caracteres, solo puede contener letras y espacios";
               }
               return errores;
             }}
@@ -135,7 +135,7 @@ function ModalAddCliente(props) {
                       type="text"
                       id="input-nombre"
                       name="nombreApellido"
-                      placeholder="Magnus S.A."
+                      placeholder="Nombre del Cliente"
                       autoComplete="off"
                       value={values.nombreApellido}
                       onChange={handleChange}
@@ -165,7 +165,7 @@ function ModalAddCliente(props) {
                       type="date"
                       id="input-fecha"
                       name="fecha"
-                      placeholder="77623030"
+                      
                       autoComplete="off"
                       value={values.fecha}
                       onBlur={handleBlur}
@@ -195,7 +195,7 @@ function ModalAddCliente(props) {
                       type="text"
                       id="input-institucion"
                       name="institucion"
-                      placeholder="77623030"
+                      placeholder="Nombre de la institucion"
                       autoComplete="off"
                       value={values.institucion}
                       onBlur={handleBlur}
@@ -225,7 +225,7 @@ function ModalAddCliente(props) {
                       type="text"
                       id="input-puesto"
                       name="puesto"
-                      placeholder="77623030"
+                      placeholder="Nombre del puesto"
                       autoComplete="off"
                       value={values.puesto}
                       onBlur={handleBlur}

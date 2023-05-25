@@ -62,7 +62,7 @@ function ModalAdd(props) {
       errores.numeroDocumento = "Por favor ingresa un número de documento";
     } else if (!/^[a-zA-Z0-9]+$/.test(valores.numeroDocumento)) {
       errores.numeroDocumento =
-        "El número de documento solo puede contener letras y dígitos";
+        "El número de documento solo puede contener letras y dígitos, sin espacios";
     }
 
     if (!valores.fecha) {

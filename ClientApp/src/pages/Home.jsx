@@ -66,7 +66,7 @@ function Home(props) {
             />
             <Widget
               type={"saldoCaja"}
-              monto={ganancias.saldoCaja ? ganancias.saldoCaja.toFixed(2) : 0}
+              monto={ganancias.cajaActual ? ganancias.cajaActual.toFixed(2) : 0}
               porcentaje={
                 ganancias.porcentajeCambioCaja
                   ? ganancias.porcentajeCambioCaja
