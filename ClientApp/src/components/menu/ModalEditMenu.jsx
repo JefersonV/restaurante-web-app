@@ -3,7 +3,7 @@ import { FormGroup, Label, Col, Input } from 'reactstrap'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import Swal from 'sweetalert2';
-import { BiEditAlt } from 'react-icons/bi'
+import { BiEditAlt, BiFoodMenu } from 'react-icons/bi'
 import { TbTruck } from 'react-icons/tb';
 
 function ModalEditMenu(props) {
@@ -67,7 +67,7 @@ function ModalEditMenu(props) {
           setItemId(props.idPlatillo)
         }} />
       <Modal isOpen={modal} fade={false} toggle={toggle} centered={true}>
-        <ModalHeader toggle={toggle}><TbTruck size={30} /> Editar Platillo</ModalHeader>
+        <ModalHeader toggle={toggle}><BiFoodMenu size={30} /> Editar Platillo</ModalHeader>
         <ModalBody>
         <Formik
 				initialValues={{
@@ -82,15 +82,15 @@ function ModalEditMenu(props) {
 					// Validacion platillo
 					if(!valores.platillo){
 						errores.platillo = 'Por favor ingresa un platillo'
-					} else if(!/^[a-zA-ZÀ-ÿ\s.]{1,25}$/.test(valores.platillo)){
-						errores.platillo = 'El platillo debe tener un máximo de 25 caracteres, solo puede contener letras y espacios'
+					} else if(!/^[a-zA-ZÀ-ÿ\s.]{1,35}$/.test(valores.platillo)){
+						errores.platillo = 'El platillo debe tener un máximo de 35 caracteres, solo puede contener letras y espacios'
 					}
 					// Validacion precio
 					if(!valores.precio){
 						errores.precio = 'Por favor ingresa un número telefónico'
 						/* !/^[0-9]{9}$/.test(valores.precio) */ 
-					} else if(!/^\d{1,5}(\.\d{1,2})?$/.test(valores.precio)){
-						errores.precio = 'El teléfono debe tener un máximo de 8 números, y debe escribirse sin espacios ni guiones'
+					} else if(!/^\d+(\.\d{1,2})?$/.test(valores.precio)){
+						errores.precio = 'El precio debe contener una cantidad y opcional dos decimales separados por .'
 					}
 					
 					return errores;
@@ -147,14 +147,14 @@ function ModalEditMenu(props) {
 								sm={2}
 								
 							>
-								platillo
+								Platillo
 							</Label>
 							<Col sm={10}>
 								<Input 
 									type="text"
 									id="input-platillo"
 									name="platillo"
-									placeholder="Magnus S.A."
+									placeholder="Nombre del Platillo"
 									autoComplete="off"
 									value={ values.platillo }
 									onChange={handleChange}
@@ -171,14 +171,14 @@ function ModalEditMenu(props) {
 									for="input-precio"
 									sm={2}
 									>
-									precio
+									Precio
 								</Label>
 								<Col sm={10}>
 									<Input 
 										type="text"
 										id="input-precio"
 										name="precio"
-										placeholder="77623030"
+										placeholder="00.00"
 										autoComplete="off"
 										value={values.precio}
 										onBlur={handleBlur}

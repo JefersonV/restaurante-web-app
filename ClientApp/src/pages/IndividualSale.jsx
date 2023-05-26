@@ -62,7 +62,6 @@ function IndividualSale(props) {
     setSaleDetail((prevSaleDetail) => [...prevSaleDetail, selectedItem]);
     // Inicializamos el valor en 1
     setCantidades((prevCantidades) => [...prevCantidades, 1]);
-
   };
 
   /* Eliminar un item de la venta */

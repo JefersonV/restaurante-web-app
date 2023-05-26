@@ -3,7 +3,6 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import { FormGroup, Label, Col, Input } from 'reactstrap'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { BiEditAlt, BiFoodMenu } from 'react-icons/bi'
-import { TbTruck } from 'react-icons/tb'
 import Swal from 'sweetalert2'
 import '../../styles/Formulario.scss'
 
@@ -41,16 +40,17 @@ function ModalAdd (props) {
 					// Validacion platillo
 					if(!valores.platillo){
 						errores.platillo = 'Por favor ingresa un platillo'
-					} else if(!/^[a-zA-ZÀ-ÿ\s.]{1,25}$/.test(valores.platillo)){
-						errores.platillo = 'El platillo debe tener un máximo de 25 caracteres, solo puede contener letras y espacios'
+					} else if(!/^[a-zA-ZÀ-ÿ\s.]{1,35}$/.test(valores.platillo)){
+						errores.platillo = 'El platillo debe tener un máximo de 35 caracteres, solo puede contener letras y espacios'
 					}
 					// Validacion precio
 					if(!valores.precio){
-						errores.precio = 'Por favor ingresa un número telefónico'
+						errores.precio = 'Por favor ingresa una cantidad'
 						/* !/^[0-9]{9}$/.test(valores.precio) */ 
-					} else if(!/^\d{1,5}(\.\d{1,2})?$/.test(valores.precio)){
-						errores.precio = 'El teléfono debe tener un máximo de 8 números, y debe escribirse sin espacios ni guiones'
-					}
+					} else if (!/^\d+(\.\d{1,2})?$/.test(valores.precio)) {
+            errores.precio =
+              "El precio debe contener una cantidad y opcional dos decimales separados por .";
+          }
 					return errores;
 				}}
 				onSubmit={async (valores, {resetForm}) => {
@@ -110,7 +110,7 @@ function ModalAdd (props) {
 									type="text"
 									id="input-platillo"
 									name="platillo"
-									placeholder="Típico"
+									placeholder="Nombre del Platillo"
 									autoComplete="off"
 									value={values.platillo }
 									onChange={handleChange}
@@ -135,7 +135,7 @@ function ModalAdd (props) {
 										type="text"
 										id="input-precio"
 										name="precio"
-										placeholder="28"
+										placeholder="00.00"
 										autoComplete="off"
 										value={values.precio}
 										onBlur={handleBlur}

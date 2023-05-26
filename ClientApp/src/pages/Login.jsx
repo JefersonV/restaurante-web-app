@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
+  const api = import.meta.env.VITE_BACKEND_URL;
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [response, setResponse] = useState("");

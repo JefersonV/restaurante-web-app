@@ -130,7 +130,7 @@ function ModalEdit(props) {
 								timer: 1500
 							})
 							/* Prop para actualizar la data de la tabla */
-							props.actualizarListaProveedores()
+							props.actualizarListaMenu()
 						}
 					} catch(error) {
 						console.log(error)

@@ -5,10 +5,6 @@ import Widget from "../components/charts/widgets/Widget";
 import Chart from "../components/charts/chart/Chart";
 
 function Home(props) {
-  useEffect(() => {
-    // Para establecer en el módulo en el que nos encontramos
-    props.setTitle("Dashboard");
-  }, []);
   const [ganancias, setGanancias] = useState(false);
   const [datosAnuales, setDatosAnuales] = useState([]);
 
@@ -70,7 +66,7 @@ function Home(props) {
             />
             <Widget
               type={"saldoCaja"}
-              monto={ganancias.saldoCaja ? ganancias.saldoCaja.toFixed(2) : 0}
+              monto={ganancias.cajaActual ? ganancias.cajaActual.toFixed(2) : 0}
               porcentaje={
                 ganancias.porcentajeCambioCaja
                   ? ganancias.porcentajeCambioCaja
