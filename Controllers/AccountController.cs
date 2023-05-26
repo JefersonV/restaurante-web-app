@@ -88,7 +88,7 @@ namespace restaurante_web_app.Controllers
                 }
 
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_config["Jwt:Key"]);
+                var key = Encoding.ASCII.GetBytes(_config["Jwt:Key"] ?? string.Empty);
 
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {

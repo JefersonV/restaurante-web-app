@@ -114,8 +114,10 @@ namespace restaurante_web_app.Controllers
         [HttpPost]
         public async Task<ActionResult<VentaDtoOut>> Create(VentaDtoIn ventaDto)
         {
+#pragma warning disable CS8604 // Posible argumento de referencia nulo
             var total = ventaDto.DetalleVenta.Sum(dvDto => dvDto.Cantidad * _dbContext.Menus
             .Single(p => p.IdPlatillo == dvDto.IdPlatillo).Precio);
+#pragma warning restore CS8604 // Posible argumento de referencia nulo
 
             var venta = new Venta
             {
@@ -157,6 +159,12 @@ namespace restaurante_web_app.Controllers
                     c => c.IdCliente,
                     (vm, c) => new { Venta = vm.Venta, Mesero = vm.Mesero, Cliente = c })
                 .FirstOrDefaultAsync(v => v.Venta.IdVenta == venta.IdVenta);
+
+
+            if (ventaOut == null)
+            {
+                return NotFound();
+            }
 
             var ventaDtoOut = new VentaDtoOut
             {

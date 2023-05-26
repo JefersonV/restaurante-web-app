@@ -30,13 +30,14 @@ namespace restaurante_web_app.Controllers
             var inventario = await _dbContext.MovimientoCajas
                 .Include(m => m.IdTipoMovimientoNavigation)
                 .Include(m => m.IdCajaDiariaNavigation)
-                .Where(m => m.IdCajaDiariaNavigation.Fecha >= inicioMes && m.IdCajaDiariaNavigation.Fecha <= finMes)
+                .Where(m => m.IdCajaDiariaNavigation != null && m.IdCajaDiariaNavigation.Fecha >= inicioMes 
+                && m.IdCajaDiariaNavigation.Fecha <= finMes)
                 .OrderByDescending(m => m.IdMovimiento)
                 .Select(m => new InventarioDtoOut
                 {
                     IdMovimiento = m.IdMovimiento,
-                    TipoMovimiento = m.IdTipoMovimientoNavigation.Tipo,
-                    FechaCaja = m.IdCajaDiariaNavigation.Fecha,
+                    TipoMovimiento = m.IdTipoMovimientoNavigation != null ? m.IdTipoMovimientoNavigation.Tipo : "",
+                    FechaCaja = m.IdCajaDiariaNavigation != null ? m.IdCajaDiariaNavigation.Fecha : default,
                     Total = m.Total
                 })
                 .ToListAsync();
