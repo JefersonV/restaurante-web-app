@@ -22,7 +22,7 @@ function SwalDeleteSale({idVenta, actualizarListaVentas}) {
 
   const saleDelete = async (id) => {
     console.log("click -> Id: ", id);
-    const response = await fetch(`http://localhost:5173/api/Menu/${id}`, {
+    const response = await fetch(`http://localhost:5173/api/Venta/${id}`, {
       method: "DELETE",
       headers: {
         'Authorization': `Bearer ${localStorage.token}`

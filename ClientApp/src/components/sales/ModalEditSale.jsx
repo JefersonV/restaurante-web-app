@@ -116,91 +116,90 @@ function ModalEditSale(props) {
           >
             {({ values, handleSubmit, handleChange, handleBlur, errors, setFieldValue }) => (
               <form className="formulario" onSubmit={handleSubmit}>
-              <h5>No. de Comanda: {values.noComanda}</h5>
+                <h5>No. de Comanda: {values.noComanda}</h5>
+                <FieldArray name="detalleVenta">
+                  {({ insert, remove, push }) => (
+                    <>
+                      <Table>
+                        <thead>
+                          <tr>
+                            <th>Platillo</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unitario</th>
+                            <th>Sub total</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {values.detalleVenta.map((detalle, index) => {
+                            const handleCantidadChange = (e) => {
+                              const newCantidad = parseInt(e.target.value, 10);
+                              const newDetalleVenta = [...values.detalleVenta];
+                              newDetalleVenta[index].cantidad = newCantidad;
+                              newDetalleVenta[index].subtotal = newCantidad * detalle.precio;
 
-<FieldArray name="detalleVenta">
-  {({ insert, remove, push }) => (
-    <>
-      <Table>
-        <thead>
-          <tr>
-            <th>Platillo</th>
-            <th>Cantidad</th>
-            <th>Precio Unitario</th>
-            <th>Sub total</th>
-          </tr>
-        </thead>
-        <tbody>
-          {values.detalleVenta.map((detalle, index) => {
-            const handleCantidadChange = (e) => {
-              const newCantidad = parseInt(e.target.value, 10);
-              const newDetalleVenta = [...values.detalleVenta];
-              newDetalleVenta[index].cantidad = newCantidad;
-              newDetalleVenta[index].subtotal = newCantidad * detalle.precio;
+                              let newTotal = 0;
+                              newDetalleVenta.forEach((item) => {
+                                newTotal += item.subtotal;
+                              });
 
-              let newTotal = 0;
-              newDetalleVenta.forEach((item) => {
-                newTotal += item.subtotal;
-              });
+                              setFieldValue(`detalleVenta.${index}.cantidad`, newCantidad);
+                              setFieldValue(`detalleVenta.${index}.subtotal`, newCantidad * detalle.precio);
+                              setFieldValue(`total`, newTotal);
+                            };
 
-              setFieldValue(`detalleVenta.${index}.cantidad`, newCantidad);
-              setFieldValue(`detalleVenta.${index}.subtotal`, newCantidad * detalle.precio);
-              setFieldValue(`total`, newTotal);
-            };
-
-            return (
-              <tr key={index}>
-                <td>{detalle.platillo}</td>
-                <td>
-                  <div className="table-buttons">
-                    <button
-                      type="button"
-                      className="btn btn-plus"
-                      onClick={() => {
-                        handleCantidadChange({
-                          target: {
-                            value: Math.max(detalle.cantidad - 1, 0),
-                          },
-                        });
-                      }}
-                    >
-                      <AiOutlineMinus />
-                    </button>
-                    <input
-                      type="text"
-                      className="form-control input-cantidad-edit"
-                      name={`detalleVenta.${index}.cantidad`}
-                      value={detalle.cantidad}
-                      onChange={handleCantidadChange}
-                    />
-                    <button
-                      type="button"
-                      className="btn btn-minus"
-                      onClick={() => {
-                        handleCantidadChange({
-                          target: {
-                            value: detalle.cantidad + 1,
-                          },
-                        });
-                      }}
-                    >
-                      <AiOutlinePlus />
-                    </button>
-                  </div>
-                </td>
-                <td>{detalle.precio}</td>
-                <td>{detalle.subtotal}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-        <tr>
-          <td colSpan={4}>{values.total}</td>
-        </tr>
-      </Table>
-    </>
-  )}
-</FieldArray>
+                            return (
+                              <tr key={index}>
+                                <td>{detalle.platillo}</td>
+                                <td>
+                                  <div className="table-buttons">
+                                    <button
+                                      type="button"
+                                      className="btn btn-plus"
+                                      onClick={() => {
+                                        handleCantidadChange({
+                                          target: {
+                                            value: Math.max(detalle.cantidad - 1, 0),
+                                          },
+                                        });
+                                      }}
+                                    >
+                                      <AiOutlineMinus />
+                                    </button>
+                                    <input
+                                      type="text"
+                                      className="form-control input-cantidad-edit"
+                                      name={`detalleVenta.${index}.cantidad`}
+                                      value={detalle.cantidad}
+                                      onChange={handleCantidadChange}
+                                    />
+                                    <button
+                                      type="button"
+                                      className="btn btn-minus"
+                                      onClick={() => {
+                                        handleCantidadChange({
+                                          target: {
+                                            value: detalle.cantidad + 1,
+                                          },
+                                        });
+                                      }}
+                                    >
+                                      <AiOutlinePlus />
+                                    </button>
+                                  </div>
+                                </td>
+                                <td>{detalle.precio}</td>
+                                <td>{detalle.subtotal}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                        <tr>
+                          <td colSpan={4}>{values.total}</td>
+                        </tr>
+                      </Table>
+                    </>
+                  )}
+                </FieldArray>
 
             </form>
             )}
@@ -208,7 +207,7 @@ function ModalEditSale(props) {
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={toggle}>
-            Do Something
+            Actualizar
           </Button>{" "}
           <Button color="secondary" onClick={toggle}>
             Cancel
