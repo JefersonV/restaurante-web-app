@@ -19,6 +19,26 @@ namespace restaurante_web_app.Controllers
             _dbContext = dbContext;
         }
 
+        [HttpGet("{caja}")]
+        public async Task<JsonResult> GetCaja()
+        {
+            // Obtener la fecha actual
+            DateOnly fechaActual = DateOnly.FromDateTime(DateTime.Now);
+
+            var fechaAnterior = fechaActual.AddDays(-1);
+            var cajaAnterior = await _dbContext.CajaDiaria
+                .OrderByDescending(c => c.Fecha)
+                .FirstOrDefaultAsync(c => c.Fecha == fechaAnterior);
+
+            if (cajaAnterior == null)
+            {
+                return new JsonResult( new { cajaAnterior = 0 });
+            }
+
+            return new JsonResult(new { cajaAnterior = cajaAnterior.SaldoFinal });
+        }
+
+
         [HttpGet]
         public async Task<IEnumerable<CajaDtoOut>> GetAll()
         {
@@ -110,6 +130,11 @@ namespace restaurante_web_app.Controllers
         {
             var cajaDiaria = await _dbContext.CajaDiaria
                 .FirstOrDefaultAsync(c => c.IdCajaDiaria == id);
+
+            if (cajaDiaria == null)
+            {
+                return NotFound();
+            }
 
             decimal? totalVentas = await GetTotalByMonth("Ventas", cajaDiaria.Fecha);
             decimal? totalGastos = await GetTotalByMonth("Gastos", cajaDiaria.Fecha);
