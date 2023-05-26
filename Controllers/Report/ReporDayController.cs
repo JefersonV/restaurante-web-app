@@ -30,7 +30,7 @@ namespace restaurante_web_app.Controllers
             _dbContext = dbContext;
         }
 
-        //[Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador")]
         [HttpGet("day")]
         public IActionResult GenerateReporDay(DateTime fecha)
         {
