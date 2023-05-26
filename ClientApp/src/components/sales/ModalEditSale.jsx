@@ -44,9 +44,6 @@ function ModalEditSale(props) {
   ]);
 
   useEffect(() => {
-    console.info(dataPostSale)
-  }, [dataPostSale])
-  useEffect(() => {
     if (itemId) {
       getDataSale(itemId); 
       console.log(itemId);
