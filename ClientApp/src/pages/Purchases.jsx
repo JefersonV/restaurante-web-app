@@ -6,6 +6,15 @@ import ModalAdd from '../components/purchases/ModalAddPurchase';
 import DatePicker from "../components/purchases/DatePicker";
 import dayjs from "dayjs";
 import addDays from "date-fns/addDays";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import isToday from "dayjs/plugin/isToday";
+import weekday from "dayjs/plugin/weekday";
+
+dayjs.extend(weekOfYear);
+dayjs.extend(isToday);
+dayjs.extend(weekday);
+dayjs.extend(startOfMonth);
+dayjs.extend(endOfMonth);
 
 import "../styles/Select.scss";
 
@@ -56,44 +65,40 @@ function Purchases(props) {
 
   //Funciones necesarias para el sistema
   const filterDataByCurrentDate = (data) => {
-    const currentDate = new Date().toISOString().split("T")[0];
+    const fechaActual = dayjs();
+    const fechaFormateada = fechaActual.format("YYYY-MM-DD");
     //const currentDate = new Date();
     //currentDate.setDate(currentDate.getDate() - 1);
     //const yesterday = currentDate.toISOString().split("T")[0];
     //console.log(yesterday);
-    const filteredData = data.filter((item) => item.fecha === currentDate);
+    const filteredData = data.filter((item) => item.fecha === fechaFormateada);
     return filteredData;
   };
   const filterDataByDateRange = (data) => {
-    const startDate = new Date(); // Fecha de inicio de la semana actual
-    startDate.setDate(startDate.getDate() - startDate.getDay());
-
-    const endDate = new Date(); // Fecha de cierre de la semana actual
-    endDate.setDate(endDate.getDate() + (6 - endDate.getDay()));
+    const fechaActual = dayjs();
+    const numeroSemana = fechaActual.week();
+    const fechaInicioSemana = fechaActual.startOf("week");
+    const fechaFinSemana = fechaInicioSemana.add(6, "day");
+    const fechaInicioFormateada = fechaInicioSemana.format("YYYY-MM-DD");
+    const fechaFinFormateada = fechaFinSemana.format("YYYY-MM-DD");
 
     const filteredData = data.filter((item) => {
-      const itemDate = new Date(item.fecha);
-      return itemDate >= startDate && itemDate <= endDate;
+      const itemDate = item.fecha;
+      return itemDate >= fechaInicioFormateada && itemDate <= fechaFinFormateada;
     });
 
     return filteredData;
   };
   const filterDataByMonth = (jsonData) => {
-    const currentDate = new Date();
-    const startOfMonth = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      1
-    );
-    const endOfMonth = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth() + 1,
-      0
-    );
+    const fechaActual = dayjs();
+    const fechaInicioMes = fechaActual.startOf("month");
+    const fechaFinMes = fechaActual.endOf("month");
+    const fechaInicioFormateada = fechaInicioMes.format("YYYY-MM-DD");
+    const fechaFinFormateada = fechaFinMes.format("YYYY-MM-DD");
     
     const filteredData = jsonData.filter((item) => {
-      const itemDate = new Date(item.fecha);
-      return itemDate >= startOfMonth && itemDate <= endOfMonth;
+      const itemDate = item.fecha;
+      return itemDate >= fechaInicioFormateada && itemDate <= fechaFinFormateada;
     });
 
     return filteredData;
