@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { FormGroup, Label, Col, Input, Table } from "reactstrap";
 import { Formik, FieldArray } from "formik";
@@ -9,16 +10,20 @@ import { AiOutlineClose } from "react-icons/ai"
 function ModalBoxClose(props) {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
-
-  const [formularioEnviado, cambiarFormularioEnviado] = useState(false);
-  const [saldoCajaAnterior, setSaldoCajaAnterior] = useState(250);
+  /* Estado para el resultante de caja */
   const [resultadoFinal, setResultadoFinal] = useState(0);
-  useEffect(() => {
-    console.log(resultadoFinal);
-  }, [resultadoFinal]);
 
-  console.log(resultadoFinal)
+  /* Identificar el activo para cerra la caja */
+  const getDataCashBoxId = props.cashData.filter((item) => item.estado === true);
+  /* Id del que tiene el estado activo */
+  const IdActivo = getDataCashBoxId[0]?.idCajaDiaria;  
+  /* Objeto que irá en el body de la solicitud put */
+  console.info(getDataCashBoxId)
+  let dataCerrar = {
+    cantidadSacar: ""
+  }
 
+  const navigate = useNavigate();
   return (
     <>
       <Button 
@@ -54,44 +59,38 @@ function ModalBoxClose(props) {
             }}
             onSubmit={async (valores, { resetForm }) => {
               // Captura de la data que se va a enviar...
-              
-              const dataCajaPost = {
-                "saldoInicial": resultadoFinal
-              }
-              // Método POST y otras operaciones...
+              dataCerrar.cantidadSacar = resultadoFinal
+              // Método PUT para cerra caja
               try {
-                const response = await fetch('http://localhost:5173/api/Caja', {
-                  method: 'POST',
-                  headers: {
-                    'Authorization': `Bearer ${localStorage.token}`,
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify(dataCajaPost)
-                });
-                if (response.ok) {
+                const response = await fetch(
+                  `http://localhost:5173/api/Caja/${IdActivo}`,
+                  {
+                    method: "PUT",
+                    body: JSON.stringify(dataCerrar),
+                    headers: {
+                      Authorization: `Bearer ${localStorage.token}`,
+                      "Content-Type": "application/json",
+                    },
+                  });
+                if(response.ok) {
+                  /* Ocultar el modal */
+                  setModal(false)
                   Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Caja abierta',
+                    title: 'Caja Cerrada',
                     showConfirmButton: false,
                     timer: 1000
                   })
-                  
-                  // State 
-                  cambiarFormularioEnviado(true);
-                  setTimeout(() => cambiarFormularioEnviado(false), 5000);
-                  resetForm();
-                } else {
-                  console.log('Ha ocurrido un error al enviar el formulario')
-                }
+                  /* Eliminar el valor de localStorage */
+                  localStorage.removeItem("cajaAbierta")
+                  navigate('/')
+                }  
               } catch (error) {
-                console.log('Ha ocurrido un error al enviar el formulario')
-                console.log(error)
+                console.log(error);
               }
               // Resetear el formulario y mostrar mensaje de éxito
-              resetForm();
-              cambiarFormularioEnviado(true);
-              setTimeout(() => cambiarFormularioEnviado(false), 5000);
+            
             }}
           >
             {({ values, handleSubmit, handleChange, handleBlur, errors, touched }) => (
@@ -141,7 +140,7 @@ function ModalBoxClose(props) {
                             <td title="saldo entregado en la caja anterior">
                               Saldo actual en caja
                             </td>
-                            <td>{saldoCajaAnterior}</td>
+                            <td>{getDataCashBoxId[0]?.caja || 0}</td>
                           </tr>
                           <tr>
                             <td>Monto a retirar</td>
@@ -150,8 +149,12 @@ function ModalBoxClose(props) {
                           <tr>
                             <th>Resultante en caja</th>
                             {/* Cálculo del monto inicial de la jornada */}
-                            <th className="d-none">{setResultadoFinal(saldoCajaAnterior - parseFloat(values.montoInicial)) || saldoCajaAnterior || 0}</th>
-                            <th>{resultadoFinal || saldoCajaAnterior || 0}</th>
+                            <th className="d-none">
+                              {/* getDataCashBoxId[0]?.caja es lo que hay actualmente en caja */}
+                              {setResultadoFinal(getDataCashBoxId[0]?.caja - parseFloat(values.montoInicial))
+                              || getDataCashBoxId[0]?.caja || 0}
+                            </th>
+                            <th>{resultadoFinal || getDataCashBoxId[0]?.caja || 0}</th>
                           </tr>
                         </tbody>
                       </Table>

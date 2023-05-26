@@ -115,6 +115,10 @@ function App() {
                   path="/customers"
                   element={<Customers setTitle={setTitle} />}
                 />
+                <Route
+                  path="/waiters"
+                  element={<Waiters setTitle={setTitle} />}
+                />
                 {/* Colocar las demas */}
               </Route>
               {/* Rutas que pueden ser accedidas por usuarios autenticados y que sean 'Invitado' o 'Administrador' */}

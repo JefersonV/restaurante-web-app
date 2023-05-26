@@ -7,7 +7,6 @@ import Select from '../Select';
 // import DatePicker from '../components/DatePicker';
 import DatePicker from '../DatePicker';
 import { AiOutlineClose } from "react-icons/ai"
-
 import ModalBoxClose from './ModalBoxClose';
 // import ModalBoxClose from '../components/caja/ModalBoxClose';
 import dayjs from 'dayjs';
@@ -36,6 +35,7 @@ function CashTest() {
   useEffect(() => {
     getDataCashBox()
   }, [])
+
   return (
     <>
       <div className="container mt-3 mb-3">
@@ -49,7 +49,10 @@ function CashTest() {
             <Select />
           </div>
           <div className="col-6">
-            <ModalBoxClose />
+            <ModalBoxClose 
+              cashData={cashData}
+
+            />
             
           </div>
       </div>

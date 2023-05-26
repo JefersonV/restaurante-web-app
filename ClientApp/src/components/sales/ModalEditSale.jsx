@@ -34,10 +34,18 @@ function ModalEditSale(props) {
       console.log(error);
     }
   };
-  /* useEffect(() => {
-    console.log(sale.detalleVenta.length)
-  }, [sale]) */
 
+  const [dataPostSale, setDataPostSale] = useState([
+    {
+      idDetalleVenta: "",
+      cantidad: "",
+      // idPlatillo: ""
+    }
+  ]);
+
+  useEffect(() => {
+    console.info(dataPostSale)
+  }, [dataPostSale])
   useEffect(() => {
     if (itemId) {
       getDataSale(itemId); 
@@ -68,19 +76,17 @@ function ModalEditSale(props) {
               detalleVenta: sale.detalleVenta || [],
             }}
             enableReinitialize={true}
-            validate={(valores) => {
-              const errores = {};
-              if (!valores.cantidad) {
-                errores.cantidad = "Por favor ingresa un cantidad";
-              } else if (!/^[a-zA-ZÀ-ÿ\s.]{1,25}$/.test(valores.cantidad)) {
-                errores.cantidad =
-                  "El cantidad debe tener un máximo de 25 caracteres, solo puede contener letras y espacios";
-              }
-              return errores;
-            }}
+            // validate={(valores) => {
+            //   const errores = {};
+            //   if (!valores.cantidad) {
+            //     errores.cantidad = "Por favor ingresa un cantidad";
+            //   } else if (!/^[a-zA-ZÀ-ÿ\s.]{1,25}$/.test(valores.cantidad)) {
+            //     errores.cantidad =
+            //       "El cantidad debe tener un máximo de 25 caracteres, solo puede contener letras y espacios";
+            //   }
+            //   return errores;
+            // }}
             onSubmit={async (valores, { resetForm }) => {
-              /* State de put */
-
               setFormularioEnviado(true);
               setTimeout(() => setFormularioEnviado(false), 5000);
               resetForm();
@@ -90,7 +96,7 @@ function ModalEditSale(props) {
                   `http://localhost:5173/api/Venta/${itemId}`,
                   {
                     method: "PUT",
-                    // body: JSON.stringify(bodyTest),
+                    body: JSON.stringify(dataPostSale),
                     headers: {
                       Authorization: `Bearer ${localStorage.token}`,
                       "Content-Type": "application/json",
@@ -117,6 +123,7 @@ function ModalEditSale(props) {
             {({ values, handleSubmit, handleChange, handleBlur, errors, setFieldValue }) => (
               <form className="formulario" onSubmit={handleSubmit}>
                 <h5>No. de Comanda: {values.noComanda}</h5>
+                
                 <FieldArray name="detalleVenta">
                   {({ insert, remove, push }) => (
                     <>
@@ -131,9 +138,10 @@ function ModalEditSale(props) {
                         </thead>
                         <tbody>
                           {values.detalleVenta.map((detalle, index) => {
+                            let newDetalleVenta
                             const handleCantidadChange = (e) => {
                               const newCantidad = parseInt(e.target.value, 10);
-                              const newDetalleVenta = [...values.detalleVenta];
+                              newDetalleVenta = [...values.detalleVenta];
                               newDetalleVenta[index].cantidad = newCantidad;
                               newDetalleVenta[index].subtotal = newCantidad * detalle.precio;
 
@@ -141,7 +149,20 @@ function ModalEditSale(props) {
                               newDetalleVenta.forEach((item) => {
                                 newTotal += item.subtotal;
                               });
-
+     
+                              /* 
+                              noComanda: sale.numeroComanda,
+                              total: sale.total,
+                              detalleVenta: sale.detalleVenta || [],
+                              */
+                              const newDataPostSale = [...dataPostSale];
+                              newDataPostSale[index] = {
+                                idDetalleVenta: newDetalleVenta[index].id,
+                                cantidad: newDetalleVenta[index].cantidad,
+                                // idPlatillo: detalle.idPlatillo
+                                // idPlatillo: 4
+                              };
+                              setDataPostSale(newDataPostSale);
                               setFieldValue(`detalleVenta.${index}.cantidad`, newCantidad);
                               setFieldValue(`detalleVenta.${index}.subtotal`, newCantidad * detalle.precio);
                               setFieldValue(`total`, newTotal);
@@ -200,18 +221,22 @@ function ModalEditSale(props) {
                     </>
                   )}
                 </FieldArray>
-
+                <Button 
+                  type="submit"
+                  color="primary"
+                  outline
+                >
+                  Registrar
+                </Button>
+                <Button color="secondary" onClick={toggle}>
+                  Cancel
+                </Button>
             </form>
             )}
           </Formik>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={toggle}>
-            Actualizar
-          </Button>{" "}
-          <Button color="secondary" onClick={toggle}>
-            Cancel
-          </Button>
+          
         </ModalFooter>
       </Modal>
     </div>
