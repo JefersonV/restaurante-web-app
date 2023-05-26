@@ -15,10 +15,12 @@ import Tablep from '../../components/report/tprueba';
 // import { Row, Col,  Button } from "reactstrap";
 import { FcPrint } from 'react-icons/fc';
 import ModalNewSale from '../../components/modales/ModalNewSale';
-import Selectc from '../../components/report/SelecttReportC';
+
 
 
 function Reports (props)  {
+  const URL = import.meta.env.VITE_BACKEND_URL;
+
     //   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
   const isOpen = useStore((state) => state.sidebar)
   useEffect(() => {
@@ -45,7 +47,7 @@ function Reports (props)  {
 //   *****************************************GENERAR PDF */
 
   const generarPdf = () => {
-    const url = `http://localhost:5173/api/pdf/reportday?date=${selectedDate1}`;
+    const url = `${URL}/api/pdf/reportday?date=${selectedDate1}`;
     fetch(url, {
       method: 'GET',
       headers: {
@@ -80,7 +82,7 @@ function Reports (props)  {
       const formattedDate = date.toISOString().split('T')[0];
   
       // Realizar la solicitud a la API para obtener los datos de ventas en la fecha seleccionada
-      fetch(`http://localhost:5173/api/ReportDay/day?fecha=${formattedDate}`,{
+      fetch(`${URL}/api/ReportDay/day?fecha=${formattedDate}`,{
         headers: {
           'Authorization': `Bearer ${localStorage.token}`,
         }
@@ -127,34 +129,6 @@ function Reports (props)  {
 
 
 
-// const [selectedDate1, setSelectedDate1] = useState(null);
-//   const [hasSales, setHasSales] = useState(false);
-
-  
-
-//   const checkSales = (date) => {
-//     if (date) {
-//       // Realizar la verificación de las ventas en la fecha seleccionada
-//       // Puedes utilizar una función o hacer una solicitud a tu API aquí
-
-//       // Ejemplo de verificación de ventas
-//       if (date.toISOString().split('T')[0] === '2023-05-18') {
-//         setHasSales(true);
-//       } else {
-//         setHasSales(false);
-//       }
-//     }
-//   };
-
-//   const handle = (event) => {
-//     const dateValue = event.target.value;
-//     const date = dateValue ? new Date(dateValue) : null;
-//     setSelectedDate1(date);
-//     checkSales(date);
-//   };
-
-
-
 
 
   
@@ -190,6 +164,7 @@ function Reports (props)  {
               color="primary"
               outline
             >
+              
               Generar reporte
               <FcPrint />
             </Button>

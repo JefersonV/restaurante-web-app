@@ -19,6 +19,8 @@ import Selectcompras from '../../components/report/SelecttReportC';
 // import Selectc from '../../components/report/SelecttReportC';
 
 function ShoppMonth (props)  {
+  const URL = import.meta.env.VITE_BACKEND_URL;
+
   const isOpen = useStore((state) => state.sidebar)
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
@@ -77,7 +79,7 @@ const [month, setMonth] = useState(initialMonth);
   };
   const fetchMonthData = async () => {
     try {
-      const response = await fetch(`http://localhost:5173/api/ReportCost/month?month=${month}`,{
+      const response = await fetch(`${URL}/api/ReportCost/month?month=${month}`,{
         headers: {
           'Authorization': `Bearer ${localStorage.token}`,
         }
@@ -99,7 +101,7 @@ const [month, setMonth] = useState(initialMonth);
 
 
   const generarPdf = () => {//http://localhost:5188/api/pdf/reportweek
-    const url = `http://localhost:5173/api/pdfCost/Costmonth?month=${month}`;
+    const url = `${URL}/api/pdfCost/Costmonth?month=${month}`;
     
     fetch(url, {
       method: 'GET',

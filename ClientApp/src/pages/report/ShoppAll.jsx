@@ -18,6 +18,8 @@ import Selectcompras from '../../components/report/SelecttReportC';
 
 
 function ShoppAll (props)  {
+  const URL = import.meta.env.VITE_BACKEND_URL;
+
   const isOpen = useStore((state) => state.sidebar)
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
@@ -34,7 +36,7 @@ function ShoppAll (props)  {
   }];
 
   const generarPdf = () => {//http://localhost:5188/api/pdf/reportweek
-    const url = `http://localhost:5173/api/pdfCost/Costyear`;
+    const url = `${URL}/api/pdfCost/Costyear`;
     fetch(url, {
       method: 'GET',
       headers: {
@@ -101,7 +103,7 @@ const [month, setMonth] = useState(initialMonth);
     setLoading(true);
     const fetchYearData = async () => {
       try {
-        const response = await fetch('http://localhost:5173/api/ReportCost/year', {
+        const response = await fetch(`${URL}/api/ReportCost/year`, {
           headers: {
             'Authorization': `Bearer ${localStorage.token}`,
           }

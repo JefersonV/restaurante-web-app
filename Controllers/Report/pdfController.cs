@@ -27,7 +27,7 @@ namespace restaurante_web_app.Controllers.Report
             _dbContext = dbContext;
         }
 
-        //[HttpGet]
+        //[HttpGet
         [HttpGet("reportday")]
         public IActionResult GeneratePdfday([FromQuery] DateTime date)
         {

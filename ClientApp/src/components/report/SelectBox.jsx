@@ -10,20 +10,37 @@ import { useNavigate } from 'react-router-dom'
 // import '../styles/Select.scss'
 // import '../styles/Select.scss'
 
-const  SelectOPT = () => {
+const  SelectBox = () => {
 
 
   const navigate = useNavigate();
   // const [selectedOption, setSelectedOption] = useState('Resumen de ventas de hoy');
   const [selectedOption, setSelectedOption] = useState('');
 
+ 
 
 
+  const options = [
+  
+    {
+      value: '1',
+      label: 'hoy',
+      href: '/boxday',
+    },
+    {
+      value: '2',
+      label: 'semanal',
+      href: '/boxweek',
+      
+    },
+    // {
+    //   value: '4',
+    //   label: 'Mensual',
+    //   href: '/boxmonth',
+    // },
 
-  const options = [{value: '1',label: 'Ventas',href: '/reports'},
-  {value: '2',label: 'Compras',href: '/purchasesday',},
-  {value: '3',label: 'Caja',href: '/boxday',}
-];
+    
+  ];
 
   // const history = useHistory();
 
@@ -51,18 +68,13 @@ if (selectedOptionData) {
 
   
   return (
-     <FormGroup>
- 
-        
-  
-       
-     <Input  
-     outline
+     <FormGroup> 
+     <Input 
         onChange={handle} 
         id="exampleSelect"
         name="select"
         type="select">
-     <option value="">Tipos de Reporte</option>
+     <option value="">Seleccionar opción</option>
      {options.map((option) => (
       <option key={option.value} value={option.value}>
       {option.label}
@@ -72,18 +84,7 @@ if (selectedOptionData) {
      
      </Input>
 
-   {/* <div>
-<select onChange={handle}>
-<option value="">Seleccionar opción</option>
-{options.map((option) => (
-<option key={option.value} value={option.value}>
-{option.label}
-</option>
-))}
-</select>
-</div>  */}
      </FormGroup> 
-
 
     
 
@@ -92,4 +93,4 @@ if (selectedOptionData) {
   )
 }
 
-export default SelectOPT;
+export default SelectBox;

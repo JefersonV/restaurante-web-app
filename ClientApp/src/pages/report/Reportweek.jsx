@@ -15,6 +15,8 @@ import ModalNewSale from '../../components/modales/ModalNewSale';
 import SelectOPT from '../../components/report/SelectReportShopp';
 
 function Reportsweek (props)  {
+  const URL = import.meta.env.VITE_BACKEND_URL;
+
   const isOpen = useStore((state) => state.sidebar)
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
@@ -29,7 +31,7 @@ function Reportsweek (props)  {
 
 
   const generarPdf = () => {//http://localhost:5188/api/pdf/reportweek
-    const url = `http://localhost:5173/api/pdf/reportweek?month=${month}&weekNumber=${weekNumber}`;
+    const url = `${URL}/api/pdf/reportweek?month=${month}&weekNumber=${weekNumber}`;
     fetch(url, {
       method: 'GET',
       headers: {

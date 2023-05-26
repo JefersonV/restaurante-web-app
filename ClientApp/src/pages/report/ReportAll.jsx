@@ -17,6 +17,9 @@ import ModalNewSale from '../../components/modales/ModalNewSale';
 import Selectc from '../../components/report/SelecttReportC';
 
 function ReportAll (props)  {
+  
+  const URL = import.meta.env.VITE_BACKEND_URL;
+
   const isOpen = useStore((state) => state.sidebar)
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
@@ -93,7 +96,7 @@ const [month, setMonth] = useState(initialMonth);
     setLoading(true);
     const fetchYearData = async () => {
       try {
-        const response = await fetch('http://localhost:5173/api/ReportDay/year',{
+        const response = await fetch(`${URL}/api/ReportDay/year`,{
           headers: {
             'Authorization': `Bearer ${localStorage.token}`,
           }
@@ -111,7 +114,7 @@ const [month, setMonth] = useState(initialMonth);
 
 
   const generarPdf = () => {//http://localhost:5188/api/pdf/reportweek
-    const url = `http://localhost:5173/api/pdf/mes?month=${month}`;
+    const url = `${URL}/api/pdf/mes?month=${month}`;
     
     fetch(url, {
       method: 'GET',

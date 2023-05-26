@@ -18,6 +18,8 @@ import Selectc from '../../components/report/SelecttReportC';
 
 function ShoppRange(props)  {
 
+  const URL = import.meta.env.VITE_BACKEND_URL;
+
   const isOpen = useStore((state) => state.sidebar)
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
@@ -38,7 +40,7 @@ function ShoppRange(props)  {
 
 
   const pdfRange = () => {
-    const url = `http://localhost:5173/api/pdfCost/Costrange?fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}`;
+    const url = `${URL}/api/pdfCost/Costrange?fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}`;
     fetch(url, {
       method: 'GET',
       headers: {
@@ -63,7 +65,7 @@ function ShoppRange(props)  {
     // e.preventDefault();
     setLoading(true);
     // Realizar la solicitud a la API para obtener los datos del rango de fechas seleccionado
-    fetch(`http://localhost:5173/api/ReportCost/rango?fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}`, {
+    fetch(`${URL}/api/ReportCost/rango?fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}`, {
       headers: {
         'Authorization': `Bearer ${localStorage.token}`,
       }

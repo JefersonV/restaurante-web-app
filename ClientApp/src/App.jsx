@@ -30,6 +30,8 @@ import ShoppRange from "./pages/report/ShoppRange";
 import ShoppMonth from "./pages/report/ShoppMonth";
 import ShoppAll from "./pages/report/ShoppAll";
 import ReportAll from "./pages/report/ReportAll";
+import BoxDay from "./pages/report/BoxDay";
+import BoxWeek from "./pages/report/BoxWeek";
 
 function App() {
   const [pageTitle, setPageTitle] = useState("");
@@ -147,6 +149,18 @@ function App() {
                 <Route
                   path="/purchasesall"
                   element={<ShoppAll setTitle={setTitle} />}
+                />
+                <Route
+                  path="/boxday"
+                  element={<BoxDay setTitle={setTitle} />}
+                />
+                <Route
+                  path="/boxweek"
+                  element={<BoxWeek setTitle={setTitle} />}
+                />
+                <Route
+                  path="/boxmonth"
+                  element={<BoxWeek setTitle={setTitle} />}
                 />
                 <Route
                   path="/config"

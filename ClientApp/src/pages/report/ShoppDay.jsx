@@ -22,6 +22,8 @@ import ModalNewSale from '../../components/modales/ModalNewSale';
 
 
 function ShoppDay (props)  {
+  const URL = import.meta.env.VITE_BACKEND_URL;
+
     //   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
   const isOpen = useStore((state) => state.sidebar)
   useEffect(() => {
@@ -76,7 +78,7 @@ function ShoppDay (props)  {
 //   *****************************************GENERAR PDF */
 
   const generarPdf = () => {
-    const url = `http://localhost:5173/api/pdfCost/Costday?date=${selectedDate1}`;
+    const url = `${URL}/api/pdfCost/Costday?date=${selectedDate1}`;
     fetch(url, {
       method: 'GET',
       headers: {
@@ -112,7 +114,7 @@ function ShoppDay (props)  {
       const formattedDate = date.toISOString().split('T')[0];
       
       // Realizar la solicitud a la API para obtener los datos de ventas en la fecha seleccionada
-      fetch(`http://localhost:5173/api/ReportCost/day?fecha=${formattedDate}`,{
+      fetch(`${URL}/api/ReportCost/day?fecha=${formattedDate}`,{
         headers: {
           'Authorization': `Bearer ${localStorage.token}`,
         }

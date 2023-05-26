@@ -18,6 +18,9 @@ import Selectcompras from '../../components/report/SelecttReportC';
 
 
 function Shoppweek (props)  {
+
+  const URL = import.meta.env.VITE_BACKEND_URL;
+
   const isOpen = useStore((state) => state.sidebar)
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
@@ -34,7 +37,7 @@ function Shoppweek (props)  {
   }];
 
   const generarPdf = () => {//http://localhost:5188/api/pdf/reportweek
-    const url = `http://localhost:5173/api/pdfCost/Costweek?month=${month}&weekNumber=${weekNumber}`;
+    const url = `${URL}/api/pdfCost/Costweek?month=${month}&weekNumber=${weekNumber}`;
     fetch(url, {
       method: 'GET',
       headers: {
@@ -77,7 +80,7 @@ const [month, setMonth] = useState(initialMonth);
     setLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:5173/api/ReportCost/week?month=${month}&weekNumber=${weekNumber}`,
+      const response = await fetch(`${URL}/api/ReportCost/week?month=${month}&weekNumber=${weekNumber}`,
       {
         headers: {
           'Authorization': `Bearer ${localStorage.token}`,

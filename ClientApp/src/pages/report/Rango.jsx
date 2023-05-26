@@ -15,7 +15,10 @@ import Tablep from '../../components/report/tprueba';
 import { FcPrint } from 'react-icons/fc';
 import Selectc from '../../components/report/SelecttReportC';
 
+
 function Rango(props)  {
+  const URL = import.meta.env.VITE_BACKEND_URL;
+
 
   const isOpen = useStore((state) => state.sidebar)
   useEffect(() => {
@@ -37,7 +40,7 @@ function Rango(props)  {
 
 
   const pdfRange = () => {
-    const url = `http://localhost:5173/api/pdf/range?fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}`;
+    const url = `${URL}/api/pdf/range?fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}`;
     fetch(url, {
       method: 'GET',
       headers: {
@@ -62,7 +65,7 @@ function Rango(props)  {
     // e.preventDefault();
     setLoading(true);
     // Realizar la solicitud a la API para obtener los datos del rango de fechas seleccionado
-    fetch(`http://localhost:5173/api/ReportDay/rango?fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}`, {
+    fetch(`${URL}/api/ReportDay/rango?fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}`, {
       headers: {
         'Authorization': `Bearer ${localStorage.token}`,
       }
