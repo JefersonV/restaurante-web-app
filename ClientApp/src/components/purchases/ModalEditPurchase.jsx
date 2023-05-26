@@ -22,15 +22,12 @@ function ModalEdit(props) {
 
   const fetchProveedores = async () => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/Proveedor/`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.token}`,
-          },
-        }
-      );
+      const response = await fetch("http://localhost:5173/api/Proveedor/", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+        },
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -59,15 +56,12 @@ function ModalEdit(props) {
 
   const getDataId = async (id) => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/Gasto/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`http://localhost:5173/api/Gasto/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+          "Content-Type": "application/json",
+        },
+      });
       const dataFetch = await response.json();
       console.warn(dataFetch);
       const { idProveedor} = proveedores.find(
@@ -160,7 +154,7 @@ function ModalEdit(props) {
 
               try {
                 const response = await fetch(
-                  `${import.meta.env.VITE_BACKEND_URL}/api/Gasto/${itemId}`,
+                  `http://localhost:5173/api/Gasto/${itemId}`,
                   {
                     method: "PUT",
                     body: JSON.stringify(bodyTest),

@@ -38,7 +38,7 @@ function Login() {
       body: JSON.stringify({ usuario: user, contrasenia: password }),
     };
     const response = await fetch(
-      `${api}/api/Account/login`,
+      "http://localhost:5173/api/Account/login",
       requestOptions
     );
     const data = await response.json();

@@ -18,7 +18,7 @@ function Home(props) {
 
   const datosDashboard = async () => {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/Dashboard/total`,
+      "http://localhost:5173/api/Dashboard/total",
       requestOptions
     );
     const data = await response.json();
@@ -27,7 +27,7 @@ function Home(props) {
 
   const datosGrafica = async () => {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/Dashboard/ganancias`,
+      "http://localhost:5173/api/Dashboard/ganancias",
       requestOptions
     );
     const data = await response.json();

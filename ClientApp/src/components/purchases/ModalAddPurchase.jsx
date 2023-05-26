@@ -24,15 +24,12 @@ function ModalAdd(props) {
 
   const fetchProveedores = async () => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/Proveedor/`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.token}`,
-          },
-        }
-      );
+      const response = await fetch("http://localhost:5173/api/Proveedor/", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+        },
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -100,17 +97,14 @@ function ModalAdd(props) {
     bodyProvider.idProveedor = valores.idProveedor;
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/Gasto/`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${localStorage.token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(bodyProvider),
-        }
-      );
+      const response = await fetch("http://localhost:5173/api/Gasto/", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bodyProvider),
+      });
 
       if (response.ok) {
         Swal.fire({
