@@ -26,12 +26,15 @@ function SwalDeleteCliente(props) {
 
   const providerDelete = async (id) => {
     console.log("click -> Id: ", id);
-    const response = await fetch(`http://localhost:5173/api/Cliente/${id}`, {
-      method: "DELETE",
-      headers: {
-        'Authorization': `Bearer ${localStorage.token}`
-      },
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/Cliente/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+        },
+      }
+    );
     // setData(data.filter((data) => data.id_cliente !== id));
     if(response.ok) {
       /* Prop para actualizar la tabla en tiempo real, después de eliminar el registro. */

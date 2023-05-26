@@ -30,14 +30,17 @@ function ModalAdd(props) {
     bodyProvider.nombre = valores.nombre;
 
     try {
-      const response = await fetch('http://localhost:5173/api/Mesero', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(bodyProvider)
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/Mesero`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bodyProvider),
+        }
+      );
       
       if (response.ok) {
         Swal.fire({

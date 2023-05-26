@@ -64,7 +64,7 @@ function ModalAdd(props) {
               /* Método Post */
               try {
                 const response = await fetch(
-                  "http://localhost:5173/api/Proveedor",
+                  `${import.meta.env.VITE_BACKEND_URL}/api/Proveedor`,
                   {
                     method: "POST",
                     headers: {

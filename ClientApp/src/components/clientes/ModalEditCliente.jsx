@@ -35,12 +35,15 @@ function ModalEditCliente(props) {
   /* Traer la data del item seleccionado */
   const getDataId = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5173/api/Cliente/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/Cliente/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const dataFetch = await response.json();
       console.warn(dataFetch);
       setData({
@@ -135,7 +138,7 @@ function ModalEditCliente(props) {
 
               try {
                 const response = await fetch(
-                  `http://localhost:5173/api/Cliente/${itemId}`,
+                  `${import.meta.env.VITE_BACKEND_URL}/api/Cliente/${itemId}`,
                   {
                     method: "PUT",
                     body: JSON.stringify(bodyTest),

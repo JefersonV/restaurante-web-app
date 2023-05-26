@@ -21,11 +21,14 @@ function Sales(props) {
 
   const getData = async () => {
     try {
-      const response = await fetch('http://localhost:5173/api/Venta', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.token}`
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/Venta`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+          },
         }
-      })
+      );
       const json = await response.json() 
       setDataApi(json)
     } catch(error) {

@@ -19,12 +19,14 @@ function Customers(props) {
   const getData = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5173/api/Cliente", {
+        `${import.meta.env.VITE_BACKEND_URL}/api/Cliente`,
+        {
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.token}`
-          }
-        });
+            Authorization: `Bearer ${localStorage.token}`,
+          },
+        }
+      );
       const json = await response.json();
       setDataApi(json);
       console.log(json);

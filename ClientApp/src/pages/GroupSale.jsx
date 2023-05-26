@@ -88,7 +88,7 @@ function GroupSale(props) {
       // setLoading(true)
       setNoDataMenu(false);
       // if(response.data && response.data.length === 0) setNoDataMenu(true)
-      const response = await fetch('http://localhost:5173/api/Menu', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/Menu`, {
         headers: {
           'Authorization': `Bearer ${localStorage.token}`,
         },
@@ -168,7 +168,7 @@ function GroupSale(props) {
         DetalleVenta: detalleVenta
       };
       console.log(postData)
-      const response = await fetch('http://localhost:5173/api/Venta', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/Venta`, {
       method: 'POST',  
       headers: {
           'Authorization': `Bearer ${localStorage.token}`,

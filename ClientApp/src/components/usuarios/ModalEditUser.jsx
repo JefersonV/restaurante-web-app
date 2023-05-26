@@ -20,12 +20,15 @@ const ModalEditUser = (props) => {
 
   const getUsuarioData = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5173/api/Usuario/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-          'Content-Type': 'application/json'
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/Usuario/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+            "Content-Type": "application/json",
+          },
         }
-      });
+      );
       const usuarioData = await response.json();
       setData({
         ...data,
@@ -57,14 +60,17 @@ const ModalEditUser = (props) => {
     console.log(bodyTest);
 
     try {
-      const response = await fetch(`http://localhost:5173/api/Usuario/${idUsuario}`, {
-        method: 'PUT',
-        body: JSON.stringify(bodyTest),
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-          'Content-Type': 'application/json'
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/Usuario/${idUsuario}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(bodyTest),
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+            "Content-Type": "application/json",
+          },
         }
-      });
+      );
       console.log(response);
       console.log(response.ok);
       if (response.ok) {

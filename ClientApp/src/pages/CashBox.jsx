@@ -19,12 +19,15 @@ function CashBox(props) {
   /* Data de la última caja registrada */
   const getDataCashBox = async () => {
     try {
-      const response = await fetch('http://localhost:5173/api/Caja/caja', {
-        headers: {
-          'Content-Type': 'application/json',
-          "Authorization": `Bearer ${localStorage.token}`
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/Caja/caja`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.token}`,
+          },
         }
-      })
+      );
       const data = await response.json()
       console.log(data)
       setSaldoCajaAnterior(data)

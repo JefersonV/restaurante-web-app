@@ -74,12 +74,16 @@ const [month, setMonth] = useState(initialMonth);
     setLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:5173/api/ReportDay/reportweek?month=${month}&weekNumber=${weekNumber}`,
-      {
-        headers: {
-          'Authorization': `Bearer ${localStorage.token}`,
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/ReportDay/reportweek?month=${month}&weekNumber=${weekNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+          },
         }
-      });
+      );
       if (response.ok) {
         const data = await response.json();
         setSalesData(data);

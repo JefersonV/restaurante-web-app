@@ -21,12 +21,15 @@ function ModalEditSale(props) {
 
   const getDataSale = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5173/api/Venta/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/Venta/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const json = await response.json();
       console.log(json);
       setSale(json);
@@ -90,7 +93,7 @@ function ModalEditSale(props) {
 
               try {
                 const response = await fetch(
-                  `http://localhost:5173/api/Venta/${itemId}`,
+                  `${import.meta.env.VITE_BACKEND_URL}/api/Venta/${itemId}`,
                   {
                     method: "PUT",
                     body: JSON.stringify(dataPostSale),
@@ -98,7 +101,8 @@ function ModalEditSale(props) {
                       Authorization: `Bearer ${localStorage.token}`,
                       "Content-Type": "application/json",
                     },
-                  });
+                  }
+                );
                 if(response.ok) {
                   setModal(false)
 

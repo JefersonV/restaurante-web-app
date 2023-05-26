@@ -18,12 +18,15 @@ function CashTest() {
   /* Data de todas las cajas registradas */
   const getDataCashBox = async () => {
     try {
-      const response = await fetch('http://localhost:5173/api/Caja', {
-        headers: {
-          'Content-Type': 'application/json',
-          "Authorization": `Bearer ${localStorage.token}`
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/Caja`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.token}`,
+          },
         }
-      })
+      );
       const data = await response.json()
       console.log(data)
       setCashData(data)

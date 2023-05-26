@@ -63,7 +63,7 @@ function ModalBoxClose(props) {
               // Método PUT para cerra caja
               try {
                 const response = await fetch(
-                  `http://localhost:5173/api/Caja/${IdActivo}`,
+                  `${import.meta.env.VITE_BACKEND_URL}/api/Caja/${IdActivo}`,
                   {
                     method: "PUT",
                     body: JSON.stringify(dataCerrar),
@@ -71,7 +71,8 @@ function ModalBoxClose(props) {
                       Authorization: `Bearer ${localStorage.token}`,
                       "Content-Type": "application/json",
                     },
-                  });
+                  }
+                );
                 if(response.ok) {
                   /* Ocultar el modal */
                   setModal(false)

@@ -82,7 +82,7 @@ function ModalAddCliente(props) {
               /* Método Post */
               try {
                 const response = await fetch(
-                  "http://localhost:5173/api/Cliente",
+                  `${import.meta.env.VITE_BACKEND_URL}/api/Cliente`,
                   {
                     method: "POST",
                     headers: {

@@ -52,14 +52,17 @@ function ModalBox(props) {
               }
               // Método POST y otras operaciones...
               try {
-                const response = await fetch('http://localhost:5173/api/Caja', {
-                  method: 'POST',
-                  headers: {
-                    'Authorization': `Bearer ${localStorage.token}`,
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify(dataCajaPost)
-                });
+                const response = await fetch(
+                  `${import.meta.env.VITE_BACKEND_URL}/api/Caja`,
+                  {
+                    method: "POST",
+                    headers: {
+                      Authorization: `Bearer ${localStorage.token}`,
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(dataCajaPost),
+                  }
+                );
                 if (response.ok) {
                   Swal.fire({
                     position: 'center',

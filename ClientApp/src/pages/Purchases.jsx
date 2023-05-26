@@ -54,7 +54,7 @@ function Purchases(props) {
       },
     };
     const response = await fetch(
-      "http://localhost:5173/api/Gasto",
+      `${import.meta.env.VITE_BACKEND_URL}/api/Gasto`,
       requestOptions
     );
     const data = await response.json();

@@ -15,12 +15,15 @@ const ModalEditWaiter = ({ idMesero, actualizarListaMesero }) => {
 
   const getWaiterData = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5173/api/Mesero/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-          'Content-Type': 'application/json'
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/Mesero/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+            "Content-Type": "application/json",
+          },
         }
-      });
+      );
       const waiterData = await response.json();
       setData({
         ...data,
@@ -49,14 +52,17 @@ const ModalEditWaiter = ({ idMesero, actualizarListaMesero }) => {
     console.log(bodyTest);
 
     try {
-      const response = await fetch(`http://localhost:5173/api/Mesero/${idMesero}`, {
-        method: 'PUT',
-        body: JSON.stringify(bodyTest),
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-          'Content-Type': 'application/json'
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/Mesero/${idMesero}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(bodyTest),
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+            "Content-Type": "application/json",
+          },
         }
-      });
+      );
       console.log(response);
       console.log(response.ok);
       if (response.ok) {

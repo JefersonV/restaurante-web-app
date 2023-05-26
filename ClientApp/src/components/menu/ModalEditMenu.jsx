@@ -29,12 +29,15 @@ function ModalEditMenu(props) {
 /* Traer la data del item seleccionado */
   const getDataId = async (id) => {
 		try {
-			const response = await fetch(`http://localhost:5173/api/Menu/${id}`, {
-				headers: {
-					'Authorization': `Bearer ${localStorage.token}`,
-					'Content-Type': 'application/json'
-				}
-			})
+			const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/Menu/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 			const dataFetch = await response.json()
 			console.warn(dataFetch)
 			setData({
@@ -109,15 +112,17 @@ function ModalEditMenu(props) {
 					console.log(bodyTest)
 
 					try {
-						const response = await fetch(`http://localhost:5173/api/Menu/${itemId}`, 
-						{
-							method: "PUT",
-							body: JSON.stringify(bodyTest),
-							headers: {
-								'Authorization': `Bearer ${localStorage.token}`,
-								'Content-Type': 'application/json'
-							}
-						})
+						const response = await fetch(
+              `${import.meta.env.VITE_BACKEND_URL}/api/Menu/${itemId}`,
+              {
+                method: "PUT",
+                body: JSON.stringify(bodyTest),
+                headers: {
+                  Authorization: `Bearer ${localStorage.token}`,
+                  "Content-Type": "application/json",
+                },
+              }
+            );
 						console.log(response)
 						console.log(response.ok)
 						if(response.ok) {

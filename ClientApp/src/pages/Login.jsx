@@ -38,7 +38,7 @@ function Login() {
       body: JSON.stringify({ usuario: user, contrasenia: password }),
     };
     const response = await fetch(
-      "http://localhost:5173/api/Account/login",
+      `${import.meta.env.VITE_BACKEND_URL}/api/Account/login`,
       requestOptions
     );
     const data = await response.json();

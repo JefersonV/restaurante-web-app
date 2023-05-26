@@ -24,12 +24,15 @@ const SwalDelete = ({ idUsuario, actualizarListaUsuario }) => {
 
   const providerDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5173/api/Account/${id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/Account/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+          },
+        }
+      );
       if (response.ok) {
         /* Prop para actualizar la tabla en tiempo real después de eliminar el registro */
         actualizarListaUsuario();

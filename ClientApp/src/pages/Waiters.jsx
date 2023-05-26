@@ -17,7 +17,7 @@ function Waiters(props) {
   const [dataApi, setDataApi] = useState([]);
   const getData = async () => {
     try {
-      const response = await fetch("http://localhost:5173/api/Mesero", {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/Mesero`, {
         headers: {
           Authorization: `Bearer ${localStorage.token}`,
         },

@@ -56,12 +56,15 @@ function ModalEdit(props) {
 
   const getDataId = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5173/api/Gasto/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/Gasto/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const dataFetch = await response.json();
       console.warn(dataFetch);
       const { idProveedor} = proveedores.find(
