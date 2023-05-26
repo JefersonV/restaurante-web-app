@@ -3,31 +3,37 @@ import { useStore } from '../../providers/GlobalProvider'
 import DatePicker from '../../components/DatePicker';
 import Searchbar from '../../components/Searchbar';
 // import Select from '../../components/Select';
-import Select from '../../components/report/SelecttReport';
+// import Select from '../../components/report/SelecttReport';
 // import Select from '../../components/report/SelectReportShopp';
+// import Selectc from '../../components/report/SelecttReportC';
 import SelectOPT from '../../components/report/SelectReportShopp';
+import Tablep from '../../components/report/tshopping';
 import TableData from '../../components/TableData';
 // import Tablaprueba from '../components/tprueba';
 import ButtonDrop from '../../components/ButtonDrop';
+import Selectcompras from '../../components/report/SelecttReportC';
 import { Col, Button, Label, Input, Table, Alert,  Spinner} from 'reactstrap'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import Tablep from '../../components/report/tprueba';
+// import Tablep from '../../components/report/tprueba';
 // import { Row, Col,  Button } from "reactstrap";
 import { FcPrint } from 'react-icons/fc';
 import ModalNewSale from '../../components/modales/ModalNewSale';
 
 
 
-function Reports (props)  {
+function ShoppDay (props)  {
   const URL = import.meta.env.VITE_BACKEND_URL;
 
     //   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
   const isOpen = useStore((state) => state.sidebar)
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
-    props.setTitle("Ventas: Reporte Diario");
+    props.setTitle("Compras: Reporte Diario");
   }, []);
 
+  const sele = [{value: '1',label: 'hoy',href: '/reports/pu'},{value: '2',label: 'semanal',href: '/reports/week',},
+  {value: '3',label: 'rango',href: '/reports/rango',},{value: '4',label: 'Mensual',href: '/reports/month',
+  }];
 
   const defaultDateString = () => {
     const today = new Date();
@@ -42,12 +48,37 @@ function Reports (props)  {
   const [hasSales, setHasSales] = useState(null);
   const [loading, setLoading] = useState(false);
 
+// const getDataday = async () => {
+
+//   try {
+//     const response = await fetch(`http://localhost:5188/api/ReportDay/day?fecha=${selectedDate}`);
+//     const json = await response.json();
+
+//     setDataApi(json);
+//     // setIsLoading(false);
+
+//     // if (json.length === 0) {
+//     //   setModalOpen(true);
+//     // }
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
+// useEffect(() => {
+//   getDataday()
+// }, [])
+
+// const toggleModal = () => {
+//   setModalOpen(!modalOpen);
+// };
+
+// *****************************************fin MOSTRAR VENTAS DIARIOS TABLA */
 
 
 //   *****************************************GENERAR PDF */
 
   const generarPdf = () => {
-    const url = `${URL}/api/pdf/reportday?date=${selectedDate1}`;
+    const url = `${URL}/api/pdfCost/Costday?date=${selectedDate1}`;
     fetch(url, {
       method: 'GET',
       headers: {
@@ -69,7 +100,8 @@ function Reports (props)  {
   };
   // *****************************************FIN GENERAR PDF */
 
-
+  const sele1 = [{value: '1',label: 'Ventas',href: '/reports'},{value: '2',label: 'Compras',href: '/purchasesday',}
+];
 
   
   useEffect(() => {
@@ -80,9 +112,9 @@ function Reports (props)  {
     setLoading(true);
     if (date) {
       const formattedDate = date.toISOString().split('T')[0];
-  
+      
       // Realizar la solicitud a la API para obtener los datos de ventas en la fecha seleccionada
-      fetch(`${URL}/api/ReportDay/day?fecha=${formattedDate}`,{
+      fetch(`${URL}/api/ReportCost/day?fecha=${formattedDate}`,{
         headers: {
           'Authorization': `Bearer ${localStorage.token}`,
         }
@@ -121,13 +153,46 @@ function Reports (props)  {
   const results = !search ? salesData 
   // Si se ha ingresado información al input, que la compare a los criterios y los filtre
   : salesData.filter((item) =>
-    item.cliente.nombreApellido.toLowerCase().includes(search.toLocaleLowerCase())
+    item.proveedor.nombre.toLowerCase().includes(search.toLocaleLowerCase()) ||
+    item.gastos[0].concepto.toLowerCase().includes(search.toLocaleLowerCase()) 
     // item.platillo.toLowerCase().includes(search.toLocaleLowerCase())
   )
 // FIN BUSCAR
 
 
 
+
+// const [selectedDate1, setSelectedDate1] = useState(null);
+//   const [hasSales, setHasSales] = useState(false);
+
+  
+
+//   const checkSales = (date) => {
+//     if (date) {
+//       // Realizar la verificación de las ventas en la fecha seleccionada
+//       // Puedes utilizar una función o hacer una solicitud a tu API aquí
+
+//       // Ejemplo de verificación de ventas
+//       if (date.toISOString().split('T')[0] === '2023-05-18') {
+//         setHasSales(true);
+//       } else {
+//         setHasSales(false);
+//       }
+//     }
+//   };
+
+//   const handle = (event) => {
+//     const dateValue = event.target.value;
+//     const date = dateValue ? new Date(dateValue) : null;
+//     setSelectedDate1(date);
+//     checkSales(date);
+//   };
+
+
+
+
+
+  
 
 
 
@@ -147,14 +212,14 @@ function Reports (props)  {
 
           </div>
           <div className="col">
-            <SelectOPT />
+            <SelectOPT/>
 
 
           </div>
         </div>
         <div className="row ">
           <div className='col '>
-            <Select />
+            <Selectcompras />
             
             
           </div> 
@@ -164,7 +229,6 @@ function Reports (props)  {
               color="primary"
               outline
             >
-              
               Generar reporte
               <FcPrint />
             </Button>
@@ -198,7 +262,7 @@ function Reports (props)  {
         <Tablep data={results} />
         // <Alert color="warning">No hay ventas en la fecha seleccionada.</Alert>
       ) : (
-        <Alert color="danger">No hay ventas en la fecha seleccionada.</Alert>
+        <Alert color="danger">No hay compras en la fecha seleccionada.</Alert>
         // <Tablep data={results} />
       )}
 
@@ -216,7 +280,7 @@ function Reports (props)  {
   
 };
 
-export default Reports;
+export default ShoppDay;
 
 
 

@@ -6,8 +6,18 @@ export default function Tablep ( props ) {
 
     const { data } = props
 
+    const sumaTotal = data.reduce((total, item) => {
+      return total + item.ventas.reduce((subtotal, venta) => {
+        return subtotal + venta.subtotal;
+      }, 0);
+    }, 0);
+
+
+    
   return (
     <div>
+
+<h6>Resumen de ventas: {sumaTotal}</h6>
     {data.length > 0 ? (
       <Table>
         <thead>
@@ -44,6 +54,7 @@ export default function Tablep ( props ) {
           ))}
         </tbody>
       </Table>
+      
     ) : (
       <Alert color="danger">No se econtraron ventas.</Alert>
     )}

@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Form, FormGroup, Label, Input, Button, Spinner } from 'reactstrap';
+import { Table, Form, Spinner, Label, Input, Button } from 'reactstrap';
 import { useStore } from '../../providers/GlobalProvider'
 import DatePicker from '../../components/DatePicker';
 import Searchbar from '../../components/Searchbar';
 // import Select from '../../components/Select';
-import Select from '../../components/report/SelecttReport';
+import Selectcompras from '../../components/report/SelecttReportC';
 import SelectOPT from '../../components/report/SelectReportShopp';
+import Tablep from '../../components/report/tshopping';
 import TableData from '../../components/TableData';
 // import Tablaprueba from '../components/tprueba';
 import ButtonDrop from '../../components/ButtonDrop';
 // import { Col, Button, Label, Input, Table, Alert,  Spinner} from 'reactstrap'
 import { Modal, ModalHeader, ModalBody, ModalFooter, Alert, Col } from 'reactstrap';
-import Tablep from '../../components/report/tprueba';
+// import Tablep from '../../components/report/tprueba';
 import { FcPrint } from 'react-icons/fc';
 import Selectc from '../../components/report/SelecttReportC';
 
+function ShoppRange(props)  {
 
-function Rango(props)  {
   const URL = import.meta.env.VITE_BACKEND_URL;
-
 
   const isOpen = useStore((state) => state.sidebar)
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
-    props.setTitle("Ventas: Reporte Rangos");
+    props.setTitle("Compras: Reporte Rangos");
   }, []);
 
 
@@ -40,7 +40,7 @@ function Rango(props)  {
 
 
   const pdfRange = () => {
-    const url = `${URL}/api/pdf/range?fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}`;
+    const url = `${URL}/api/pdfCost/Costrange?fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}`;
     fetch(url, {
       method: 'GET',
       headers: {
@@ -65,7 +65,7 @@ function Rango(props)  {
     // e.preventDefault();
     setLoading(true);
     // Realizar la solicitud a la API para obtener los datos del rango de fechas seleccionado
-    fetch(`${URL}/api/ReportDay/rango?fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}`, {
+    fetch(`${URL}/api/ReportCost/rango?fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}`, {
       headers: {
         'Authorization': `Bearer ${localStorage.token}`,
       }
@@ -115,7 +115,8 @@ function Rango(props)  {
   const results = !search ? data 
   // Si se ha ingresado información al input, que la compare a los criterios y los filtre
   : data.filter((item) =>
-    item.cliente.nombreApellido.toLowerCase().includes(search.toLocaleLowerCase())
+    item.proveedor.nombre.toLowerCase().includes(search.toLocaleLowerCase()) ||
+    item.gastos[0].concepto.toLowerCase().includes(search.toLocaleLowerCase())
     // item.platillo.toLowerCase().includes(search.toLocaleLowerCase())
   )
 // FIN BUSCAR
@@ -137,14 +138,14 @@ function Rango(props)  {
         </div>
       <div className="row ">
         <div className="col">
-          <Select />
+          <Selectcompras/>
         </div>
       
       <div className="col" >
           {/* <ButtonDrop>
             <FcPrint />
           </ButtonDrop> */}
-          <Label htmlFor="dateInput">Seleccionar fecha:</Label>
+          
           <Button
             onClick={pdfRange}
             color="primary"
@@ -190,7 +191,7 @@ function Rango(props)  {
         <Tablep data={results} />
         // <Alert color="warning">No hay ventas en la fecha seleccionada.</Alert>
       ) : (
-        <Alert color="danger">No hay ventas en la fecha seleccionada.</Alert>
+        <Alert color="danger">No hay compras en la fecha seleccionada.</Alert>
         // <Tablep data={results} />
       )}
               
@@ -201,4 +202,4 @@ function Rango(props)  {
     )
 };
 
-export default Rango;
+export default ShoppRange;

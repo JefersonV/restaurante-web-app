@@ -3,24 +3,27 @@ import { useStore } from '../../providers/GlobalProvider'
 import DatePicker from '../../components/DatePicker';
 import Searchbar from '../../components/Searchbar';
 // import Select from '../../components/Select';
-import Select from '../../components/report/SelecttReport';
-import TableData from '../../components/TableData';
+// import Select from '../../components/report/SelecttReport';
+import Select from '../../components/report/SelectReportShopp';
 // import Tablaprueba from '../components/tprueba';
 import ButtonDrop from '../../components/ButtonDrop';
-import { Col, Button, Label, Input, Table, Alert, Spinner} from 'reactstrap'
-import Tablep from '../../components/report/tprueba';
+import { Col, Button, Label, Input, Spinner, Alert} from 'reactstrap'
+// import Tablep from '../../components/report/tprueba';
+import Tablep from '../../components/report/tshopping';
 // import { Row, Col,  Button } from "reactstrap";
 import { FcPrint } from 'react-icons/fc';
 import ModalNewSale from '../../components/modales/ModalNewSale';
 import SelectOPT from '../../components/report/SelectReportShopp';
+import Selectcompras from '../../components/report/SelecttReportC';
 
-function Reportsweek (props)  {
+
+function ShoppAll (props)  {
   const URL = import.meta.env.VITE_BACKEND_URL;
 
   const isOpen = useStore((state) => state.sidebar)
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
-    props.setTitle("Ventas: Reporte Semanal");
+    props.setTitle("Compras: Reporte Semanal");
   }, []);
   //   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
   // const isOpen = useStore((state) => state.sidebar)
@@ -28,10 +31,12 @@ function Reportsweek (props)  {
 
 
 
-
+  const sele = [{value: '1',label: 'hoy',href: '/reports'},{value: '2',label: 'semanal',href: '/reports/week',},
+  {value: '3',label: 'rango',href: '/reports/rango',},{value: '4',label: 'Mensual',href: '/reports/month',
+  }];
 
   const generarPdf = () => {//http://localhost:5188/api/pdf/reportweek
-    const url = `${URL}/api/pdf/reportweek?month=${month}&weekNumber=${weekNumber}`;
+    const url = `${URL}/api/pdfCost/Costyear`;
     fetch(url, {
       method: 'GET',
       headers: {
@@ -69,29 +74,49 @@ const [month, setMonth] = useState(initialMonth);
 
 
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
 
-    try {
-      const response = await fetch(`http://localhost:5173/api/ReportDay/reportweek?month=${month}&weekNumber=${weekNumber}`,
-      {
-        headers: {
-          'Authorization': `Bearer ${localStorage.token}`,
-        }
-      });
-      if (response.ok) {
+  //   try {
+  //     const response = await fetch("http://localhost:5173/api/ReportCost/year",
+  //     {
+  //       headers: {
+  //         'Authorization': `Bearer ${localStorage.token}`,
+  //       }
+  //     });
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setSalesData(data);
+  //     } else {
+  //       console.error('Error al obtener los datos');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error en la solicitud:', error);
+  //   }
+
+  //   setLoading(false);
+  // };
+
+
+  useEffect(() => {
+    setLoading(true);
+    const fetchYearData = async () => {
+      try {
+        const response = await fetch(`${URL}/api/ReportCost/year`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.token}`,
+          }
+        });
         const data = await response.json();
         setSalesData(data);
-      } else {
-        console.error('Error al obtener los datos');
+      } catch (error) {
+        console.error('Error al obtener los datos del año:', error);
       }
-    } catch (error) {
-      console.error('Error en la solicitud:', error);
-    }
-
+    };
     setLoading(false);
-  };
+    fetchYearData();
+  }, []);
 
       /* ----- Buscador */
   // state para buscador
@@ -107,33 +132,15 @@ const [month, setMonth] = useState(initialMonth);
   const results = !search ? salesData 
   // Si se ha ingresado información al input, que la compare a los criterios
   : salesData.filter((item) =>
-  item.cliente.nombreApellido.toLowerCase().includes(search.toLocaleLowerCase())
+  item.proveedor.nombre.toLowerCase().includes(search.toLocaleLowerCase()) ||
+  item.gastos[0].concepto.toLowerCase().includes(search.toLocaleLowerCase())
   // item.platillo.toLowerCase().includes(search.toLocaleLowerCase())
   )
 // FIN BUSCAR
 
 
-  //accionar hanldesubmit automaticamente
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'month') {
-      setMonth(value);
-    } else if (name === 'weekNumber') {
-      setWeekNumber(value);
-    }
-  };
 
-  const handleInputsFilled = () => {
-    return month !== '' && weekNumber !== '';
-  };
-
-  const handleAutoSubmit = () => {
-    if (handleInputsFilled()) {
-      formRef.current.submit();
-    }
-  };
-  //fin
-
+  
   return (
     
 
@@ -152,7 +159,7 @@ const [month, setMonth] = useState(initialMonth);
     </div>
     <div className="row">
       <div className="col">
-        <Select />
+        <Selectcompras />
       </div>
     
     <div className="col" >
@@ -178,40 +185,8 @@ const [month, setMonth] = useState(initialMonth);
         {/* <Tablep info={info}/> */}
 
         <div>
-      <form  onSubmit={handleSubmit}>
-        <Label>
-          Numero de mes:
-          <Input
-            type="number"
-            name="month"
-            value={month}
-            // onChange={(e) => setMonth(e.target.value)}
-
-          
-          
-        
-          onChange={handleInputChange}
-          // onBlur={handleAutoSubmit}
-          />
-        </Label>
-        <Label>
-          Numero de semana del:
-          <Input
-            type="number"
-            name="weekNumber"
-            value={weekNumber}
-            // onChange={(e) => setWeekNumber(e.target.value)}
-
-            
-   
-          onChange={handleInputChange}
-          // onBlur={handleAutoSubmit}
-          />
-        </Label>
-        <Button type="submit" disabled={loading} outline>
-          Generar Reporte
-        </Button>
-      </form>
+      <h3>Datos Generales</h3>
+      {/* <Button type='submit' onChange={handleSubmit}>Ver</Button>} */}
 
       {loading ? (
         <Spinner
@@ -225,7 +200,7 @@ const [month, setMonth] = useState(initialMonth);
       <Tablep data={results} />
 
       ) : (
-        <Alert color="danger">No se econtraron ventas.</Alert>
+        <Alert color="danger">No se econtraron compras.</Alert>
         // <Tablep data={results} />
       )}
     </div>
@@ -250,4 +225,4 @@ const getWeekNumber = (date) => {
   return weekNumber;
 };
 
-export default Reportsweek;
+export default ShoppAll;

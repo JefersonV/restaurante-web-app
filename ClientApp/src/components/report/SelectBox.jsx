@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 // import '../styles/Select.scss'
 // import '../styles/Select.scss'
 
-const  Select = () => {
+const  SelectBox = () => {
 
 
   const navigate = useNavigate();
@@ -25,29 +25,20 @@ const  Select = () => {
     {
       value: '1',
       label: 'hoy',
-      href: '/reports',
+      href: '/boxday',
     },
     {
       value: '2',
       label: 'semanal',
-      href: '/reports/week',
+      href: '/boxweek',
       
     },
-    {
-      value: '3',
-      label: 'rango',
-      href: '/reports/rango',
-    },
-    {
-      value: '4',
-      label: 'Mensual',
-      href: '/reports/month',
-    },
-    {
-      value: '5',
-      label: 'Todo',
-      href: '/reports/all',
-    },
+    // {
+    //   value: '4',
+    //   label: 'Mensual',
+    //   href: '/boxmonth',
+    // },
+
     
   ];
 
@@ -102,4 +93,4 @@ if (selectedOptionData) {
   )
 }
 
-export default Select;
+export default SelectBox;

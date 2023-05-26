@@ -4,34 +4,103 @@ import DatePicker from '../../components/DatePicker';
 import Searchbar from '../../components/Searchbar';
 // import Select from '../../components/Select';
 import Select from '../../components/report/SelecttReport';
+import SelectOPT from '../../components/report/SelectReportShopp';
+import Selectmonth from '../../components/report/Selectmonth copy';
 import TableData from '../../components/TableData';
 // import Tablaprueba from '../components/tprueba';
 import ButtonDrop from '../../components/ButtonDrop';
-import { Col, Button, Label, Input, Table, Alert, Spinner} from 'reactstrap'
+import { Col, Button, Label, Input, Spinner, Alert, Form} from 'reactstrap'
 import Tablep from '../../components/report/tprueba';
 // import { Row, Col,  Button } from "reactstrap";
 import { FcPrint } from 'react-icons/fc';
 import ModalNewSale from '../../components/modales/ModalNewSale';
-import SelectOPT from '../../components/report/SelectReportShopp';
 
-function Reportsweek (props)  {
+
+function Reportmonth (props)  {
   const URL = import.meta.env.VITE_BACKEND_URL;
 
   const isOpen = useStore((state) => state.sidebar)
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
-    props.setTitle("Ventas: Reporte Semanal");
+    props.setTitle("Ventas: Reporte Mensual");
   }, []);
+
+
   //   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
   // const isOpen = useStore((state) => state.sidebar)
   // const [seledia, setseledia] = useState([]);
 
 
 
+  
+
+
+
+  const currentDate = new Date();
+  const initialMonth = currentDate.getMonth() + 1;
+  const initialWeekNumber = getWeekNumber(currentDate);
+  const formRef = useRef([]);
+
+  // const [month, setMonth] = useState(initialMonth);
+  // const [weekNumber, setWeekNumber] = useState(initialWeekNumber);
+
+const [month, setMonth] = useState(initialMonth);
+  // const [weekNumber, setWeekNumber] = useState(initialWeekNumber);
+  // const [salesData, setSalesData] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const [data, setData] = useState([]);
+
+
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+
+  //   try {
+  //     const response = await fetch(`http://localhost:5173/api/ReportDay/reportweek?month=${month}&weekNumber=${weekNumber}`);
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setSalesData(data);
+  //     } else {
+  //       console.error('Error al obtener los datos');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error en la solicitud:', error);
+  //   }
+
+  //   setLoading(false);
+  // };
+
+  const handleMonthChange = (event) => {
+    setMonth(event.target.value);
+  };
+  const fetchMonthData = async () => {
+    try {
+      const response = await fetch(`${URL}/api/ReportDay/month?month=${month}`,{
+        headers: {
+          'Authorization': `Bearer ${localStorage.token}`,
+        }
+      });
+
+      // ?month=may
+      const jsonData = await response.json();
+      setData(jsonData);
+    } catch (error) {
+      console.error('Error fetching month data:', error);
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    fetchMonthData();
+  };
+
 
 
   const generarPdf = () => {//http://localhost:5188/api/pdf/reportweek
-    const url = `${URL}/api/pdf/reportweek?month=${month}&weekNumber=${weekNumber}`;
+    const url = `${URL}/api/pdf/mes?month=${month}`;
+    
     fetch(url, {
       method: 'GET',
       headers: {
@@ -53,45 +122,8 @@ function Reportsweek (props)  {
       });
   };
 
-  const currentDate = new Date();
-  const initialMonth = currentDate.getMonth() + 1;
-  const initialWeekNumber = getWeekNumber(currentDate);
-  const formRef = useRef([]);
 
-  // const [month, setMonth] = useState(initialMonth);
-  // const [weekNumber, setWeekNumber] = useState(initialWeekNumber);
-
-const [month, setMonth] = useState(initialMonth);
-  const [weekNumber, setWeekNumber] = useState(initialWeekNumber);
-  const [salesData, setSalesData] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-
-
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const response = await fetch(`http://localhost:5173/api/ReportDay/reportweek?month=${month}&weekNumber=${weekNumber}`,
-      {
-        headers: {
-          'Authorization': `Bearer ${localStorage.token}`,
-        }
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setSalesData(data);
-      } else {
-        console.error('Error al obtener los datos');
-      }
-    } catch (error) {
-      console.error('Error en la solicitud:', error);
-    }
-
-    setLoading(false);
-  };
+  
 
       /* ----- Buscador */
   // state para buscador
@@ -104,9 +136,9 @@ const [month, setMonth] = useState(initialMonth);
   }
   //metodo de filtrado del buscador
   // Si state search es null (no sea ha ingresado nada en el input) results = dataApi
-  const results = !search ? salesData 
+  const results = !search ? data 
   // Si se ha ingresado información al input, que la compare a los criterios
-  : salesData.filter((item) =>
+  : data.filter((item) =>
   item.cliente.nombreApellido.toLowerCase().includes(search.toLocaleLowerCase())
   // item.platillo.toLowerCase().includes(search.toLocaleLowerCase())
   )
@@ -114,26 +146,27 @@ const [month, setMonth] = useState(initialMonth);
 
 
   //accionar hanldesubmit automaticamente
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'month') {
-      setMonth(value);
-    } else if (name === 'weekNumber') {
-      setWeekNumber(value);
-    }
-  };
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   if (name === 'month') {
+  //     setMonth(value);
+  //   } else if (name === 'weekNumber') {
+  //     setWeekNumber(value);
+  //   }
+  // };
 
-  const handleInputsFilled = () => {
-    return month !== '' && weekNumber !== '';
-  };
+  // const handleInputsFilled = () => {
+  //   return month !== '' && weekNumber !== '';
+  // };
 
-  const handleAutoSubmit = () => {
-    if (handleInputsFilled()) {
-      formRef.current.submit();
-    }
-  };
+  // const handleAutoSubmit = () => {
+  //   if (handleInputsFilled()) {
+  //     formRef.current.submit();
+  //   }
+  // };
   //fin
 
+  
   return (
     
 
@@ -146,9 +179,7 @@ const [month, setMonth] = useState(initialMonth);
       </div>
       <div className="col">
             <SelectOPT />
-
-
-          </div>
+        </div>
     </div>
     <div className="row">
       <div className="col">
@@ -177,7 +208,7 @@ const [month, setMonth] = useState(initialMonth);
         {/* <TableData data={results} /> */}
         {/* <Tablep info={info}/> */}
 
-        <div>
+        {/* <div>
       <form  onSubmit={handleSubmit}>
         <Label>
           Numero de mes:
@@ -208,18 +239,13 @@ const [month, setMonth] = useState(initialMonth);
           // onBlur={handleAutoSubmit}
           />
         </Label>
-        <Button type="submit" disabled={loading} outline>
+        <Button type="submit" disabled={loading}>
           Generar Reporte
         </Button>
       </form>
 
       {loading ? (
-        <Spinner
-        className="m-5"
-        color="warning"
-      >
-        Loading...
-      </Spinner>
+        <p>Cargando...</p>
       ) : salesData ? (
       
       <Tablep data={results} />
@@ -228,7 +254,67 @@ const [month, setMonth] = useState(initialMonth);
         <Alert color="danger">No se econtraron ventas.</Alert>
         // <Tablep data={results} />
       )}
-    </div>
+    </div> */}
+    <Form onSubmit={handleSubmit}>
+      <div className="row">
+        <div className="col">
+        <Selectmonth value={month} sele={handleMonthChange}></Selectmonth>
+        </div>
+        <div className="col">
+        <Button type="submit" outline>Mostrar Datos</Button>
+        </div>
+      </div>
+
+          
+          
+        
+      </Form>
+  
+  {loading ? (
+        <Spinner
+        className="m-5"
+        color="warning"
+      >
+        Loading...
+      </Spinner>
+      ) : data ? (
+      
+      <Tablep data={results} />
+
+      ) : (
+        <Alert color="danger">No se econtraron ventas.</Alert>
+        // <Tablep data={results} />
+      )}
+{/* <div>
+      <h2>Datos del Mes</h2>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Nombre del Mes:
+          <input type="text" value={month} onChange={handleMonthChange} />
+        </label>
+        <button type="submit">Mostrar Datos</button>
+      </form>
+      <Table>
+        <thead>
+          <tr>
+            <th>Cliente ID</th>
+            <th>Nombre y Apellido</th>
+            <th>Institución</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((item, index) => (
+            <tr key={index}>
+              <td>{item.cliente.idCliente}</td>
+              <td>{item.cliente.nombreApellido}</td>
+              <td>{item.cliente.institucion}</td>
+              <td>{item.total}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </div> */}
       </div>
     </div>
   </div>
@@ -250,4 +336,4 @@ const getWeekNumber = (date) => {
   return weekNumber;
 };
 
-export default Reportsweek;
+export default Reportmonth;

@@ -109,7 +109,7 @@ namespace restaurante_web_app.Controllers
             return ventaDto;
         }
 
-        [Authorize(Roles = "Administrador, Invitado")]
+        //[Authorize(Roles = "Administrador, Invitado")]
         //Crear una venta luego crear los detalles que contiene con su relacion uno a muchos
         [HttpPost]
         public async Task<ActionResult<VentaDtoOut>> Create(VentaDtoIn ventaDto)
