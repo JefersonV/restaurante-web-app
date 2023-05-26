@@ -15,10 +15,11 @@ function CashBox(props) {
   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
   const isOpen = useStore((state) => state.sidebar);
 
-  const [cashData, setCashData] = useState([])
+  const [saldoCajaAnterior, setSaldoCajaAnterior] = useState([])
+  /* Data de la última caja registrada */
   const getDataCashBox = async () => {
     try {
-      const response = await fetch('http://localhost:5173/api/Caja', {
+      const response = await fetch('http://localhost:5173/api/Caja/caja', {
         headers: {
           'Content-Type': 'application/json',
           "Authorization": `Bearer ${localStorage.token}`
@@ -26,7 +27,7 @@ function CashBox(props) {
       })
       const data = await response.json()
       console.log(data)
-      setCashData(data)
+      setSaldoCajaAnterior(data)
     } catch(error) {
       console.log(error)
     }
@@ -39,14 +40,11 @@ function CashBox(props) {
   /* Estado para local que se pasa al componente hijo para validar si la caja está abierta */
   const [cajaAbierta, setCajaAbierta] = useState("false")
 
+  /* Cambia el estado, le establece el valor del localStorage */
   const setCajaSesion = (valor) => {
     setCajaAbierta(valor)
   }
   
-  // const [openBox, setOpenBox] = useState("")
-  // setOpenBox(localStorage.getItem("cajaAbierta") || "")
-  // console.log('openBox')
-  // console.log(openBox)
   let test = ""
   test = localStorage.getItem("cajaAbierta")
   if(test === "true") {
@@ -69,6 +67,7 @@ function CashBox(props) {
           <ModalBox 
             cajaAbierta={cajaAbierta}
             setCajaSesion={setCajaSesion}
+            saldoCajaAnterior={saldoCajaAnterior}
           />
           </div>
         </div>

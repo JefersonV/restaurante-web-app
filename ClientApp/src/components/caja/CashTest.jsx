@@ -16,6 +16,7 @@ function CashTest() {
   
   const [cashData, setCashData] = useState([])
 
+  /* Data de todas las cajas registradas */
   const getDataCashBox = async () => {
     try {
       const response = await fetch('http://localhost:5173/api/Caja', {

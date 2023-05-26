@@ -11,19 +11,9 @@ function ModalBox(props) {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
   // Saldo registrado en la API
-  const [saldoCajaAnterior, setSaldoCajaAnterior] = useState(250);
+  // const [saldoCajaAnterior.cajaAnterior, setsaldoCajaAnterior.cajaAnterior] = useState(250);
   // Saldo para iniciar la jornada -> saldoCajaAnt + valor del input
   const [resultadoFinal, setResultadoFinal] = useState(0);
-
-  props.setCajaSesion("false")
-  /* Session */
-  if (props.cajaAbierta === 'true') {
-    // La caja está abierta
-    console.log('La caja está abierta');
-  } else {
-    // La caja está cerrada o el valor no está establecido
-    console.log('La caja está cerrada');
-  }
 
   return (
     <>
@@ -129,10 +119,6 @@ function ModalBox(props) {
                       )}
                   </Col>
                 
-                <FieldArray name="caja">
-                  
-                  {({ insert, remove, push }) => (
-                    <>
                       {/* Campos del formulario */}
                       <Table className="mt-3" bordered striped>
                         <thead>
@@ -146,7 +132,7 @@ function ModalBox(props) {
                             <td title="saldo entregado en la caja anterior">
                               Saldo en Caja
                             </td>
-                            <td>{saldoCajaAnterior}</td>
+                            <td>{props.saldoCajaAnterior.cajaAnterior || 0}</td>
                           </tr>
                           <tr>
                             <td>Monto añadido</td>
@@ -155,14 +141,11 @@ function ModalBox(props) {
                           <tr>
                             <th>Monto inicial jornada</th>
                             {/* Cálculo del monto inicial de la jornada */}
-                            <th className="d-none">{setResultadoFinal(saldoCajaAnterior + parseFloat(values.montoInicial)) || saldoCajaAnterior || 0}</th>
-                            <th>{resultadoFinal || saldoCajaAnterior || 0}</th>
+                            <th className="d-none">{setResultadoFinal(props.saldoCajaAnterior.cajaAnterior + parseFloat(values.montoInicial)) || props.saldoCajaAnterior.cajaAnterior || 0}</th>
+                            <th>{resultadoFinal || props.saldoCajaAnterior.cajaAnterior || 0}</th>
                           </tr>
                         </tbody>
                       </Table>
-                    </>
-                  )}
-                </FieldArray>
                 </FormGroup>
                 <Button 
                   type="submit" 

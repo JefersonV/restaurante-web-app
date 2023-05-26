@@ -32,7 +32,7 @@ function ModalBoxClose(props) {
      
       <Modal isOpen={modal} fade={false} toggle={toggle} centered={true}>
         <ModalHeader toggle={toggle}>
-          <FaCashRegister size={30} /> Apertura de Caja
+          <FaCashRegister size={30} /> Cerrar Caja
         </ModalHeader>
         <ModalBody>
           <Formik
