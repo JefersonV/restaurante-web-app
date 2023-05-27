@@ -165,7 +165,7 @@ function ModalAdd(props) {
                       valid={touched.idTipoUsuario && !errors.idTipoUsuario}
                       invalid={touched.idTipoUsuario && !!errors.idTipoUsuario}
                     >
-                      <option value="">Seleccione un tipo de usuario</option>
+                      <option value="" disabled>Seleccione un tipo de usuario</option>
                       <option value="1">Administrador</option>
                       <option value="2">Invitado</option>
                     </Input>
