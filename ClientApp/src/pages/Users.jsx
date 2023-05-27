@@ -56,12 +56,10 @@ function Users(props) {
     <div className={ isOpen ? "wrapper" : "side" }>
       <div className="container-fluid mt-4">
       <div className="row">
-          <div className="col">
+          <div className="col-6">
             <Searchbar searcher={searcher} />
           </div>
-        </div>
-        <div className="row d-flex justify-content-center align-items-center">
-          <div className="col">
+          <div className="col-6">
             <ModalAddUser actualizarListaUsuario={getData} />
             {/* <Button color="primary" outline>
               Imprimir lista
@@ -69,6 +67,8 @@ function Users(props) {
             </Button> */}
           </div>
         </div>
+        
+
       <TableUsers 
         data={results}
         actualizarListaUsuario={getData}
