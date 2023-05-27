@@ -109,13 +109,15 @@ namespace restaurante_web_app.Controllers
             return ventaDto;
         }
 
-        [Authorize(Roles = "Administrador, Invitado")]
+        //[Authorize(Roles = "Administrador, Invitado")]
         //Crear una venta luego crear los detalles que contiene con su relacion uno a muchos
         [HttpPost]
         public async Task<ActionResult<VentaDtoOut>> Create(VentaDtoIn ventaDto)
         {
+#pragma warning disable CS8604 // Posible argumento de referencia nulo
             var total = ventaDto.DetalleVenta.Sum(dvDto => dvDto.Cantidad * _dbContext.Menus
             .Single(p => p.IdPlatillo == dvDto.IdPlatillo).Precio);
+#pragma warning restore CS8604 // Posible argumento de referencia nulo
 
             var venta = new Venta
             {
@@ -157,6 +159,12 @@ namespace restaurante_web_app.Controllers
                     c => c.IdCliente,
                     (vm, c) => new { Venta = vm.Venta, Mesero = vm.Mesero, Cliente = c })
                 .FirstOrDefaultAsync(v => v.Venta.IdVenta == venta.IdVenta);
+
+
+            if (ventaOut == null)
+            {
+                return NotFound();
+            }
 
             var ventaDtoOut = new VentaDtoOut
             {
@@ -238,7 +246,7 @@ namespace restaurante_web_app.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Administrador")]
+        //[Authorize(Roles = "Administrador")]
         //Eliminar detalles de una venta -> no elimina la venta solo los detalles que se indique
         [HttpDelete("{idVenta:long}/detalleVenta/{idDetalleVenta:long}")]
         public async Task<ActionResult> DeleteDetalleVenta(long idVenta, long idDetalleVenta)

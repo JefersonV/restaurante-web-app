@@ -20,6 +20,7 @@ const Widget = ({ type, monto, porcentaje = 0 }) => {
         icon: <BsCash className="icon" color="black" />,
         colors: { backgroundColor: "#ffc107", color: "black" },
         colorSpam: { color: "black" },
+        colorLink: { color: "black"}
       };
       break;
     case "gastosMes":
@@ -59,6 +60,7 @@ const Widget = ({ type, monto, porcentaje = 0 }) => {
         icon: <FaCashRegister className="icon" color="black" />,
         colors: { backgroundColor: "#0dcaf0", color: "black" },
         colorSpam: { color: "black" },
+        colorLink: { color: "black"}
       };
       break;
     default:
@@ -75,7 +77,8 @@ const Widget = ({ type, monto, porcentaje = 0 }) => {
           {data.isMoney && "Q"} {monto}
         </span>
         {/* <span className="link">{data.link}</span> */}
-        <Link className="link" to={data.path}>
+        {/* style={{display: isOpen ? "block" : "none"}} */}
+        <Link className="link" to={data.path} style={data.colorLink}>
           {data.link}
         </Link>
       </div>

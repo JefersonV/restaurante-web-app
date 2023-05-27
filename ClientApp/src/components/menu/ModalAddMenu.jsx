@@ -6,7 +6,7 @@ import { BiEditAlt, BiFoodMenu } from 'react-icons/bi'
 import Swal from 'sweetalert2'
 import '../../styles/Formulario.scss'
 
-function ModalAdd (props) {
+function ModalAddMenu (props) {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
   /* Formik */
@@ -24,8 +24,9 @@ function ModalAdd (props) {
 			outline
 			onClick={toggle}
 		> 
-			Registra Nuevo
 			<BiEditAlt  />
+			Registrar Nuevo
+			
 		</Button>
       <Modal isOpen={modal} fade={false} toggle={toggle} centered={true}>
         <ModalHeader toggle={toggle}><BiFoodMenu size={30}/> Ingreso de nuevo Platillo</ModalHeader>
@@ -174,4 +175,4 @@ function ModalAdd (props) {
   )
 }
 
-export default ModalAdd
+export default ModalAddMenu

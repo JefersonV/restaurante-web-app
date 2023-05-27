@@ -19,10 +19,20 @@
 	padding-left: 1em;
 	background-color: #BA434E;
 	padding: 0 1em;
-	label {
-		width: 100%;
-		cursor: pointer;
-
-	}
 }
 
+#abrir, #abrir label {
+	text-align: left;
+	color: white;
+	cursor: pointer;
+	width: 100%;
+}
+
+.table-content-bold {
+	font-weight: bold;
+	text-align: center;
+}
+
+.cash-active {
+	background-color: #5be3a4;
+}

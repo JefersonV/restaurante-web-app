@@ -30,8 +30,7 @@ namespace restaurante_web_app.Controllers
 
             var cajaDiaria = await _dbContext.CajaDiaria
                 .OrderByDescending(c => c.Fecha)
-                .FirstOrDefaultAsync(c => c.Fecha == new DateOnly(2023, 5, 22));
-
+                .FirstOrDefaultAsync(c => c.Fecha == fechaActual);
 
             decimal? totalVentas = await GetTotalByMonth("Ventas", fechaActual);
             decimal? totalVentasMesAnterior = await GetTotalByMonth("Ventas", fechaMesAnterior);
@@ -48,7 +47,7 @@ namespace restaurante_web_app.Controllers
 
             decimal? cajaActual = 0;
 
-            if (cajaDiaria.Estado)
+            if (cajaDiaria != null && cajaDiaria.Estado == true)
             {
                 cajaActual = cajaDiaria.SaldoInicial + (totalVentas ?? 0) - (totalGastos ?? 0);
             }
@@ -61,7 +60,7 @@ namespace restaurante_web_app.Controllers
                 porcentajeCambioGastos,
                 ganancia,
                 porcentajeCambioGanancia,
-                cajaActual
+                cajaActual,
             };
 
             return new JsonResult(data);

@@ -8,6 +8,7 @@ import ModalAdd from "../components/modales/ModalAdd";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import CardSkeleton from "../components/skeletonUI/CardSkeleton";
 
+
 function Providers(props) {
   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
   const isOpen = useStore((state) => state.sidebar);
@@ -58,6 +59,12 @@ function Providers(props) {
           item.telefono.toLowerCase().includes(search.toLocaleLowerCase())
       );
 
+
+
+
+
+
+
   return (
     <div className={isOpen ? "wrapper" : "side"}>
       <div className="container mt-4">
@@ -69,10 +76,10 @@ function Providers(props) {
             {/* Prop para actualizar la data después de confirmar el envío de post */}
             <ModalAdd actualizarListaProveedores={getData} />
 
-            <Button color="primary" outline>
+            {/* <Button color="primary" outline>
               Imprimir lista
               <FcPrint />
-            </Button>
+            </Button> */}
           </div>
         </div>
 

@@ -196,7 +196,7 @@ function ModalEdit(props) {
 							outline
 							>
 							Registrar
-          	</Button>
+          				</Button>
 						<Button color="secondary" onClick={toggle}>
 							Cancelar
 						</Button>
