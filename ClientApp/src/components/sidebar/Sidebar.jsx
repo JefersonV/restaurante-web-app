@@ -3,7 +3,8 @@ import { SidebarData } from "./SidebarData";
 import { FaBars } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import SidebarItem from "./SidebarItem";
-import LogoRestaurant from "../../assets/images/la centenaria.png";
+import Logo from "../../assets/images/centenaria-logo.png"
+import LogoRestaurant from "../../assets/images/centenaria-logo.png";
 import { MdLogout } from "react-icons/md";
 /* Provider (estado global)*/
 import { useStore, useSubItem } from "../../providers/GlobalProvider";
@@ -59,22 +60,21 @@ function Sidebar(props) {
           <section className="top_section">
             {/* Sidebar completa o incompleta  */}
             {/* isOpen === true -> se mostrará el h1 por defecto, de lo contrario se oculta */}
-            <h1 style={{ display: isOpen ? "block" : "none" }} className="logo">
-              Logo
-            </h1>
+            <div className="logo">
+              <figure className="m-0">
+                <img style={{ width: isOpen ? "75px" : "50px" }} className="logo-restaurante" width="20px" src={Logo} alt="Logo restaurante" />
+              </figure>
+              <p className="logo-text-right m-0" style={{ display: isOpen ? "block" : "none"}}>Café Y Restaurante <br /> La Centenaria</p>
+            </div>
           </section>
           {/* Items de la sidebar */}
           {SidebarData.map((item, index) => {
             // return <SidebarItem item ={item} isOpen={isOpen} key={index} />;
             return <SidebarItem item={item} key={index} />;
           })}
-          <div
-            className="d-flex justify-content-center"
-            style={{ position: "relative", bottom: "-16em" }}
-          >
-            <button
+          <button
               type="button"
-              className="btn btn-light"
+              className="btn btn-light d-block m-auto mt-5"
               onClick={cerrarSesion}
             >
               {isOpen ? (
@@ -88,7 +88,12 @@ function Sidebar(props) {
                 </>
               )}
             </button>
-          </div>
+          {/* <div
+            className="d-flex justify-content-center"
+            style={{ position: "relative", bottom: "-16em" }}
+          >
+            
+          </div> */}
         </aside>
         {/* Componentes */}
         <main>{children}</main>

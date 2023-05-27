@@ -51,7 +51,7 @@ function ModalEditSale(props) {
   }, [itemId]);
 
   return (
-    <div>
+    <>
       <AiOutlineEdit
         onClick={() => {
           /* AbrirModal */
@@ -236,7 +236,7 @@ function ModalEditSale(props) {
           
         </ModalFooter>
       </Modal>
-    </div>
+    </>
   );
 }
 

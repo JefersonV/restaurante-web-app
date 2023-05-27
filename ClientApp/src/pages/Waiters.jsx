@@ -54,17 +54,20 @@ function Waiters(props) {
     <div className={isOpen ? "wrapper" : "side"}>
       <div className="container-fluid mt-4">
         <div className="row">
-          <div className="col">
+          <div className="col-6">
             <Searchbar searcher={searcher} />
+          </div>
+          <div className="col-6">
+            <ModalAddMesero actualizarListaMesero={getData} />
+
           </div>
         </div>
         <div className="row d-flex justify-content-center align-items-center">
           <div className="col">
-            <ModalAddMesero actualizarListaMesero={getData} />
-            <Button color="primary" outline>
+            {/* <Button color="primary" outline>
               Imprimir lista
               <FcPrint />
-            </Button>
+            </Button> */}
           </div>
         </div>
         <TableWaiters data={results} actualizarListaMesero={getData} />

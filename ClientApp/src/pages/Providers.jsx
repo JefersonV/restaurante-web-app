@@ -76,10 +76,10 @@ function Providers(props) {
             {/* Prop para actualizar la data después de confirmar el envío de post */}
             <ModalAdd actualizarListaProveedores={getData} />
 
-            <Button color="primary" outline>
+            {/* <Button color="primary" outline>
               Imprimir lista
               <FcPrint />
-            </Button>
+            </Button> */}
           </div>
         </div>
 

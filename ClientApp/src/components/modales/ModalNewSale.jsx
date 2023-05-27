@@ -1,8 +1,7 @@
 
 import React, { useState } from 'react' 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
-import { FcPlus } from 'react-icons/fc'
-import { AiOutlineArrowRight } from 'react-icons/ai'
+import { AiOutlineArrowRight, AiOutlinePlus } from 'react-icons/ai'
 import '../../styles/SaleModal.scss'
 import { Link, useResolvedPath } from 'react-router-dom'
 function ModalNewSale() {
@@ -18,9 +17,8 @@ function ModalNewSale() {
         outline
         onClick={toggle}
       >
-      <FcPlus 
-        
-      />
+      {/* <FcPlus /> */}
+      <AiOutlinePlus strokeWidth={50}/>
         Nueva venta
       </Button>
       <Modal isOpen={modal} fade={false} toggle={toggle} centered={true}>

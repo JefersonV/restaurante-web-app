@@ -63,10 +63,10 @@ function Users(props) {
         <div className="row d-flex justify-content-center align-items-center">
           <div className="col">
             <ModalAddUser actualizarListaUsuario={getData} />
-            <Button color="primary" outline>
+            {/* <Button color="primary" outline>
               Imprimir lista
               <FcPrint />
-            </Button>
+            </Button> */}
           </div>
         </div>
       <TableUsers 

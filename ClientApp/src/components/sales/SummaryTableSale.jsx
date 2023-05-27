@@ -42,7 +42,7 @@ function SummaryTableSale(props) {
                   <td>{item.numeroComanda}</td>
                   <td>{dayjs(item.fecha).format('DD/MM/YYYY')}</td>
                   <td>{item.cliente}</td>
-                  <td>{item.total}</td>
+                  <td>Q.{item.total?.toFixed(2) || 0}</td>
                   <td>
                     {/* Item que fue clickado  */}
                     <ModalEditSale 
