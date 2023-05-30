@@ -176,7 +176,14 @@ aside .top_section .logo .logo-restaurante .logo-text-right {
 
 .active {
   background: var(--border-sidebar);
-  color: #000;
+  color: var(--color-sidebar);
+  /* color: #000; */
+  transition: all 0.5s;
+  border-radius: 0.5em;
+  /* background-color: var(--item-selected); */
+  overflow: hidden;
+  /*   border-left: 4px solid var(--border-sidebar2); */
+  border-left: 5.5px solid var(--border-menu);
 }
 
 .icon,

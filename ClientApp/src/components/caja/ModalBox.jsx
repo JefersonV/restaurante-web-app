@@ -143,7 +143,8 @@ function ModalBox(props) {
                             <th>Monto inicial jornada</th>
                             {/* Cálculo del monto inicial de la jornada */}
                             <th className="d-none">{setResultadoFinal(props.saldoCajaAnterior.cajaAnterior + parseFloat(values.montoInicial)) || props.saldoCajaAnterior.cajaAnterior || 0}</th>
-                            <th className="d-nonoe">{setMontoInicial(values.montoInicial)}</th>
+                            {setMontoInicial(values.montoInicial)}
+                            {/* <th className="d-none"></th> */}
                             <th>{resultadoFinal || props.saldoCajaAnterior.cajaAnterior || 0}</th>
                           </tr>
                         </tbody>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Table } from 'reactstrap'
 import '../styles/Table.scss'
+import dayjs from 'dayjs'
 import Skeleton from 'react-loading-skeleton'
 
 export default function TableInventario(props) {
@@ -53,7 +54,7 @@ export default function TableInventario(props) {
             {item.tipoMovimiento}
           </td>
           <td>
-            {item.fechaCaja}
+            {dayjs(item.fechaCaja).format('DD/MM/YYYY')}
           </td>
           <td>
             Q.{item.total.toFixed(2)}

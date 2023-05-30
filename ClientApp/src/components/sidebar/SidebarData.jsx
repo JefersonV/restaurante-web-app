@@ -32,8 +32,12 @@ export const SidebarData = [
     title: "Inventario",
     path: "/inventory",
     icon: <MdOutlineInventory />,
-    iconClosed: <RiArrowDownSFill />,
-    iconOpened: <RiArrowUpSFill />,
+    iconClosed: <RiArrowDownSFill 
+                  size={25}
+                />,
+    iconOpened: <RiArrowUpSFill 
+                  size={25}
+                />,
     subNav: [
       {
         title: "Ventas",
@@ -68,8 +72,12 @@ export const SidebarData = [
     title: "Configuración",
     path: "/config",
     icon: <GrConfigure />,
-    iconClosed: <RiArrowDownSFill />,
-    iconOpened: <RiArrowUpSFill />,
+    iconClosed: <RiArrowDownSFill 
+                size={25}
+                />,
+    iconOpened: <RiArrowUpSFill
+                size={25}            
+                />,
     subNav: [
       {
         title: "Menú",

@@ -65,7 +65,7 @@ function Sales(props) {
             <Searchbar searcher={searcher} />
           </div>
         </div>
-        <div className="row d-flex justify-content-center align-items-center">
+        <div className="row d-flex justify-content-center align-items-initial">
           <div className="col">
             <Select 
               data={results}

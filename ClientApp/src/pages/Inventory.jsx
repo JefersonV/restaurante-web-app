@@ -39,7 +39,7 @@ function Inventory(props) {
   return (
     <div className={ isOpen ? "wrapper" : "side" }>
       <div className="container-fluid mt-4">
-        <h1 style={{ textAlign: "center" }}>Movimientos del mes</h1>
+        <h1 style={{ textAlign: "center", color: "#8b1e3f" }}>Movimientos del mes</h1>
       <div className="row">
           <div className="col">
             {/* <TableData data={results} /> */}

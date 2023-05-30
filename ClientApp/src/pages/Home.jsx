@@ -5,8 +5,13 @@ import Widget from "../components/charts/widgets/Widget";
 import Chart from "../components/charts/chart/Chart";
 
 function Home(props) {
+  useEffect(() => {
+    // Para establecer en el módulo en el que nos encontramos
+    props.setTitle("Dashboard");
+  }, []);
   const [ganancias, setGanancias] = useState(false);
   const [datosAnuales, setDatosAnuales] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
 
   const requestOptions = {
     method: "GET",

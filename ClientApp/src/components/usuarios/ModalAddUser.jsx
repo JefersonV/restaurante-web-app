@@ -28,7 +28,7 @@ function ModalAdd(props) {
         'El nombre debe tener un máximo de 25 caracteres y solo puede contener letras y espacios';
     }
     if (!valores.contrasenia) {
-      errores.contrasenia = 'Por favor ingresa una contrasenia';
+      errores.contrasenia = 'Por favor ingresa una contraseña';
     }
     if (!valores.idTipoUsuario) {
       errores.idTipoUsuario = 'Por favor selecciona un tipo de usuario';
@@ -139,6 +139,9 @@ function ModalAdd(props) {
                       onBlur={handleBlur}
                       valid={touched.contrasenia && !errors.contrasenia && values.contrasenia.length > 0}
                       invalid={touched.contrasenia && !!errors.contrasenia}
+                      append={<span onClick={() => setMostrarContrasenia(!mostrarContrasenia)}>
+                      {mostrarContrasenia ? <AiFillEyeInvisible /> : <AiFillEye />}
+                      </span>}
                     />
                     {touched.contrasenia && errors.contrasenia && <div className="error">{errors.contrasenia}</div>}
                   </Col>

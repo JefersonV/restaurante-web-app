@@ -132,8 +132,9 @@ function ModalAdd(props) {
   return (
     <>
       <Button color="success" outline onClick={toggle}>
-        Registrar Gasto
         <BiEditAlt />
+        {" "}
+        Registrar Gasto
       </Button>
       <Modal isOpen={modal} fade={false} toggle={toggle} centered={true}>
         <ModalHeader toggle={toggle}>

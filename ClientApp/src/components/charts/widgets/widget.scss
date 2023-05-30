@@ -61,3 +61,64 @@
     color: #ccc;
   }
 }
+
+@media screen and (max-width: 1023px) {
+  /* Estilos para pantallas con un ancho mínimo de 1023px */
+  .widgets {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .widget {
+    width: 160px;
+    .title {
+      font-size: 13px;
+    }
+    .counter {
+      font-size: 25px;
+    }
+    .link {
+      font-size: 13px;
+    }
+    .link:hover {
+      // text-decoration: underline;
+      background-color: rgba(207, 84, 72, 0.16);
+    }
+    .icon {
+      font-size: 28px;
+    }
+    
+    /*  */
+    .percentage-title {
+      font-size: 12px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+   /* Estilos para pantallas con un ancho mínimo de 768px */
+  .widget {
+    .title {
+      font-size: 12px;
+    }
+    
+    .counter {
+      font-size: 22px;
+    }
+    .link {
+      font-size: 11px;
+      align-self: left;
+    }
+    .link:hover {
+    
+    }
+    .icon {
+      font-size: 25px;
+      align-self: center;
+    }
+    
+    /*  */
+    .percentage-title {
+      font-size: 12px;
+    }
+  }
+}

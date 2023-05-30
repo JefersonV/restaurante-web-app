@@ -225,7 +225,7 @@ function Purchases(props) {
             </Button>
           </div>
         </div>
-        <div className="row d-flex justify-content-center align-items-center">
+        <div className="row d-flex justify-content-center align-items-initial mt-3 mb-2">
           <div className="col">
             <FormGroup style={{ maxWidth: "500px" }}>
               <Input

@@ -57,14 +57,14 @@ function Sidebar(props) {
         <aside
           className={isOpen ? "sidebar sidebarOpen" : "sidebar sidebarClose"}
         >
-          <section className="top_section">
+          <section className="top_section" style={{ paddingLeft: !isOpen ? "12px" : "0px" }}>
             {/* Sidebar completa o incompleta  */}
             {/* isOpen === true -> se mostrará el h1 por defecto, de lo contrario se oculta */}
             <div className="logo">
               <figure className="m-0">
-                <img style={{ width: isOpen ? "75px" : "50px" }} className="logo-restaurante" width="20px" src={Logo} alt="Logo restaurante" />
+                <img style={{ width: isOpen ? "75px" : "55px" }} className="logo-restaurante" width="20px" src={Logo} alt="Logo restaurante" />
               </figure>
-              <p className="logo-text-right m-0" style={{ display: isOpen ? "block" : "none"}}>Café Y Restaurante <br /> La Centenaria</p>
+              <p className="logo-text-right m-0" style={{ display: isOpen ? "inline" : "none"}}>Café Y Restaurante <br /> La Centenaria</p>
             </div>
           </section>
           {/* Items de la sidebar */}

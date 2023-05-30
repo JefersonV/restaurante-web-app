@@ -81,7 +81,7 @@ function TableSale({
 
   return (
     <div className="comanda-digital">
-      <Table bordered responsive>
+      <Table hover responsive>
         <thead>
           <tr>
             <th>Platillo</th>
@@ -160,7 +160,7 @@ function TableSale({
         {/* Tabla de resumen de comanda */}
       </Table>
       <div className="resumen-comanda">
-        <table className="table responsive table-resumen">
+        <Table responsive>
           <thead>
             <tr>
               <th className="resumen-title">Resumen comanda</th>
@@ -168,7 +168,7 @@ function TableSale({
           </thead>
           <tbody className="table-resumen-body">
             <tr className="row-resumen">
-              <th >
+              <th className="fs-5">
                 No. {noComanda}
               </th>
             </tr>
@@ -192,7 +192,7 @@ function TableSale({
               </td>
             </tr>
           </tbody>
-        </table>
+        </Table>
       </div>
     </div>
   );

@@ -74,7 +74,7 @@ const Widget = ({ type, monto, porcentaje = 0 }) => {
           {data.title}
         </span>
         <span className="counter" style={data.colorSpam}>
-          {data.isMoney && "Q"} {monto}
+          {data.isMoney && "Q."}{monto}
         </span>
         {/* <span className="link">{data.link}</span> */}
         {/* style={{display: isOpen ? "block" : "none"}} */}
@@ -89,12 +89,12 @@ const Widget = ({ type, monto, porcentaje = 0 }) => {
         >
           {porcentaje > 0 ? (
             <>
-              <span style={{ color: "green" }}>{porcentaje}</span>
+              <span className="percentage-title" style={{ color: "green" }}>{porcentaje}</span>
               <FaIcons.FaAngleUp color="green" />
             </>
           ) : (
             <>
-              <span style={{ color: "red" }}>{porcentaje}</span>
+              <span className="percentage-title" style={{ color: "red" }}>{porcentaje}</span>
               <FaIcons.FaAngleUp color="red" />
             </>
           )}
