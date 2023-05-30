@@ -137,7 +137,7 @@ const ModalEditUser = (props) => {
                       name="nombre"
                       id="nombre"
                       autoComplete='off'
-                      value={data.nombre}
+                      value={props.values.nombre}
                       onChange={props.handleChange}
                       onBlur={props.handleBlur}
                       valid={props.touched.nombre && !props.errors.nombre && props.values.nombre.length > 0}
