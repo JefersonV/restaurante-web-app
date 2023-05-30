@@ -48,6 +48,7 @@ const [month, setMonth] = useState(initialMonth);
   // const [weekNumber, setWeekNumber] = useState(initialWeekNumber);
   // const [salesData, setSalesData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [loading1, setLoading1] = useState(false);
 
   const [data, setData] = useState([]);
 
@@ -76,6 +77,7 @@ const [month, setMonth] = useState(initialMonth);
     setMonth(event.target.value);
   };
   const fetchMonthData = async () => {
+    setLoading(true)
     try {
       const response = await fetch(`${URL}/api/ReportDay/month?month=${month}`,{
         headers: {
@@ -86,8 +88,10 @@ const [month, setMonth] = useState(initialMonth);
       // ?month=may
       const jsonData = await response.json();
       setData(jsonData);
+      setLoading(false)
     } catch (error) {
       console.error('Error fetching month data:', error);
+      setLoading(false)
     }
   };
 
@@ -99,6 +103,7 @@ const [month, setMonth] = useState(initialMonth);
 
 
   const generarPdf = () => {//http://localhost:5188/api/pdf/reportweek
+    setLoading1(true)
     const url = `${URL}/api/pdf/mes?month=${month}`;
     
     fetch(url, {
@@ -116,9 +121,11 @@ const [month, setMonth] = useState(initialMonth);
         if (!newWindow) {
           throw new Error('No se pudo abrir el PDF en una pestaña nueva.');
         }
+        setLoading1(false)
       })
       .catch((error) => {
         console.error('Error:', error);
+        setLoading1(false);
       });
   };
 
@@ -191,14 +198,20 @@ const [month, setMonth] = useState(initialMonth);
           <FcPrint />
         </ButtonDrop> */}
         {/* <Label htmlFor="dateInput">Seleccionar fecha:</Label> */}
-        <Button
-          onClick={generarPdf}
-          color="primary"
-          outline
-        >
-          Imprimir
-          <FcPrint />
-        </Button>
+              <Button color="primary" disabled={loading1} onClick={generarPdf} >
+                
+                {loading1 ? (
+                  <>
+                    <Spinner size="sm" />
+                    <span>Generando</span>
+                  </>
+                ) : (
+                  <>
+                    Imprimir
+                    <FcPrint />
+                  </>
+                )}
+              </Button>
       </div>
     
       

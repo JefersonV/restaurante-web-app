@@ -45,6 +45,8 @@ function BoxDay (props)  {
   const [salesData, setSalesData] = useState([]);
   const [hasSales, setHasSales] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [loading1, setLoading1] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(null);
 
 
 
@@ -56,6 +58,7 @@ function BoxDay (props)  {
 //   *****************************************GENERAR PDF */
 
   const generarPdf = () => {
+    setLoading1(true)
     const url = `${URL}/api/pdfBox/boxday?fecha=${selectedDate1}`;
     //=2023-5-20
     fetch(url, {
@@ -72,9 +75,11 @@ function BoxDay (props)  {
         if (!newWindow) {
           throw new Error('No se pudo abrir el PDF en una pestaña nueva.');
         }
+        setLoading1(false)
       })
       .catch((error) => {
         console.error('Error:', error);
+        setLoading1(false)
       });
   };
   // *****************************************FIN GENERAR PDF */
@@ -144,6 +149,17 @@ function BoxDay (props)  {
   //   fetchDailyReport();
   // }, []);
 
+  const notification = (mensaje) =>
+    toast.error(mensaje, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
 
   useEffect(() => {
     checkSales(new Date(selectedDate1));
@@ -160,31 +176,50 @@ function BoxDay (props)  {
           'Authorization': `Bearer ${localStorage.token}`,
         }
       })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Error de servidor: ' + response.status);
-          }
-          return response.json();
-        })
+        .then( (response) => response.json()
+        //   response => 
+        //   {
+        //   if (!response.ok) {
+        //     throw new Error('Error de servidor: ' + response.status);
+            
+        //     // setLoading(false);
+        //   }
+        //   setErrorMessage(response.status);
+        //   return response.json();
+         
+          
+          
+        // }
+        )
         .then((data) => {
           // Verificar la respuesta de la API y actualizar los datos de ventas y el estado hasSales en consecuencia
-          setSalesData(data);
-      setCajaDiaria(data.cajaDiaria);
-      setMovimientosCaja(data.movimientosCaja);
-      setTotalVentas(data.totalVentas);
-        setTotalGastos(data.totalGastos);
-          setHasSales(data.length > 0);
-          console.log("casa",data)
+          
+
+       
+            // setData(responseData);
+            setSalesData(data);
+            setCajaDiaria(data.cajaDiaria);
+            setMovimientosCaja(data.movimientosCaja);
+            setTotalVentas(data.totalVentas);
+            setTotalGastos(data.totalGastos);
+            setHasSales(data.length > 0);
+            console.log("casa",data)
+            setLoading(false);
+
+   
+          // setLoading(false);
     
           
         })
         .catch((error) => {
           console.error('Error:', error);
           alert('No se encontraron  los datos ');
+          setLoading(false);
+          // setGastos(error);
           
         });
     }
-    setLoading(false)
+    // setLoading(false)
   };
   
   const handleDateChange1 = (event) => {
@@ -205,6 +240,17 @@ function BoxDay (props)  {
     return <p>Loading...</p>;
   }
 
+  
+  // if (!cajaDiaria ) {
+  //   return <p>Loading...</p>;
+  // }
+  
+//   if (movimientosCaja.length > 0) {
+//     return <p>Loading...</p>;
+//   }
+// else{
+//   return <p>si hay </p>
+// }
 
 
 
@@ -257,12 +303,10 @@ function BoxDay (props)  {
 //   };
 
 
-// if (!data) {
-//   return <p>Loading...</p>;
-// }
+
 
 // const { cajaDiaria, movimientosCaja } = data;
-console.log("con",movimientosCaja)
+console.log("Movimientos",movimientosCaja.length)
 console.log("has", salesData)
 
 
@@ -301,14 +345,20 @@ const estadoStyle = {
             
           </div> 
           <div className='col '>
-          <Button
-              onClick={generarPdf}
-              color="primary"
-              outline
-            >
-              Generar reporte
-              <FcPrint />
-            </Button>
+              <Button color="primary" disabled={loading1} onClick={generarPdf} >
+                
+                {loading1 ? (
+                  <>
+                    <Spinner size="sm" />
+                    <span>Generando</span>
+                  </>
+                ) : (
+                  <>
+                    Imprimir
+                    <FcPrint />
+                  </>
+                )}
+              </Button>
             
           </div> 
 
@@ -383,45 +433,57 @@ const estadoStyle = {
       </Table>
       </div>
 
-      <Tablebox
+      {/* <Tablebox
         movimientosCaja={movimientosCaja}
         data={salesData}
         
         
-        />
+        /> */}
+
+
+        
+
+        {loading ? (
+        <Spinner
+        className="m-5"
+        color="warning"
+      >
+        Loading...
+      </Spinner>
+      ):
+       movimientosCaja.length >0 ? (
+        // <Alert color="success">Hay ventas en la fecha seleccionada.</Alert>
+        // <Tablep data={results} />
+        // <Tablebox movimientosCaja={movimientosCaja} data={salesData} />
+                // <Alert color="warning">No hay ventas en la fecha seleccionada.</Alert>
+
+                <Tablebox movimientosCaja={movimientosCaja} data={salesData} />
+
+
+      ) :(
+        <Alert color="warning">No hay ventas en la fecha seleccionada.</Alert>
+        // <Tablebox movimientosCaja={movimientosCaja} data={salesData} />
+
+
+
+      ) }
+
+{/* {errorMessage ===null ? (
+        
+        <Alert color="danger">{errorMessage}</Alert>
+      ): (
+    
+        <Tablebox movimientosCaja={movimientosCaja} data={salesData} />
+
+      )} */}
+
+
+        
       
 
         
     </div>
     </div>
-      {/* <table>
-        <thead>
-            <tr>
-              <td>uno</td>
-              <td>dos</td>
-              <td>tres</td>
-            </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr key={index}>
-              <td>{item.cajaDiaria.saldoInicial}. {item.cajaDiaria.saldoFinal}</td>
-
-            </tr>
-          ))
-
-          }
-
-
-        </tbody>
-      </table> */}
-      {
-
-      }
-
-      <div>
-
-          </div>
       </div>
     </div>
 

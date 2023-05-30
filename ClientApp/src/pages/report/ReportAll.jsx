@@ -14,7 +14,7 @@ import Tablep from '../../components/report/tprueba';
 // import { Row, Col,  Button } from "reactstrap";
 import { FcPrint } from 'react-icons/fc';
 import ModalNewSale from '../../components/modales/ModalNewSale';
-import Selectc from '../../components/report/SelecttReportC';
+// import Selectc from '../../components/report/SelecttReportC';
 
 function ReportAll (props)  {
   
@@ -49,48 +49,17 @@ const [month, setMonth] = useState(initialMonth);
   // const [weekNumber, setWeekNumber] = useState(initialWeekNumber);
   // const [salesData, setSalesData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [loading1, setLoading1] = useState(false);
 
   const [data, setData] = useState([]);
 
 
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-
-  //   try {
-  //     const response = await fetch(`http://localhost:5173/api/ReportDay/reportweek?month=${month}&weekNumber=${weekNumber}`);
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       setSalesData(data);
-  //     } else {
-  //       console.error('Error al obtener los datos');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error en la solicitud:', error);
-  //   }
-
-  //   setLoading(false);
-  // };
 
   const handleMonthChange = (event) => {
     setMonth(event.target.value);
   };
-  // const fetchMonthData = async () => {
-  //   try {
-  //     const response = await fetch(`http://localhost:5188/api/ReportDay/month?month=${month}`,{
-  //       headers: {
-  //         'Authorization': `Bearer ${localStorage.token}`,
-  //       }
-  //     });
 
-  //     // ?month=may
-  //     const jsonData = await response.json();
-  //     setData(jsonData);
-  //   } catch (error) {
-  //     console.error('Error fetching month data:', error);
-  //   }
-  // };
 
   useEffect(() => {
     setLoading(true);
@@ -114,7 +83,8 @@ const [month, setMonth] = useState(initialMonth);
 
 
   const generarPdf = () => {//http://localhost:5188/api/pdf/reportweek
-    const url = `${URL}/api/pdf/mes?month=${month}`;
+    setLoading1(true)
+    const url = `${URL}/api/pdf/year`;
     
     fetch(url, {
       method: 'GET',
@@ -131,9 +101,11 @@ const [month, setMonth] = useState(initialMonth);
         if (!newWindow) {
           throw new Error('No se pudo abrir el PDF en una pestaña nueva.');
         }
+        setLoading1(false)
       })
       .catch((error) => {
         console.error('Error:', error);
+        setLoading1(false)
       });
   };
 
@@ -199,7 +171,7 @@ const [month, setMonth] = useState(initialMonth);
     </div>
     <div className="row">
       <div className="col">
-        <Selectc />
+        <Select />
       </div>
     
     <div className="col" >
@@ -207,14 +179,20 @@ const [month, setMonth] = useState(initialMonth);
           <FcPrint />
         </ButtonDrop> */}
         {/* <Label htmlFor="dateInput">Seleccionar fecha:</Label> */}
-        <Button
-          onClick={generarPdf}
-          color="primary"
-          outline
-        >
-          Imprimir
-          <FcPrint />
-        </Button>
+              <Button color="primary" disabled={loading1} onClick={generarPdf} >
+                
+                {loading1 ? (
+                  <>
+                    <Spinner size="sm" />
+                    <span>Generando</span>
+                  </>
+                ) : (
+                  <>
+                    Imprimir
+                    <FcPrint />
+                  </>
+                )}
+              </Button>
       </div>
     
       

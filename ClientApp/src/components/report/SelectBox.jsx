@@ -33,11 +33,11 @@ const  SelectBox = () => {
       href: '/boxweek',
       
     },
-    // {
-    //   value: '4',
-    //   label: 'Mensual',
-    //   href: '/boxmonth',
-    // },
+    {
+      value: '3',
+      label: 'Mensual',
+      href: '/boxmonth',
+    },
 
     
   ];

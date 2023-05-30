@@ -41,12 +41,14 @@ function Reports (props)  {
   const [salesData, setSalesData] = useState([]);
   const [hasSales, setHasSales] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [loading1, setLoading1] = useState(false);
 
 
 
 //   *****************************************GENERAR PDF */
 
   const generarPdf = () => {
+    setLoading1(true);
     const url = `${URL}/api/pdf/reportday?date=${selectedDate1}`;
     fetch(url, {
       method: 'GET',
@@ -54,6 +56,7 @@ function Reports (props)  {
         'Content-Type': 'application/pdf',
       },
       responseType: 'blob',
+      
     })
       .then((response) => response.blob())
       .then((blob) => {
@@ -62,9 +65,11 @@ function Reports (props)  {
         if (!newWindow) {
           throw new Error('No se pudo abrir el PDF en una pestaña nueva.');
         }
+        setLoading1(false);
       })
       .catch((error) => {
         console.error('Error:', error);
+        setLoading1(false);
       });
   };
   // *****************************************FIN GENERAR PDF */
@@ -92,12 +97,14 @@ function Reports (props)  {
           // Verificar la respuesta de la API y actualizar los datos de ventas y el estado hasSales en consecuencia
           setSalesData(data);
           setHasSales(data.length > 0);
+          setLoading(false)
         })
         .catch((error) => {
           console.error('Error:', error);
+          setLoading(false)
         });
     }
-    setLoading(false)
+    
   };
   
   const handleDateChange1 = (event) => {
@@ -159,15 +166,41 @@ function Reports (props)  {
             
           </div> 
           <div className='col '>
-          <Button
-              onClick={generarPdf}
-              color="primary"
-              outline
-            >
+          {/* {loading >  0 ? (
+        <Spinner
+          className="m-5"
+          color="warning"
+        >
+          Loading...
+        </Spinner>
+      ):
+        ( */}
+            {/* <Button
+                onClick={generarPdf}
+                color="primary"
+                outline
+              >
+                
+                Generar reporte
+                <FcPrint />
+              </Button> */}
+              <Button color="primary" disabled={loading1} onClick={generarPdf} >
+                
+                {loading1 ? (
+                  <>
+                    <Spinner size="sm" />
+                    <span>Generando</span>
+                  </>
+                ) : (
+                  <>
+                    Imprimir
+                    <FcPrint />
+                  </>
+                )}
+              </Button>
+
               
-              Generar reporte
-              <FcPrint />
-            </Button>
+                  
             
           </div> 
 
@@ -193,14 +226,11 @@ function Reports (props)  {
         Loading...
       </Spinner>
       ):
-      hasSales  ? (
+       (
         // <Alert color="success">Hay ventas en la fecha seleccionada.</Alert>
         <Tablep data={results} />
         // <Alert color="warning">No hay ventas en la fecha seleccionada.</Alert>
-      ) : (
-        <Alert color="danger">No hay ventas en la fecha seleccionada.</Alert>
-        // <Tablep data={results} />
-      )}
+      ) }
 
           </div>
         </div>
