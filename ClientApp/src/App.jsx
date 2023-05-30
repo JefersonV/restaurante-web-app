@@ -165,7 +165,7 @@ function App() {
                 />
                 <Route
                   path="/config"
-                  element={<Config setTitle={setTitle} />}
+                  element={<Menu setTitle={setTitle} />}
                 />
                 <Route path="/menu" element={<Menu setTitle={setTitle} />} />
                 <Route

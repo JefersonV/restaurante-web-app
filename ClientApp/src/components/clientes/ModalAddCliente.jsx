@@ -24,8 +24,9 @@ function ModalAddCliente(props) {
   return (
     <>
       <Button color="danger" outline onClick={toggle}>
-        Registra Nuevo
         <BiEditAlt />
+        Registrar Nuevo
+        
       </Button>
       <Modal isOpen={modal} fade={false} toggle={toggle} centered={true}>
         <ModalHeader toggle={toggle}>

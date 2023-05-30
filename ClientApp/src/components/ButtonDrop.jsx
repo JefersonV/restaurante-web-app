@@ -4,13 +4,12 @@ import { ButtonGroup, UncontrolledDropdown, DropdownToggle, DropdownMenu, Dropdo
 function ButtonDrop({children}) {
   return (
     <>
-      <ButtonGroup>
+      {/* <ButtonGroup>
         <UncontrolledDropdown>
         <DropdownToggle caret
           color="primary"
           outline
         >
-            {/* children para el ícono */}
             {children}
             Imprimir Reporte
         </DropdownToggle>
@@ -32,7 +31,7 @@ function ButtonDrop({children}) {
             </DropdownItem>
         </DropdownMenu>
         </UncontrolledDropdown>
-      </ButtonGroup>
+      </ButtonGroup> */}
     </>
   )
 }

@@ -14,6 +14,7 @@ function ModalBox(props) {
   // const [saldoCajaAnterior.cajaAnterior, setsaldoCajaAnterior.cajaAnterior] = useState(250);
   // Saldo para iniciar la jornada -> saldoCajaAnt + valor del input
   const [resultadoFinal, setResultadoFinal] = useState(0);
+  const [montoInicial,setMontoInicial] = useState(0)
 
   return (
     <>
@@ -48,7 +49,7 @@ function ModalBox(props) {
             onSubmit={async (valores, { resetForm }) => {
               // Captura de la data que se va a enviar...
               const dataCajaPost = {
-                "saldoInicial": resultadoFinal
+                "saldoInicial": montoInicial
               }
               // Método POST y otras operaciones...
               try {
@@ -145,6 +146,7 @@ function ModalBox(props) {
                             <th>Monto inicial jornada</th>
                             {/* Cálculo del monto inicial de la jornada */}
                             <th className="d-none">{setResultadoFinal(props.saldoCajaAnterior.cajaAnterior + parseFloat(values.montoInicial)) || props.saldoCajaAnterior.cajaAnterior || 0}</th>
+                            <th className="d-nonoe">{setMontoInicial(values.montoInicial)}</th>
                             <th>{resultadoFinal || props.saldoCajaAnterior.cajaAnterior || 0}</th>
                           </tr>
                         </tbody>

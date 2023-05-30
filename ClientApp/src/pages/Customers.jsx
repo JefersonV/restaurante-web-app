@@ -65,20 +65,19 @@ function Customers(props) {
           <div className="col">
             <Searchbar searcher={searcher} />
           </div>
-        </div>
-        <div className="row d-flex justify-content-center align-items-center">
-          <div className="col">
+        <div className="col-6">
+          
           <ModalAddCliente
             actualizarListaClientes={getData}
           />
-          <Button 
+          {/* <Button 
             color="primary"
             outline
             >
             Imprimir lista 
             <FcPrint />
-          </Button>
-          </div>
+          </Button> */}
+        </div>
         </div>
         <div className="row">
           <div className="col">

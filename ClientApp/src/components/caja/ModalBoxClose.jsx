@@ -19,9 +19,8 @@ function ModalBoxClose(props) {
   const IdActivo = getDataCashBoxId[0]?.idCajaDiaria;  
   /* Objeto que irá en el body de la solicitud put */
   console.info(getDataCashBoxId)
-  let dataCerrar = {
-    cantidadSacar: ""
-  }
+
+  const [cantidadSacar, setCantidadSacar] = useState(0)
 
   const navigate = useNavigate();
   return (
@@ -59,7 +58,10 @@ function ModalBoxClose(props) {
             }}
             onSubmit={async (valores, { resetForm }) => {
               // Captura de la data que se va a enviar...
-              dataCerrar.cantidadSacar = resultadoFinal
+              let dataCerrar = {
+                cantidadSacar: cantidadSacar
+              }
+              
               // Método PUT para cerra caja
               try {
                 const response = await fetch(
@@ -154,7 +156,9 @@ function ModalBoxClose(props) {
                               {/* getDataCashBoxId[0]?.caja es lo que hay actualmente en caja */}
                               {setResultadoFinal(getDataCashBoxId[0]?.caja - parseFloat(values.montoInicial))
                               || getDataCashBoxId[0]?.caja || 0}
+                              {setCantidadSacar(values.montoInicial)}
                             </th>
+
                             <th>{resultadoFinal || getDataCashBoxId[0]?.caja || 0}</th>
                           </tr>
                         </tbody>

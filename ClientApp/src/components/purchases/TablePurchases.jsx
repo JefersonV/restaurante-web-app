@@ -3,6 +3,7 @@ import { HiPencilAlt } from "react-icons/hi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import SwalDelete from "./ModalDeletePurchase"
 import ModalEdit from "./ModalEditPurchase"
+import dayjs from "dayjs";
 
 function TablePurchases(props) {
   const { data, actualizarListaCompras } = props;
@@ -35,7 +36,7 @@ function TablePurchases(props) {
               <tr key={index}>
                 <th scope="row">{index + 1}</th>
                 <td style={{ textAlign: "left" }}>{compra.numeroDocumento}</td>
-                <td style={{ textAlign: "left" }}>{compra.fecha}</td>
+                <td style={{ textAlign: "left" }}>{dayjs(compra.fecha).format('DD/MM/YYYY')}</td>
                 <td style={{ textAlign: "left" }}>{compra.concepto}</td>
                 <td style={{ textAlign: "left" }}>{compra.proveedor}</td>
                 <td style={{ textAlign: "left" }}>{`Q.${compra.total.toFixed(

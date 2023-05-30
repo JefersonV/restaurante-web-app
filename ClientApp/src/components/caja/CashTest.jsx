@@ -91,22 +91,22 @@ function CashTest() {
                 {/* Si el item está activo el texto dirá activo */} 
                 {item.estado === true ? "Activo" : "Inactivo"}</span>
               </td>
-              <td>Q.{item.saldoInicial}</td>
+              <td>Q.{item.saldoInicial?.toFixed(2) || 0}</td>
               <td>
                 <span className="table-content-bold">Efectivo</span><br />
-                Q.{item.ingreso}
+                Q.{item.ingreso?.toFixed(2) || 0}
               </td>
               <td>
                 <span className="table-content-bold">Efectivo</span><br />
-                Q.{item.egreso}
+                Q.{item.egreso?.toFixed(2) || 0}
               </td>
               <td>
                 <span className="table-content-bold">Caja</span> 
-                  Q.{item.caja}<br /><span className={item.estado === true ? "d-none" : "table-content-bold"}>Entregó:Q.{item.entrega} 
+                  Q.{item.caja?.toFixed(2) || 0}<br /><span className={item.estado === true ? "d-none" : "table-content-bold"}>Entregó:Q.{item.entrega} 
                   </span> 
               </td>
-              <td>Q.{item.saldoBruto}</td>
-              <td className="table-content-bold">Q.{item.ganancia}</td>
+              <td>Q.{item.saldoBruto?.toFixed(2) || 0}</td>
+              <td className="table-content-bold">Q.{item.ganancia?.toFixed(2) || 0}</td>
             </tr>
           ))}
         </tbody>

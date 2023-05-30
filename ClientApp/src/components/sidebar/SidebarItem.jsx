@@ -14,7 +14,7 @@ function SidebarItem(props) {
     <>
       {/* Menú  */}
       {/* Items */}
-      <Link to={item.path} className="link" activeclassname="active" onClick={item.subNav && showSubNav}>
+      <Link to={item.path} className="link" activeclassname="active" onClick={item.subNav && showSubNav} title={item.title}>
         <div className="icon">{item.icon}</div>
         <span style={{display: isOpen ? "block" : "none"}} className="link_text">{item.title}</span>
         <div className="sidebar-arrow">

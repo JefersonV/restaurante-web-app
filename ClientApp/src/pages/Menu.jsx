@@ -60,23 +60,23 @@ function Menu(props) {
     <div className={isOpen ? "wrapper" : "side"}>
       <div className="container-fluid mt-4">
         <div className="row">
-          <div className="col">
+          <div className="col-6">
             <Searchbar searcher={searcher} />
           </div>
-        </div>
-        <div className="row d-flex justify-content-center align-items-center">
-          <div className="col">
+        <div className="col-6 ">
+ 
           <ModalAddMenu
             actualizarListaMenu={getData}
           />
-          <Button 
+          {/* <Button 
             color="primary"
             outline
             >
             Imprimir lista 
             <FcPrint />
-          </Button>
-          </div>
+          </Button> */}
+
+        </div>
         </div>
         <div className="row">
           <div className="col">
