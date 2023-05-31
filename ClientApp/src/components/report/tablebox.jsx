@@ -19,8 +19,9 @@ export default function Tablebox ( props ) {
     <div>
 
 {/* <h6>Resumen de ventas: {sumaTotal}</h6> */}
-    {movimientosCaja ?  (
-
+{/* {data.length > 0 ?  */}
+    {/* {movimientosCaja ?  ( */}
+{
 movimientosCaja.map((movimiento, index) => (
   <div key={index} className='d-flex'>
     {/* <p>Id Movimiento: {movimiento.idMovimiento}</p>
@@ -68,9 +69,7 @@ movimientosCaja.map((movimiento, index) => (
 
       
       
-    ) : (
-      <Alert color="danger">No se econtraron ventas.</Alert>
-    )}
+        }
   </div>
   );
   };

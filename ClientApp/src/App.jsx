@@ -33,6 +33,7 @@ import ShoppAll from "./pages/report/ShoppAll";
 import ReportAll from "./pages/report/ReportAll";
 import BoxDay from "./pages/report/BoxDay";
 import BoxWeek from "./pages/report/BoxWeek";
+import BoxMonth from "./pages/report/BoxMonth";
 
 function App() {
   const [pageTitle, setPageTitle] = useState("");
@@ -161,7 +162,7 @@ function App() {
                 />
                 <Route
                   path="/boxmonth"
-                  element={<BoxWeek setTitle={setTitle} />}
+                  element={<BoxMonth setTitle={setTitle} />}
                 />
                 <Route
                   path="/config"

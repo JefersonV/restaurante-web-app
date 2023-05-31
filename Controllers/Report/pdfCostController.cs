@@ -25,6 +25,57 @@ namespace restaurante_web_app.Controllers.Report
             _dbContext = dbContext;
         }
 
+        public class HeaderFooter : PdfPageEventHelper
+        {
+            public override void OnStartPage(PdfWriter writer, Document document)
+            {
+                //LineSeparator line = new LineSeparator();
+                //line.LineColor = BaseColor.BLACK; // Color de la línea
+                //line.LineWidth = 1f; // Ancho de la línea
+
+                //// Agregar la línea al documento
+                //document.Add(new Chunk(line));
+
+                PdfPTable headerTable = new PdfPTable(3);
+                headerTable.WidthPercentage = 100;
+
+                // Agregar la imagen al encabezado
+                string imagePath = "https://res.cloudinary.com/djcaqjlqx/image/upload/v1684894683/Centenario_uhiubm.png"; // Reemplaza con la ruta de tu imagen
+                Image image = Image.GetInstance(imagePath);
+                image.ScaleAbsolute(100, 100); // Ajustar el tamaño de la imagen
+                PdfPCell imageCell = new PdfPCell(image);
+                imageCell.HorizontalAlignment = Element.ALIGN_LEFT;
+                imageCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+                headerTable.AddCell(imageCell);
+
+                // Agregar el título al encabezado
+                PdfPCell titleCell = new PdfPCell(new Phrase("Cafe y Restaurante La Centenaria", new Font(Font.FontFamily.COURIER, 16, Font.BOLD)));
+                titleCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                titleCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                titleCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+                headerTable.AddCell(titleCell);
+
+                // Obtener la fecha de hoy
+                DateTime daynow = DateTime.Now;
+                string fechaHoy = daynow.ToString();
+
+                // Agregar la descripción al encabezado
+                PdfPCell descriptionCell = new PdfPCell(new Phrase($"Reporte de Compras\n\nFecha de Impresión:\n{fechaHoy}", new Font(Font.FontFamily.COURIER, 10, Font.NORMAL)));
+                descriptionCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                descriptionCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                descriptionCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+                headerTable.AddCell(descriptionCell);
+
+
+
+                // Agregar el encabezado al documento
+                document.Add(headerTable);
+                document.Add(new Chunk("\n"));
+
+
+            }
+        }
+
         //[HttpGet]
         [HttpGet("Costday")]
         public IActionResult GeneratePdfday([FromQuery] DateTime date)
@@ -73,47 +124,18 @@ namespace restaurante_web_app.Controllers.Report
             document.AddKeywords("gastos, base de datos, PDF");
             document.AddCreator("Mi aplicación");
 
+            HeaderFooter eventHandler = new HeaderFooter();
+            writer.PageEvent = eventHandler;
+
             // Definir el estilo de fuente predeterminado
             //FontFactory.Register(openSansFontPath, "Roboto Mono");
 
             // Open the PDF document
             document.Open();
 
-            // Crear el encabezado
-            PdfPTable headerTable = new PdfPTable(3);
-            headerTable.WidthPercentage = 100;
-
-            // Agregar la imagen al encabezado
-            string imagePath = "https://res.cloudinary.com/djcaqjlqx/image/upload/v1684894683/Centenario_uhiubm.png"; // Reemplaza con la ruta de tu imagen
-            Image image = Image.GetInstance(imagePath);
-            image.ScaleAbsolute(100, 100); // Ajustar el tamaño de la imagen
-            PdfPCell imageCell = new PdfPCell(image);
-            imageCell.HorizontalAlignment = Element.ALIGN_LEFT;
-            imageCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
-            headerTable.AddCell(imageCell);
-
-            // Agregar el título al encabezado
-            //PdfPCell titleCell = new PdfPCell(new Phrase("Título del documento"));
-            PdfPCell titleCell = new PdfPCell(new Phrase("Cafe y Restaurante La Centenaria", new Font(Font.FontFamily.COURIER, 16, Font.BOLD)));
-            titleCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            titleCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            titleCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
-            headerTable.AddCell(titleCell);
-
-
-            // Obtener la fecha de hoy
-            DateTime daynow = DateTime.Now;
-            string fechaHoy = daynow.ToString();
-
-            // Agregar la descripción al encabezado
-            PdfPCell descriptionCell = new PdfPCell(new Phrase($"Reporte Diario de Gastos\n\nFecha de Impresión:\n{fechaHoy}", new Font(Font.FontFamily.COURIER, 10, Font.NORMAL)));
-            descriptionCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            descriptionCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            descriptionCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
-            headerTable.AddCell(descriptionCell);
-
-            // Agregar el encabezado al documento
-            document.Add(headerTable);
+            Paragraph title = new Paragraph("Reporte Diario", new Font(Font.FontFamily.COURIER, 12, Font.BOLD));
+            title.Alignment = Element.ALIGN_CENTER;
+            document.Add(title);
 
             // Recorra los grupos y agregue una nueva página para cada cliente
             foreach (var group in groupedData)
@@ -127,6 +149,8 @@ namespace restaurante_web_app.Controllers.Report
                 document.Add(new Chunk(line));
 
                 
+
+
                 Paragraph customer = new Paragraph($"Proveedor: {group.First().Nombre} \n" +
                                                    $"No. de Doc.: {group.First().NumeroDocumento} \n" +
                                                    $"Fecha de Registro: {group.First().Fecha} \n\n", new Font(Font.FontFamily.COURIER, 12, Font.BOLD));
@@ -284,45 +308,15 @@ namespace restaurante_web_app.Controllers.Report
 
             // Definir el estilo de fuente predeterminado
             //FontFactory.Register(openSansFontPath, "Roboto Mono");
+            HeaderFooter eventHandler = new HeaderFooter();
+            writer.PageEvent = eventHandler;
 
             // Open the PDF document
             document.Open();
 
-            // Crear el encabezado
-            PdfPTable headerTable = new PdfPTable(3);
-            headerTable.WidthPercentage = 100;
-
-            // Agregar la imagen al encabezado
-            string imagePath = "https://res.cloudinary.com/djcaqjlqx/image/upload/v1684894683/Centenario_uhiubm.png"; // Reemplaza con la ruta de tu imagen
-            Image image = Image.GetInstance(imagePath);
-            image.ScaleAbsolute(100, 100); // Ajustar el tamaño de la imagen
-            PdfPCell imageCell = new PdfPCell(image);
-            imageCell.HorizontalAlignment = Element.ALIGN_LEFT;
-            imageCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
-            headerTable.AddCell(imageCell);
-
-            // Agregar el título al encabezado
-            //PdfPCell titleCell = new PdfPCell(new Phrase("Título del documento"));
-            PdfPCell titleCell = new PdfPCell(new Phrase("Cafe y Restaurante La Centenaria", new Font(Font.FontFamily.COURIER, 16, Font.BOLD)));
-            titleCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            titleCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            titleCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
-            headerTable.AddCell(titleCell);
-
-
-            // Obtener la fecha de hoy
-            DateTime daynow = DateTime.Now;
-            string fechaHoy = daynow.ToString();
-
-            // Agregar la descripción al encabezado
-            PdfPCell descriptionCell = new PdfPCell(new Phrase($"Reporte Semanal de Gastos\n\nFecha de Impresión:\n{fechaHoy}", new Font(Font.FontFamily.COURIER, 10, Font.NORMAL)));
-            descriptionCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            descriptionCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            descriptionCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
-            headerTable.AddCell(descriptionCell);
-
-            // Agregar el encabezado al documento
-            document.Add(headerTable);
+            Paragraph title = new Paragraph("Reporte Semanal", new Font(Font.FontFamily.COURIER, 12, Font.BOLD));
+            title.Alignment = Element.ALIGN_CENTER;
+            document.Add(title);
 
             // Recorra los grupos y agregue una nueva página para cada cliente
             foreach (var group in groupedData)
@@ -334,6 +328,8 @@ namespace restaurante_web_app.Controllers.Report
                 line.LineWidth = 1f; // Ancho de la línea
                 // Agregar la línea al documento
                 document.Add(new Chunk(line));
+
+                
 
 
                 Paragraph customer = new Paragraph($"Proveedor: {group.First().Nombre} \n" +
@@ -508,45 +504,17 @@ namespace restaurante_web_app.Controllers.Report
 
             // Definir el estilo de fuente predeterminado
             //FontFactory.Register(openSansFontPath, "Roboto Mono");
-
+            HeaderFooter eventHandler = new HeaderFooter();
+            writer.PageEvent = eventHandler;
             // Open the PDF document
             document.Open();
+            // Obtener el nombre del mes en español
+            CultureInfo spanishCulture1 = new CultureInfo("es-ES");
+            string nombreMes = spanishCulture1.DateTimeFormat.GetMonthName(monthNumber);
 
-            // Crear el encabezado
-            PdfPTable headerTable = new PdfPTable(3);
-            headerTable.WidthPercentage = 100;
-
-            // Agregar la imagen al encabezado
-            string imagePath = "https://res.cloudinary.com/djcaqjlqx/image/upload/v1684894683/Centenario_uhiubm.png"; // Reemplaza con la ruta de tu imagen
-            Image image = Image.GetInstance(imagePath);
-            image.ScaleAbsolute(100, 100); // Ajustar el tamaño de la imagen
-            PdfPCell imageCell = new PdfPCell(image);
-            imageCell.HorizontalAlignment = Element.ALIGN_LEFT;
-            imageCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
-            headerTable.AddCell(imageCell);
-
-            // Agregar el título al encabezado
-            //PdfPCell titleCell = new PdfPCell(new Phrase("Título del documento"));
-            PdfPCell titleCell = new PdfPCell(new Phrase("Cafe y Restaurante La Centenaria", new Font(Font.FontFamily.COURIER, 16, Font.BOLD)));
-            titleCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            titleCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            titleCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
-            headerTable.AddCell(titleCell);
-
-
-            // Obtener la fecha de hoy
-            DateTime daynow = DateTime.Now;
-            string fechaHoy = daynow.ToString();
-
-            // Agregar la descripción al encabezado
-            PdfPCell descriptionCell = new PdfPCell(new Phrase($"Reporte Mensual de Gastos\n\nFecha de Impresión:\n{fechaHoy}", new Font(Font.FontFamily.COURIER, 10, Font.NORMAL)));
-            descriptionCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            descriptionCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            descriptionCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
-            headerTable.AddCell(descriptionCell);
-
-            // Agregar el encabezado al documento
-            document.Add(headerTable);
+            Paragraph title = new Paragraph($"Reporte Mensual de {nombreMes}", new Font(Font.FontFamily.COURIER, 12, Font.BOLD));
+            title.Alignment = Element.ALIGN_CENTER;
+            document.Add(title);
 
             // Recorra los grupos y agregue una nueva página para cada cliente
             foreach (var group in groupedData)
@@ -558,6 +526,8 @@ namespace restaurante_web_app.Controllers.Report
                 line.LineWidth = 1f; // Ancho de la línea
                 // Agregar la línea al documento
                 document.Add(new Chunk(line));
+
+                
 
 
                 Paragraph customer = new Paragraph($"Proveedor: {group.First().Nombre} \n" +
@@ -622,9 +592,7 @@ namespace restaurante_web_app.Controllers.Report
                 CultureInfo spanishCulture = new CultureInfo("es-ES");
                 string dayOfWeek = spanishCulture.DateTimeFormat.GetDayName(selectedDate.DayOfWeek);
 
-                // Obtener el nombre del mes en español
-                CultureInfo spanishCulture1 = new CultureInfo("es-ES");
-                string nombreMes = spanishCulture1.DateTimeFormat.GetMonthName(monthNumber);
+                
 
                 
 
@@ -716,45 +684,15 @@ namespace restaurante_web_app.Controllers.Report
             // Definir el estilo de fuente predeterminado
             //FontFactory.Register(openSansFontPath, "Roboto Mono");
 
+            HeaderFooter eventHandler = new HeaderFooter();
+            writer.PageEvent = eventHandler;
+
             // Open the PDF document
             document.Open();
 
-            // Crear el encabezado
-            PdfPTable headerTable = new PdfPTable(3);
-            headerTable.WidthPercentage = 100;
-
-            // Agregar la imagen al encabezado
-            string imagePath = "https://res.cloudinary.com/djcaqjlqx/image/upload/v1684894683/Centenario_uhiubm.png"; // Reemplaza con la ruta de tu imagen
-            Image image = Image.GetInstance(imagePath);
-            image.ScaleAbsolute(100, 100); // Ajustar el tamaño de la imagen
-            PdfPCell imageCell = new PdfPCell(image);
-            imageCell.HorizontalAlignment = Element.ALIGN_LEFT;
-            imageCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
-            headerTable.AddCell(imageCell);
-
-            // Agregar el título al encabezado
-            //PdfPCell titleCell = new PdfPCell(new Phrase("Título del documento"));
-            PdfPCell titleCell = new PdfPCell(new Phrase("Cafe y Restaurante La Centenaria", new Font(Font.FontFamily.COURIER, 16, Font.BOLD)));
-            titleCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            titleCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            titleCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
-            headerTable.AddCell(titleCell);
-
-
-            // Obtener la fecha de hoy
-            DateTime daynow = DateTime.Now;
-            string fechaHoy = daynow.ToString();
-
-            // Agregar la descripción al encabezado
-            PdfPCell descriptionCell = new PdfPCell(new Phrase($"Reporte de Gastos generado en el rango de fechas que eligió\n" +
-                                                                $"Desde: {selectedDateDesde} \n Hasta: {selectedDateHasta}\n\nFecha de Impresión:\n{fechaHoy}", new Font(Font.FontFamily.COURIER, 10, Font.NORMAL)));
-            descriptionCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            descriptionCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            descriptionCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
-            headerTable.AddCell(descriptionCell);
-
-            // Agregar el encabezado al documento
-            document.Add(headerTable);
+            Paragraph title = new Paragraph($"Reporte Rango, desde {selectedDateDesde} hasta {selectedDateHasta}", new Font(Font.FontFamily.COURIER, 12, Font.BOLD));
+            title.Alignment = Element.ALIGN_CENTER;
+            document.Add(title);
 
             // Recorra los grupos y agregue una nueva página para cada cliente
             foreach (var group in groupedData)
@@ -766,6 +704,8 @@ namespace restaurante_web_app.Controllers.Report
                 line.LineWidth = 1f; // Ancho de la línea
                 // Agregar la línea al documento
                 document.Add(new Chunk(line));
+
+                
 
 
                 Paragraph customer = new Paragraph($"Proveedor: {group.First().Nombre} \n" +
@@ -918,44 +858,17 @@ namespace restaurante_web_app.Controllers.Report
             // Definir el estilo de fuente predeterminado
             //FontFactory.Register(openSansFontPath, "Roboto Mono");
 
+            HeaderFooter eventHandler = new HeaderFooter();
+            writer.PageEvent = eventHandler;
+
             // Open the PDF document
             document.Open();
 
+            Paragraph title = new Paragraph($"Reporte General de Compras {currentYear}", new Font(Font.FontFamily.COURIER, 12, Font.BOLD));
+            title.Alignment = Element.ALIGN_CENTER;
+            document.Add(title);
             // Crear el encabezado
-            PdfPTable headerTable = new PdfPTable(3);
-            headerTable.WidthPercentage = 100;
 
-            // Agregar la imagen al encabezado
-            string imagePath = "https://res.cloudinary.com/djcaqjlqx/image/upload/v1684894683/Centenario_uhiubm.png"; // Reemplaza con la ruta de tu imagen
-            Image image = Image.GetInstance(imagePath);
-            image.ScaleAbsolute(100, 100); // Ajustar el tamaño de la imagen
-            PdfPCell imageCell = new PdfPCell(image);
-            imageCell.HorizontalAlignment = Element.ALIGN_LEFT;
-            imageCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
-            headerTable.AddCell(imageCell);
-
-            // Agregar el título al encabezado
-            //PdfPCell titleCell = new PdfPCell(new Phrase("Título del documento"));
-            PdfPCell titleCell = new PdfPCell(new Phrase("Cafe y Restaurante La Centenaria", new Font(Font.FontFamily.COURIER, 16, Font.BOLD)));
-            titleCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            titleCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            titleCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
-            headerTable.AddCell(titleCell);
-
-
-            // Obtener la fecha de hoy
-            DateTime daynow = DateTime.Now;
-            string fechaHoy = daynow.ToString();
-
-            // Agregar la descripción al encabezado
-            PdfPCell descriptionCell = new PdfPCell(new Phrase($"Reporte Anual de Gastos\n\nFecha de Impresión:\n{fechaHoy}", new Font(Font.FontFamily.COURIER, 10, Font.NORMAL)));
-            descriptionCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            descriptionCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            descriptionCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
-            headerTable.AddCell(descriptionCell);
-
-            // Agregar el encabezado al documento
-            document.Add(headerTable);
 
             // Recorra los grupos y agregue una nueva página para cada cliente
             foreach (var group in groupedData)
@@ -967,6 +880,8 @@ namespace restaurante_web_app.Controllers.Report
                 line.LineWidth = 1f; // Ancho de la línea
                 // Agregar la línea al documento
                 document.Add(new Chunk(line));
+
+                
 
 
                 Paragraph customer = new Paragraph($"Proveedor: {group.First().Nombre} \n" +

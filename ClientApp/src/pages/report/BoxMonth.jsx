@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useStore } from '../../providers/GlobalProvider'
 import DatePicker from '../../components/DatePicker';
 import Searchbar from '../../components/Searchbar';
@@ -9,44 +9,43 @@ import SelectOPT from '../../components/report/SelectReportShopp';
 import TableData from '../../components/TableData';
 // import Tablaprueba from '../components/tprueba';
 import ButtonDrop from '../../components/ButtonDrop';
-import { Col, Button, Label, Input, Table, Alert,  Spinner} from 'reactstrap'
+import { Form, Button, Label, Input, Table, Alert,  Spinner} from 'reactstrap'
 import { ToastContainer, toast } from "react-toastify";
 import Tablebox from '../../components/report/tablebox';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Tablep from '../../components/report/tprueba';
 // import { Row, Col,  Button } from "reactstrap";
 import { FcPrint } from 'react-icons/fc';
-import ModalNewSale from '../../components/modales/ModalNewSale';
-import Selectc from '../../components/report/SelecttReportC';
+import Tableboxmonth from '../../components/report/tableboxMonth';
 import { tr } from 'date-fns/locale';
+import Selectmonthbox from '../../components/report/Selectmbox';
 
 import Tableboxweek from '../../components/report/tableboxweek';
 
 
 
-function BoxWeek (props)  {
+function BoxMonth (props)  {
   const URL = import.meta.env.VITE_BACKEND_URL;
     //   /* isOpen (globalstate) -> para que el contenido se ajuste según el ancho de la sidebar (navegación) */
   const isOpen = useStore((state) => state.sidebar)
   useEffect(() => {
     // Para establecer en el módulo en el que nos encontramos
-    props.setTitle("Caja: Reporte Semanal");
+    props.setTitle("Caja: Reporte Mensual");
   }, []);
 
 
 
   //*********************************** */
-const [loading1, setLoading1] = useState(false)
-const [loading, setLoading] = useState(false)
-const [error, setError] = useState(null);
+  // const [cajaDiaria, setCajaDiaria] = useState(null);
 
 
 
 //   *****************************************GENERAR PDF */
+const [loading1, setLoading1] = useState(false)
 
   const generarPdf = () => {
     setLoading1(true)
-    const url = `${URL}/api/pdfBox/weeklypdf`;
+    const url = `${URL}/api/pdfBox/montss?month=${month}`;
     //=2023-5-20
     fetch(url, {
       method: 'GET',
@@ -72,31 +71,88 @@ const [error, setError] = useState(null);
   // *****************************************FIN GENERAR PDF */
 
 
-  const [data, setDataApi] = useState(null);
+  const currentDate = new Date();
+  const initialMonth = currentDate.getMonth() + 1;
+  const initialWeekNumber = getWeekNumber(currentDate);
+  const formRef = useRef([]);
 
-  useEffect(() => {
 
+  const [month, setMonth] = useState(initialMonth);
+  
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [sem, setsem] = useState(null)
+
+  // const handleMonthChange = (event) => {
+  //   setMonth(event.target.value);
+  // };
+
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   setLoading(true);
+
+  //   try { 
+  //     const response = await fetch();
+  //     const jsonData = await response.json();
+  //     setData(jsonData);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     setError('Error al obtener los datos.');
+  //     setLoading(false);
+  //   }
+  // };
+
+  const handleMonthChange = (event) => {
+    setMonth(event.target.value);
+  };
+
+  // const [selectedMonth, setSelectedMonth] = useState('');
+
+  // const handleMonthChange = (event) => {
+  //   setSelectedMonth(event.target.value);
+  // };
+  const fetchMonthData = async () => {
     setLoading(true)
-    fetch(`${URL}/api/ReportBox/weekly`,{
-      headers: {
-        'Authorization': `Bearer ${localStorage.token}`,
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        setDataApi(data);
-        // console.log("kdjfalkdsjfa " ,data)
-        setLoading(false)
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        setLoading(false)
+    try {
+      const response = await fetch(`${URL}/api/ReportBox/monts?month=${month}`,{
+        headers: {
+          'Authorization': `Bearer ${localStorage.token}`,
+        }
       });
+
+      // ?month=may
+      const jsonData = await response.json();
+      setData(jsonData);
+      // setsem(data.semanas )
+      setLoading(false)
+    } catch (error) {
+      console.error('No sé encontraron datos:', error);
+      alert('No se encontraron  los datos ');
+      // <Alert> No se econtraron los datos</Alert>
+
+    
+      setLoading(false)
+      // setError(error)
+    }
+    setLoading(false)
+    
+  };
+  useEffect(() => {
+    
+      fetchMonthData();
+    
   }, []);
 
-  // if (dataApi.cajasSemanales.length === 0) {
-  //   return 
-  //     <Spinner
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    fetchMonthData();
+  };
+
+  console.log(data)
+
+  // if (data.semanas.length === 0) {
+  //   return <Spinner
   //       className="m-5"
   //       color="warning"
   //     >
@@ -104,14 +160,11 @@ const [error, setError] = useState(null);
   //     </Spinner>
     
   // }
-  if (!data) {
-    return <div>Loading...</div>;
-  }
+
   
 
 
-  // Ordenar las cajas por fecha de forma descendente
-  data.cajasSemanales.sort((a, b) => new Date(b.cajaDiaria.fecha) - new Date(a.cajaDiaria.fecha));
+
  
   return (
 
@@ -156,6 +209,8 @@ const [error, setError] = useState(null);
             
           </div> 
 
+
+
           <div className="col ">
             {/* <Button onClick={fetchDailyReport}>Ver</Button> */}
           {/* <Input
@@ -181,54 +236,29 @@ const [error, setError] = useState(null);
           
 
 
-                {/* {data.cajasSemanales.map((caja, index) => (
-                  <div key={caja.cajaDiaria.idCajaDiaria}>
-                  <h4>Caja Diaria ID: {caja.cajaDiaria.idCajaDiaria}</h4>
-                  <p>Fecha: {caja.cajaDiaria.fecha}</p>
-                  <p>Saldo Inicial: {caja.cajaDiaria.saldoInicial}</p>
-                  <p>Saldo Final: {caja.cajaDiaria.saldoFinal}</p>
-                  <p>Estado: {caja.cajaDiaria.estado}</p>
-
-
-                             
-                          
-                          <p>Total Ventas: {caja.totalVentas}  </p>
-                          <p>Total Compras: {caja.totalGastos}</p>
-
-                    </div>
-
-                ))} */}
 
 
 <div>
-     
+      <Form onSubmit={handleSubmit}>
+        {/* <label> */}
+          
+          {/* <input type="number" value={month} onChange={handleMonthChange} /> */}
+          <div className='row'>
+            <div className='col'>
+            <Selectmonthbox value={month}  sele={handleMonthChange} ></Selectmonthbox>
+            </div>
+            <div className='col'>
+            <Button color='primary' type="submit" outline >Obtener Datos</Button>
 
-      <div className="p-3 mt-3 bg-secondary bg-gradient bg-opacity-25 rounded-5 mb-3">
-        <h3>Resumen Semanal:</h3>
-        {/* <p>Total Ingresos Semana: Q. {data.totalIngresosSemana}</p> */}
-        <p>Total Ventas Semana: Q. {data.totalVentasSemana}</p>
-        <p>Total Compras Semana: Q. {data.totalComprasSemana}</p>
-        <p>Total Saldo Final Semana: Q. {data.totalSaldoFinalSemana}</p>
-      </div>
 
-      <div>
-        {/* <h3>Cajas Semanales:</h3> */}
-       
-        {/* {loading ? (
-        <Spinner
-        className="m-5"
-        color="warning"
-      >
-        Loading...
-      </Spinner>
-      ):
-       (
-        // <Alert color="success">Hay ventas en la fecha seleccionada.</Alert>
-        <Tableboxweek data={data}></Tableboxweek>
-        // <Alert color="warning">No hay ventas en la fecha seleccionada.</Alert>
-      ) } */}
+            </div>
+          </div>
+        {/* </label> */}
+      </Form>
 
-{loading && <Spinner
+
+
+      {loading && <Spinner
         className="m-5"
         color="warning"
       >
@@ -239,7 +269,8 @@ const [error, setError] = useState(null);
         // <p>no hay</p>
         <div >
         {/* ******************** */}
-        <Tableboxweek data={data}></Tableboxweek>
+        <Tableboxmonth data={data}></Tableboxmonth>
+
           
         </div>
         
@@ -248,6 +279,16 @@ const [error, setError] = useState(null);
         
       )
     }
+    </div>
+
+
+<div>
+      
+
+      
+
+      <div>
+        
         
       </div>
     </div>
@@ -288,4 +329,13 @@ const [error, setError] = useState(null);
   
 };
 
-export default BoxWeek;
+
+// Función auxiliar para obtener el número de semana del mes
+const getWeekNumber = (date) => {
+  const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+  const firstDayOfWeek = firstDayOfMonth.getDay();
+  const weekNumber = Math.ceil((date.getDate() + firstDayOfWeek) / 7);
+  return weekNumber;
+};
+
+export default BoxMonth;

@@ -47,6 +47,7 @@ function ShoppDay (props)  {
   const [salesData, setSalesData] = useState([]);
   const [hasSales, setHasSales] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [loading1, setLoading1] = useState(false)
 
 // const getDataday = async () => {
 
@@ -78,6 +79,7 @@ function ShoppDay (props)  {
 //   *****************************************GENERAR PDF */
 
   const generarPdf = () => {
+    setLoading1(true)
     const url = `${URL}/api/pdfCost/Costday?date=${selectedDate1}`;
     fetch(url, {
       method: 'GET',
@@ -93,15 +95,15 @@ function ShoppDay (props)  {
         if (!newWindow) {
           throw new Error('No se pudo abrir el PDF en una pestaña nueva.');
         }
+        setLoading1(false)
       })
       .catch((error) => {
         console.error('Error:', error);
+        setLoading1(false)
       });
   };
   // *****************************************FIN GENERAR PDF */
 
-  const sele1 = [{value: '1',label: 'Ventas',href: '/reports'},{value: '2',label: 'Compras',href: '/purchasesday',}
-];
 
   
   useEffect(() => {
@@ -124,12 +126,14 @@ function ShoppDay (props)  {
           // Verificar la respuesta de la API y actualizar los datos de ventas y el estado hasSales en consecuencia
           setSalesData(data);
           setHasSales(data.length > 0);
+          setLoading(false);
         })
         .catch((error) => {
           console.error('Error:', error);
+          setLoading(false);
         });
     }
-    setLoading(false)
+    // setLoading(false)
   };
   
   const handleDateChange1 = (event) => {
@@ -224,14 +228,20 @@ function ShoppDay (props)  {
             
           </div> 
           <div className='col '>
-          <Button
-              onClick={generarPdf}
-              color="primary"
-              outline
-            >
-              Generar reporte
-              <FcPrint />
-            </Button>
+              <Button color="primary" disabled={loading1} onClick={generarPdf} >
+                
+                {loading1 ? (
+                  <>
+                    <Spinner size="sm" />
+                    <span>Generando</span>
+                  </>
+                ) : (
+                  <>
+                    Imprimir
+                    <FcPrint />
+                  </>
+                )}
+              </Button>
             
           </div> 
 

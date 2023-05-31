@@ -37,9 +37,11 @@ function ShoppRange(props)  {
   const [fechaHasta, setFechaHasta] = useState("");
   const [hasSales, setHasSales] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [loading1, setLoading1] = useState(false);
 
 
-  const pdfRange = () => {
+  const generarPdf= () => {
+    setLoading1(true)
     const url = `${URL}/api/pdfCost/Costrange?fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}`;
     fetch(url, {
       method: 'GET',
@@ -55,9 +57,11 @@ function ShoppRange(props)  {
         if (!newWindow) {
           throw new Error('No se pudo abrir el PDF en una pestaña nueva.');
         }
+        setLoading1(false)
       })
       .catch((error) => {
         console.error('Error:', error);
+        setLoading1(false)
       });
   };
 
@@ -75,12 +79,14 @@ function ShoppRange(props)  {
       .then((data) => {
         setData(data);
         setHasSales(data.length > 0);
+        setLoading(false);
         // console.log("casa",data)
       })
       .catch((error) => {
         console.error('Error:', error);
+        setLoading(false);
       });
-      setLoading(false);
+      // setLoading(false);
 
   };
 
@@ -146,14 +152,20 @@ function ShoppRange(props)  {
             <FcPrint />
           </ButtonDrop> */}
           
-          <Button
-            onClick={pdfRange}
-            color="primary"
-            outline
-          >
-            Generar reporte
-            <FcPrint />
-          </Button>
+              <Button color="primary" disabled={loading1} onClick={generarPdf} >
+                
+                {loading1 ? (
+                  <>
+                    <Spinner size="sm" />
+                    <span>Generando</span>
+                  </>
+                ) : (
+                  <>
+                    Imprimir
+                    <FcPrint />
+                  </>
+                )}
+              </Button>
         </div>
       
         

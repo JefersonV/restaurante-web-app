@@ -30,12 +30,10 @@ function ShoppAll (props)  {
   // const [seledia, setseledia] = useState([]);
 
 
-
-  const sele = [{value: '1',label: 'hoy',href: '/reports'},{value: '2',label: 'semanal',href: '/reports/week',},
-  {value: '3',label: 'rango',href: '/reports/rango',},{value: '4',label: 'Mensual',href: '/reports/month',
-  }];
+  const [loading1, setLoading1] = useState(false);
 
   const generarPdf = () => {//http://localhost:5188/api/pdf/reportweek
+    setLoading1(true)
     const url = `${URL}/api/pdfCost/Costyear`;
     fetch(url, {
       method: 'GET',
@@ -52,9 +50,11 @@ function ShoppAll (props)  {
         if (!newWindow) {
           throw new Error('No se pudo abrir el PDF en una pestaña nueva.');
         }
+        setLoading1(false)
       })
       .catch((error) => {
         console.error('Error:', error);
+        setLoading1(false)
       });
   };
 
@@ -99,9 +99,10 @@ const [month, setMonth] = useState(initialMonth);
   // };
 
 
-  useEffect(() => {
-    setLoading(true);
+
+    
     const fetchYearData = async () => {
+      setLoading(true);
       try {
         const response = await fetch(`${URL}/api/ReportCost/year`, {
           headers: {
@@ -110,11 +111,15 @@ const [month, setMonth] = useState(initialMonth);
         });
         const data = await response.json();
         setSalesData(data);
+        setLoading(false);
       } catch (error) {
         console.error('Error al obtener los datos del año:', error);
+        setLoading(false);
       }
+      // setLoading(false);
     };
-    setLoading(false);
+   
+    useEffect(() => { 
     fetchYearData();
   }, []);
 
@@ -167,14 +172,20 @@ const [month, setMonth] = useState(initialMonth);
           <FcPrint />
         </ButtonDrop> */}
         {/* <Label htmlFor="dateInput">Seleccionar fecha:</Label> */}
-        <Button
-          onClick={generarPdf}
-          color="primary"
-          outline
-        >
-          Imprimir
-          <FcPrint />
-        </Button>
+              <Button color="primary" disabled={loading1} onClick={generarPdf} >
+                
+                {loading1 ? (
+                  <>
+                    <Spinner size="sm" />
+                    <span>Generando</span>
+                  </>
+                ) : (
+                  <>
+                    Imprimir
+                    <FcPrint />
+                  </>
+                )}
+              </Button>
       </div>
     
       
