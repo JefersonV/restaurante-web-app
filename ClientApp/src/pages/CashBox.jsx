@@ -26,7 +26,7 @@ function CashBox(props) {
         }
       })
       const data = await response.json()
-      console.log(data)
+      // console.log(data)
       setSaldoCajaAnterior(data)
     } catch(error) {
       console.log(error)

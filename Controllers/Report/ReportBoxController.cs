@@ -989,20 +989,5 @@ namespace restaurante_web_app.Controllers.Report
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
     }
 }

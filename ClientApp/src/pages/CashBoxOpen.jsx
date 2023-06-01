@@ -28,7 +28,7 @@ function CashBoxOpen(props) {
         }
       })
       const data = await response.json()
-      console.log(data)
+      // console.log(data)
       setCashData(data)
     } catch(error) {
       console.log(error)
